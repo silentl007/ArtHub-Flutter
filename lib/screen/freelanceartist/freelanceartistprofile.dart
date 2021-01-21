@@ -120,18 +120,18 @@ class FreeLanceProfile extends StatelessWidget {
 
   void details(BuildContext context, Map element) {
     ParsedDataProduct details = ParsedDataProduct(
-        element['name'],
-        element['product'],
-        element['cost'],
-        element['type'],
-        element['avatar'],
-        element['desc'],
-        element['description'],
-        element['available'],
-        element['weight'],
-        element['dimension'],
-        element['material used'],
-        element['images']);
+        artistname: element['name'],
+        productname: element['product'],
+        cost: element['cost'],
+        type: element['type'],
+        avatar: element['avatar'],
+        desc: element['desc'],
+        description: element['description'],
+        avail: element['available'],
+        weight: element['weight'],
+        dimension: element['dimension'],
+        materials: element['material used'],
+        images: element['images']);
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => ProductDetails(details)));
   }

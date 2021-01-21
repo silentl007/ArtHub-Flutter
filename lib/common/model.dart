@@ -314,10 +314,12 @@ class ParsedDataGallery {
   String address;
   String location;
   String contact;
-  ParsedDataGallery(this.name, this.code, this.address, this.location, this.contact);
+  ParsedDataGallery(
+      this.name, this.code, this.address, this.location, this.contact);
 }
 
 class ParsedDataProduct {
+  int id;
   String artistname;
   String productname;
   int cost;
@@ -331,7 +333,7 @@ class ParsedDataProduct {
   String materials;
   List images;
   ParsedDataProduct(
-      this.artistname,
+      {this.artistname,
       this.productname,
       this.cost,
       this.type,
@@ -342,7 +344,7 @@ class ParsedDataProduct {
       this.weight,
       this.dimension,
       this.materials,
-      this.images);
+      this.images});
 }
 
 class Selecteditems {
