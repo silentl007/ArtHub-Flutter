@@ -8,6 +8,8 @@ class FreeLanceProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScrollController scrollController;
+    Size size = MediaQuery.of(context).size;
+    double fontSize40 = size.height * 0.05;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -57,7 +59,7 @@ class FreeLanceProfile extends StatelessWidget {
                                 child: Text(
                                   '${artistdata.name}',
                                   style: TextStyle(
-                                      fontSize: 40,
+                                      fontSize: fontSize40,
                                       color: AppColors.purple,
                                       fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.justify,

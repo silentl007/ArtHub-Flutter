@@ -18,8 +18,8 @@ class _GalleriesState extends State<Galleries> {
     Data modeldata = Data();
     List result = modeldata.galleries;
     for (var data in result) {
-      ParsedDataGallery parsed = ParsedDataGallery(
-          data['name'], data['code'], data['address'], data['location'], data['contact']);
+      ParsedDataGallery parsed = ParsedDataGallery(data['name'], data['code'],
+          data['address'], data['location'], data['contact']);
       collecteddata.add(parsed);
     }
     filtereddata = collecteddata;
@@ -28,6 +28,9 @@ class _GalleriesState extends State<Galleries> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double fontSize = size.height * 0.03875;
+    double imageHeight20 = size.height * 0.025;
+    double paddingTop = size.height * 0.05;
     collecteddata.shuffle();
     return SafeArea(
       child: Scaffold(
@@ -62,7 +65,8 @@ class _GalleriesState extends State<Galleries> {
                         right: 20,
                       ),
                       child: InkWell(
-                        onTap: () => galleryart(context, filtereddata[index].code),
+                        onTap: () =>
+                            galleryart(context, filtereddata[index].code),
                         child: Container(
                             height: size.height * .25,
                             decoration: BoxDecoration(
@@ -74,7 +78,7 @@ class _GalleriesState extends State<Galleries> {
                                     fit: BoxFit.cover)),
                             child: Padding(
                               padding:
-                                  const EdgeInsets.only(left: 50.0, top: 40),
+                                  const EdgeInsets.only(left: 50.0, top: 30),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -82,7 +86,7 @@ class _GalleriesState extends State<Galleries> {
                                       style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           color: Colors.white,
-                                          fontSize: 31)),
+                                          fontSize: fontSize)),
                                   SizedBox(
                                     height: 9,
                                   ),
@@ -90,7 +94,7 @@ class _GalleriesState extends State<Galleries> {
                                     children: [
                                       Image.asset(
                                         'assets/appimages/addressicon.png',
-                                        height: 20,
+                                        height: imageHeight20,
                                       ),
                                       SizedBox(
                                         width: 10,
@@ -119,7 +123,7 @@ class _GalleriesState extends State<Galleries> {
                                     children: [
                                       Image.asset(
                                         'assets/appimages/callicon.png',
-                                        height: 20,
+                                        height: imageHeight20,
                                       ),
                                       SizedBox(
                                         width: 10,

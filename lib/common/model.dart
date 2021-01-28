@@ -319,6 +319,21 @@ class ParsedDataGallery {
 }
 
 class ParsedDataProduct {
+  static const tableName = 'Cart';
+  static const colID = 'id';
+  static const colArtistName = 'artistname';
+  static const colProductName = 'productname';
+  static const colCost = 'cost';
+  static const colType = 'type';
+  static const colAvatar = 'avatar';
+  static const colDesc = 'desc';
+  static const colDescription = 'description';
+  static const colAvail = 'avail';
+  static const colWeight = 'weight';
+  static const colDimension = 'dimension';
+  static const colMaterials = 'materials';
+  static const colImages = 'images';
+
   int id;
   String artistname;
   String productname;
@@ -333,7 +348,8 @@ class ParsedDataProduct {
   String materials;
   List images;
   ParsedDataProduct(
-      {this.artistname,
+      {this.id,
+      this.artistname,
       this.productname,
       this.cost,
       this.type,
@@ -345,6 +361,37 @@ class ParsedDataProduct {
       this.dimension,
       this.materials,
       this.images});
+
+  Map<String, dynamic> toMap() {
+    var map = <String, dynamic>{
+      colArtistName: artistname,
+      colProductName: productname,
+      colCost: cost,
+      colType: type,
+      colAvatar: avatar,
+      colDesc: desc,
+      colDescription: description,
+      colWeight: weight,
+      colDimension: dimension,
+      colMaterials: materials,
+    };
+    if (id != null) map[colID] = id;
+    return map;
+  }
+
+  ParsedDataProduct.fromMap(Map<String, dynamic> map) {
+    id = map[colID];
+    artistname = map[colArtistName];
+    productname = map[colProductName];
+    cost = map[colCost];
+    type = map[colType];
+    avatar = map[colAvatar];
+    desc = map[colDesc];
+    description = map[colDescription];
+    weight = map[colWeight];
+    dimension = map[colDimension];
+    materials = map[colMaterials];
+  }
 }
 
 class Selecteditems {

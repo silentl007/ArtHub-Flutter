@@ -12,6 +12,8 @@ class GalleryArt extends StatefulWidget {
 class _GalleryArtState extends State<GalleryArt> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    double fontSize20 = size.height * 0.025;
     Data datacollect = Data();
     List<ParsedDataProduct> portraitworks = [];
     List<ParsedDataProduct> sculpworks = [];
@@ -79,7 +81,7 @@ class _GalleryArtState extends State<GalleryArt> {
                     'Portraits',
                     style: TextStyle(
                         color: AppColors.purple,
-                        fontSize: 20,
+                        fontSize: fontSize20,
                         fontWeight: FontWeight.w700),
                   ),
                 ),
@@ -88,7 +90,7 @@ class _GalleryArtState extends State<GalleryArt> {
                     'Sculptors',
                     style: TextStyle(
                         color: AppColors.purple,
-                        fontSize: 20,
+                        fontSize: fontSize20,
                         fontWeight: FontWeight.w700),
                   ),
                 )

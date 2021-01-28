@@ -1,0 +1,84 @@
+itemnumber != 0
+            ? Padding(
+                padding: const EdgeInsets.all(40.0),
+                child: Column(
+                  children: [
+                    Expanded(
+                        flex: 2,
+                        child: Container(
+                          color: Colors.red,
+                          child: Column(
+                            children: data
+                                .map((e) => Text('${e.productname}'))
+                                .toList(),
+                          ),
+                        )),
+                    Expanded(
+                        flex: 1,
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('Total Items'),
+                                  Align(
+                                      alignment: Alignment.topRight,
+                                      child: Text(
+                                        '$itemnumber',
+                                        textAlign: TextAlign.right,
+                                      ))
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('Service Charge'),
+                                  Align(
+                                      alignment: Alignment.topRight,
+                                      child: Text(
+                                        '500',
+                                        textAlign: TextAlign.right,
+                                      ))
+                                ],
+                              ),
+                              Container(
+                                width: double.infinity,
+                                height: 1,
+                                color: AppColors.purple,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('Total'),
+                                  Align(
+                                      alignment: Alignment.topRight,
+                                      child: Text(
+                                        '$summation',
+                                        textAlign: TextAlign.right,
+                                      ))
+                                ],
+                              ),
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: RaisedButton(
+                                    child: Text('Purchase'),
+                                    onPressed: () {
+                                      data.forEach((element) {
+                                        print(
+                                            'the cost is ${element.cost} for data ${element.productname}');
+                                      });
+                                    }),
+                              )
+                            ],
+                          ),
+                        )),
+                  ],
+                ),
+              )
+            : Center(
+                child: Text('No item in your cart!'),
+              ),

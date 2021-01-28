@@ -1,4 +1,5 @@
 import 'package:ArtHub/common/model.dart';
+import 'package:ArtHub/common/sqliteoperations.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ArtHub/screen/purchasescreen.dart';
@@ -13,13 +14,19 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   final ParsedDataProduct data;
+  DataBaseFunctions _dataBaseFunctions;
+  List<String> itemcheck = [];
+  int itemnumber = 0;
   _ProductDetailsState(this.data);
   @override
   initState() {
     super.initState();
+    setState(() {
+      _dataBaseFunctions = DataBaseFunctions.databaseinstance;
+    });
+    getdata();
   }
 
-  Selecteditems selecteditemsinstance = Selecteditems();
   int _current = 0;
   List<T> map<T>(List list, Function handler) {
     List<T> result = [];
@@ -29,13 +36,26 @@ class _ProductDetailsState extends State<ProductDetails> {
     return result;
   }
 
-  int itemnumber = 0;
+  getdata() async {
+    List<ParsedDataProduct> databaseList = await _dataBaseFunctions.fetchdata();
+    setState(() {
+      itemnumber = databaseList.length;
+    });
+    if (databaseList.isNotEmpty) {
+      databaseList.forEach((element) {
+        itemcheck.add(element.productname);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // int itemnumber = selecteditemsinstance.selecteditems.length;
     Size size = MediaQuery.of(context).size;
-    print(size.height);
-    print(size.width);
+    double fontSize20 = size.height * 0.025;
+    double fontSize18 = size.height * 0.0225;
+    double fontSize25 = size.height * 0.03125;
+    // print(size.height);
+    // print(size.width);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -51,7 +71,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                   children: [
                     Text(
                       '$itemnumber',
-                      style: TextStyle(color: AppColors.purple, fontSize: 20),
+                      style: TextStyle(
+                          color: AppColors.purple, fontSize: fontSize20),
                     ),
                     Icon(
                       Icons.shopping_cart,
@@ -156,7 +177,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                             data.productname,
                                             style: TextStyle(
                                                 color: AppColors.purple,
-                                                fontSize: 25,
+                                                fontSize: fontSize25,
                                                 fontWeight: FontWeight.bold),
                                           )),
                                     ),
@@ -176,7 +197,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                                         child: Text(
                                       '₦ ${data.cost}',
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 20),
+                                          color: Colors.white,
+                                          fontSize: fontSize20),
                                     )),
                                   ),
                                 ),
@@ -200,55 +222,55 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   children: [
                                     Text('Type:',
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: fontSize20,
                                             color: AppColors.purple,
                                             fontWeight: FontWeight.w700)),
                                     Text('${data.type}',
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: fontSize20,
                                             color: AppColors.purple)),
                                     Text('Description:',
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: fontSize20,
                                             color: AppColors.purple,
                                             fontWeight: FontWeight.w700)),
                                     Text(
                                       '${data.description}:',
                                       style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: fontSize20,
                                           color: AppColors.purple),
                                     ),
                                     Text('Weight:',
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: fontSize20,
                                             color: AppColors.purple,
                                             fontWeight: FontWeight.w700)),
                                     Text(
                                       '${data.weight} kg',
                                       style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: fontSize20,
                                           color: AppColors.purple),
                                     ),
                                     Text('Dimensions:',
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: fontSize20,
                                             color: AppColors.purple,
                                             fontWeight: FontWeight.w700)),
                                     Text(
                                       '${data.dimension} inchs',
                                       style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: fontSize20,
                                           color: AppColors.purple),
                                     ),
                                     Text('Materials:',
                                         style: TextStyle(
-                                            fontSize: 20,
+                                            fontSize: fontSize20,
                                             color: AppColors.purple,
                                             fontWeight: FontWeight.w700)),
                                     Text(
                                       '${data.materials}',
                                       style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: fontSize20,
                                           color: AppColors.purple),
                                     ),
                                   ],
@@ -265,7 +287,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 height: size.height * .07,
                                 child: RaisedButton(
                                     elevation: 8,
-                                    onPressed: () => cart(context, data),
+                                    onPressed: () => addcart(context, data),
                                     color: AppColors.purple,
                                     child: Row(
                                       mainAxisAlignment:
@@ -279,7 +301,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                           'Add to Cart',
                                           style: TextStyle(
                                               color: Colors.white,
-                                              fontSize: 18),
+                                              fontSize: fontSize18),
                                         ),
                                       ],
                                     ),
@@ -305,11 +327,21 @@ class _ProductDetailsState extends State<ProductDetails> {
         context, MaterialPageRoute(builder: (context) => PurchaseScreen()));
   }
 
-  cart(BuildContext context, ParsedDataProduct cartitem) {
-    selecteditemsinstance.selecteditems.add(cartitem);
-    setState(() {
-      itemnumber = selecteditemsinstance.selecteditems.length;
-    });
-    print('added');
+  addcart(BuildContext context, ParsedDataProduct cartitem) async {
+    if (itemcheck.contains(cartitem.productname)) {
+      return showDialog(
+          context: context,
+          child: AlertDialog(
+            content: Text('Already in cart'),
+          ));
+    } else {
+      await _dataBaseFunctions.insertitem(cartitem);
+      getdata();
+      return showDialog(
+          context: context,
+          child: AlertDialog(
+            content: Text('Added to cart'),
+          ));
+    }
   }
 }

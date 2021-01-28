@@ -7,6 +7,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double fontSize = size.height * 0.025;
     return SafeArea(
       child: Scaffold(
           body: Container(
@@ -30,7 +31,7 @@ class HomeScreen extends StatelessWidget {
                 child: Text(
                   'Galleries',
                   style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w900, fontSize: 20),
+                      color: Colors.white, fontWeight: FontWeight.w900, fontSize: fontSize),
                 ),
               ),
             ),
@@ -48,7 +49,7 @@ class HomeScreen extends StatelessWidget {
                 child: Text(
                   'Freelance',
                   style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w900, fontSize: 20),
+                      color: Colors.white, fontWeight: FontWeight.w900, fontSize: fontSize),
                 ),
               ),
             ),
