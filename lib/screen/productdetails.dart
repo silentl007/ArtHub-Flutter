@@ -58,6 +58,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     // print(size.width);
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text('Details'),
           actions: [

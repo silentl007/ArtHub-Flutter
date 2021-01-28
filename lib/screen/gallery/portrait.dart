@@ -56,13 +56,14 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
                               width: size.height * .15,
                             ),
                             SingleChildScrollView(
-                                                          child: Container(
+                              child: Container(
                                 color: Colors.transparent,
                                 width: size.height * .22,
                                 padding: EdgeInsets.only(left: 20),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     Text(
                                       '${data.productname}',
@@ -82,7 +83,8 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
                                       alignment: Alignment.bottomRight,
                                       child: RaisedButton(
                                         color: AppColors.blue,
-                                        onPressed: () => purchase(context, data),
+                                        onPressed: () =>
+                                            purchase(context, data),
                                         shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(50))),

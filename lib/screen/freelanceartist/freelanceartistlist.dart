@@ -8,6 +8,7 @@ class FreeLanceArtist extends StatefulWidget {
 }
 
 class _FreeLanceArtistState extends State<FreeLanceArtist> {
+  Widgets classWidget = Widgets();
   @override
   Widget build(BuildContext context) {
     Data artistname = Data();
@@ -24,24 +25,8 @@ class _FreeLanceArtistState extends State<FreeLanceArtist> {
     }
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Padding(
-            padding: const EdgeInsets.only(right: 30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  'Freelance',
-                  style: TextStyle(
-                    color: AppColors.purple,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-        ),
+        backgroundColor: Colors.white,
+        appBar: classWidget.apptitleBar('Freelancers'),
         body: Container(
           padding: EdgeInsets.fromLTRB(20, 15, 10, 0),
           child: Column(

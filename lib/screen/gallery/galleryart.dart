@@ -59,6 +59,7 @@ class _GalleryArtState extends State<GalleryArt> {
       length: 2,
       child: SafeArea(
         child: Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
               title: Padding(
                 padding: const EdgeInsets.only(right: 30),

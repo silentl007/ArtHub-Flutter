@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ArtHub/screen/productdetails.dart';
 
 class FreeLanceProfile extends StatelessWidget {
+  final Widgets classWidget = Widgets();
   final ParsedDataFreeLanceArts artistdata;
   FreeLanceProfile(this.artistdata);
   @override
@@ -12,24 +13,8 @@ class FreeLanceProfile extends StatelessWidget {
     double fontSize40 = size.height * 0.05;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Padding(
-            padding: const EdgeInsets.only(right: 30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  '${artistdata.name}',
-                  style: TextStyle(
-                    color: AppColors.purple,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-        ),
+        backgroundColor: Colors.white,
+        appBar: classWidget.apptitleBar('${artistdata.name}'),
         body: Padding(
           padding: const EdgeInsets.all(22.0),
           child: Column(

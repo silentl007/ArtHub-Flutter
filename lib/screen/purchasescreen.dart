@@ -9,6 +9,7 @@ class PurchaseScreen extends StatefulWidget {
 }
 
 class _PurchaseScreenState extends State<PurchaseScreen> {
+  Widgets classWidget = Widgets();
   DataBaseFunctions _dataBaseFunctions;
   List data;
   List interfacedatalist;
@@ -55,24 +56,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Padding(
-            padding: const EdgeInsets.only(right: 30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  'My Cart',
-                  style: TextStyle(
-                    color: AppColors.purple,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-        ),
+        appBar: classWidget.apptitleBar('My Cart'),
         body: Container(
           color: Colors.white,
           child: FutureBuilder(
@@ -95,23 +79,22 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                             Expanded(
                                 flex: 2,
                                 child: Container(
+                                  color: Colors.white,
                                     child: ListView.builder(
                                   itemCount: snapshot.data.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Padding(
                                       padding: const EdgeInsets.only(
-                                          top: 8.0, bottom: 8),
+                                          top: 8.0, bottom: 8, left: 5, right: 5,),
                                       child: Material(
-                                        elevation: 10,
+                                        elevation: 3,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(30)),
                                         child: Container(
                                           height: size.height * .20,
                                           decoration: BoxDecoration(
                                             color: Colors.transparent,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(30)),
                                           ),
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
@@ -152,7 +135,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                                                 .purple,
                                                             fontWeight:
                                                                 FontWeight.bold,
-                                                            fontSize: fontSize20),
+                                                            fontSize:
+                                                                fontSize20),
                                                       ),
                                                       Text(
                                                         '₦ ${snapshot.data[index].cost}',
@@ -161,7 +145,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                                                 AppColors.red,
                                                             fontWeight:
                                                                 FontWeight.bold,
-                                                            fontSize: fontSize20),
+                                                            fontSize:
+                                                                fontSize20),
                                                       ),
                                                       Align(
                                                         alignment: Alignment
@@ -191,7 +176,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w600,
-                                                                fontSize: fontSize20),
+                                                                fontSize:
+                                                                    fontSize20),
                                                           ),
                                                         ),
                                                       )

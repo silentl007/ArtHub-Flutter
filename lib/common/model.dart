@@ -405,3 +405,26 @@ class AppColors {
   static const purple = Color.fromRGBO(69, 56, 133, 1);
   static const List hell = [];
 }
+
+class Widgets {
+  Widget apptitleBar(String text) {
+    return AppBar(
+      title: Padding(
+        padding: const EdgeInsets.only(right: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              text,
+              style: TextStyle(
+                color: AppColors.purple,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

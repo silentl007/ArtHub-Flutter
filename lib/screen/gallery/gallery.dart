@@ -8,6 +8,8 @@ class Galleries extends StatefulWidget {
 }
 
 class _GalleriesState extends State<Galleries> {
+  
+  Widgets classWidget = Widgets();
   List<ParsedDataGallery> collecteddata = List();
   List<ParsedDataGallery> filtereddata = List();
 
@@ -34,24 +36,8 @@ class _GalleriesState extends State<Galleries> {
     collecteddata.shuffle();
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Padding(
-            padding: const EdgeInsets.only(right: 30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  'Galleries',
-                  style: TextStyle(
-                    color: AppColors.purple,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-        ),
+        backgroundColor: Colors.white,
+        appBar: classWidget.apptitleBar('Galleries'),
         body: Column(
           children: <Widget>[
             searchbar(),

@@ -1,4 +1,5 @@
 import 'package:ArtHub/screen/homescreen.dart';
+import 'package:ArtHub/screen/register.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
 
@@ -8,6 +9,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  Widgets classWidget = Widgets();
   final GlobalKey _key = GlobalKey<FormState>();
   final usernameControl = TextEditingController();
   final passwordControl = TextEditingController();
@@ -17,24 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
     double fontSize = size.height * 0.025;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Padding(
-            padding: const EdgeInsets.only(right: 30),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  'Login',
-                  style: TextStyle(
-                    color: AppColors.purple,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-        ),
+        appBar: classWidget.apptitleBar('Login'),
         body: Form(
           key: _key,
           child: Container(
@@ -93,6 +78,9 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => HomeScreen()));
           }
+        } else if (text == 'New user? Register') {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => RegisterScreen()));
         }
       },
     );
