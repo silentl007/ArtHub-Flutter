@@ -63,5 +63,4 @@ class DataBaseFunctions {
         ? []
         : cartlist.map((e) => ParsedDataProduct.fromMap(e)).toList();
   }
-
 }

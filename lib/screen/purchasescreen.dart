@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
 import 'package:ArtHub/common/sqliteoperations.dart';
-import 'package:flutter_rave/flutter_rave.dart';
 
 class PurchaseScreen extends StatefulWidget {
   @override
@@ -79,82 +78,92 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                             Expanded(
                                 flex: 2,
                                 child: Container(
-                                  color: Colors.white,
+                                    color: Colors.white,
                                     child: ListView.builder(
-                                  itemCount: snapshot.data.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 8.0, bottom: 8, left: 5, right: 5,),
-                                      child: Material(
-                                        elevation: 3,
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(30)),
-                                        child: Container(
-                                          height: size.height * .20,
-                                          decoration: BoxDecoration(
-                                            color: Colors.transparent,
+                                      itemCount: snapshot.data.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Padding(
+                                          padding: const EdgeInsets.only(
+                                            top: 8.0,
+                                            bottom: 8,
+                                            left: 5,
+                                            right: 5,
                                           ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  30)),
-                                                      image: DecorationImage(
-                                                          image: AssetImage(
-                                                              snapshot
-                                                                  .data[index]
-                                                                  .avatar),
-                                                          fit: BoxFit.cover)),
-                                                  height: innerheight,
-                                                  width: size.height * .15,
-                                                ),
-                                                Container(
-                                                  color: Colors.transparent,
-                                                  width: size.height * .22,
-                                                  padding:
-                                                      EdgeInsets.only(left: 20),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceAround,
-                                                    children: [
-                                                      Text(
-                                                        '${snapshot.data[index].productname}',
-                                                        style: TextStyle(
-                                                            color: AppColors
-                                                                .purple,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize:
-                                                                fontSize20),
-                                                      ),
-                                                      Text(
-                                                        '₦ ${snapshot.data[index].cost}',
-                                                        style: TextStyle(
-                                                            color:
-                                                                AppColors.red,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize:
-                                                                fontSize20),
-                                                      ),
-                                                      Align(
-                                                        alignment: Alignment
-                                                            .bottomRight,
-                                                        child: RaisedButton(
-                                                          color: AppColors.blue,
-                                                          onPressed: () =>
-                                                              remove(
+                                          child: Material(
+                                            elevation: 3,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(30)),
+                                            child: Container(
+                                              height: size.height * .20,
+                                              decoration: BoxDecoration(
+                                                color: Colors.transparent,
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          30)),
+                                                          image: DecorationImage(
+                                                              image: AssetImage(
+                                                                  snapshot
+                                                                      .data[
+                                                                          index]
+                                                                      .avatar),
+                                                              fit: BoxFit
+                                                                  .cover)),
+                                                      height: innerheight,
+                                                      width: size.height * .15,
+                                                    ),
+                                                    Container(
+                                                      color: Colors.transparent,
+                                                      width: size.height * .22,
+                                                      padding: EdgeInsets.only(
+                                                          left: 20),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceAround,
+                                                        children: [
+                                                          Text(
+                                                            '${snapshot.data[index].productname}',
+                                                            style: TextStyle(
+                                                                color: AppColors
+                                                                    .purple,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize:
+                                                                    fontSize20),
+                                                          ),
+                                                          Text(
+                                                            '₦ ${snapshot.data[index].cost}',
+                                                            style: TextStyle(
+                                                                color: AppColors
+                                                                    .red,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize:
+                                                                    fontSize20),
+                                                          ),
+                                                          Align(
+                                                            alignment: Alignment
+                                                                .bottomRight,
+                                                            child: RaisedButton(
+                                                              color: AppColors
+                                                                  .blue,
+                                                              onPressed: () => remove(
                                                                   snapshot
                                                                       .data[
                                                                           index]
@@ -163,35 +172,35 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                                                       .data[
                                                                           index]
                                                                       .cost),
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius: BorderRadius
-                                                                  .all(Radius
-                                                                      .circular(
-                                                                          50))),
-                                                          child: Text(
-                                                            'Remove',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontSize:
-                                                                    fontSize20),
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius.all(
+                                                                          Radius.circular(
+                                                                              50))),
+                                                              child: Text(
+                                                                'Remove',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    fontSize:
+                                                                        fontSize20),
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ))),
+                                        );
+                                      },
+                                    ))),
                             Expanded(
                                 flex: 1,
                                 child: Container(
@@ -313,14 +322,21 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   }
 
   purchase(BuildContext context, int cost) {
-    final _payment = RaveCardPayment(
-        isDemo: true,
-        publicKey: 'FLWPUBK-1efc1119172b9d4a878f5a507c48f4f2-X',
-        encKey: 'c040160e6dabc8df175e8fc9',
-        transactionRef: 'yysgvdgq67g',
-        amount: cost.toDouble(),
-        email: 'xtreemsilentl@gmail.com',
-        context: context);
-    _payment.process();
+    return showDialog(
+        context: context,
+        child: AlertDialog(
+          title: Text(
+            'Under Construction',
+            textAlign: TextAlign.center,
+          ),
+          scrollable: true,
+          content: Text('Coming soon!'),
+          actions: [
+            FlatButton(
+              onPressed: null,
+              child: Text('OK'),
+            )
+          ],
+        ));
   }
 }

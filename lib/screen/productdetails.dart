@@ -54,8 +54,6 @@ class _ProductDetailsState extends State<ProductDetails> {
     double fontSize20 = size.height * 0.025;
     double fontSize18 = size.height * 0.0225;
     double fontSize25 = size.height * 0.03125;
-    // print(size.height);
-    // print(size.width);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -217,7 +215,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   const EdgeInsets.only(left: 70.0, top: 10),
                               child: SingleChildScrollView(
                                 child: Column(
-                                  // mainAxisAlignment: MainAxisAlignment.str,
                                   crossAxisAlignment:
                                       CrossAxisAlignment.stretch,
                                   children: [

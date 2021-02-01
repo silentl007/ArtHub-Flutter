@@ -16,12 +16,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {'/loginscreen': (context) => LoginScreen()},
       theme: ThemeData(
-        brightness: Brightness.light,
+          brightness: Brightness.light,
           appBarTheme: AppBarTheme(
-        color: Colors.white,
-        elevation: 0,
-        iconTheme: IconThemeData(color: AppColors.purple)
-      )),
+              color: Colors.white,
+              elevation: 0,
+              iconTheme: IconThemeData(color: AppColors.purple))),
       home: SplashScreen(),
     );
   }
@@ -34,7 +33,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   void startTimer() {
-    Timer(Duration(seconds: 3), () {
+    Timer(Duration(seconds: 5), () {
       Navigator.of(context).pushReplacementNamed('/loginscreen');
     });
   }
@@ -48,13 +47,35 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-      child: Center(
-        child: Text(
-          'Loading Screen',
-          style: TextStyle(fontSize: 60),
-        ),
+    return SafeArea(
+        child: Scaffold(
+      body: Stack(
+        children: [
+          Opacity(
+            opacity: .25,
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/appimages/splash.jpg'),
+                    fit: BoxFit.cover),
+              ),
+            ),
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                CircularProgressIndicator(
+                  valueColor:
+                      new AlwaysStoppedAnimation<Color>(AppColors.purple),
+                  strokeWidth: 6.0,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     ));
   }

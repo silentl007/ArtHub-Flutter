@@ -33,9 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 TextFormField(
                   decoration: InputDecoration(
-                      focusColor: AppColors.purple,
-                      labelText: 'Username',
-                      icon: Icon(Icons.person)),
+                      labelText: 'Username', icon: Icon(Icons.person)),
                   controller: usernameControl,
                 ),
                 TextFormField(
@@ -72,12 +70,8 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       onTap: () {
         if (text == 'Login') {
-          print(usernameControl.text);
-          print(passwordControl.text);
-          if (passwordControl.text == 'pablo') {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomeScreen()));
-          }
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HomeScreen()));
         } else if (text == 'New user? Register') {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => RegisterScreen()));

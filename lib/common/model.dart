@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Data {
+  static List<String> states = ['Lagos', 'Abuja', 'Bayelsa', 'Benin'];
   List<Map> galleries = [
     {
       "name": "Art World",
@@ -31,22 +34,26 @@ class Data {
       "contact": "08038474317, 08033066026"
     },
   ];
-
+  /* this item section represents a collection of galleries, first part of the map is the details of the
+  gallery having name, address, and location. the second part with a list of works is what will be displayed
+  if a gallery is selected. NB check the logic to specify only a gallery using name parameter.
+  the logic for "items" below takes all the works and shows regardless of selected gallery. Note that */
   List<Map> items = [
     {
-      'name': 'Yerins Abraham',
-      'avatar': 'assets/yerins/yerins.png',
-      "code": "aw",
+      'name': 'Name of the Gallery',
+      'avatar': 'no avatar',
+      "code": "aw", // under review or be replaced with id
       'youtube': '',
       'aboutme': '',
-      "address": "Block 5 off Lakers, Lagos Island",
+      "address":
+          "Block 5 off Lakers, Lagos Island", // add location and contact key values, also add a list of sold items
       'works': [
         {
-          'name': 'Yerins Abraham',
-          'product': "Assassin's Creed Valhala",
-          'cost': 370000,
+          'name': 'XX', // artist name
+          'product': "Sunset Darkness",
+          'cost': 37000,
           'type': 'painting',
-          'avatar': 'assets/ac/test1.jpg',
+          'avatar': 'assets/portraits/1/work1.jpg',
           'desc': "Pictures of Assassin's Creed",
           'description': 'lorem ipsum dolor et vet heureux enfant',
           'available': true,
@@ -54,17 +61,93 @@ class Data {
           'dimension': '100 x 300',
           'material used': 'Wood, Oil, Paint',
           'images': [
-            'assets/ac/t1.jpg',
-            'assets/ac/t2.jpg',
-            'assets/ac/t3.jpg'
+            'assets/portraits/1/work1.jpg',
+            'assets/portraits/1/work2.jpg',
+            'assets/portraits/1/work3.jpg',
+            'assets/portraits/1/work4.jpg'
           ],
         },
         {
-          'name': 'Yerins Abraham',
-          'product': 'Call of Duty',
-          'cost': 500,
+          'name': 'XX', // artist name
+          'product': "In The Works",
+          'cost': 5000,
+          'type': 'painting',
+          'avatar': 'assets/portraits/2/work1.jpg',
+          'desc': "Pictures of Assassin's Creed",
+          'description': 'lorem ipsum dolor et vet heureux enfant',
+          'available': true,
+          'weight': 5,
+          'dimension': '100 x 300',
+          'material used': 'Wood, Oil, Paint',
+          'images': [
+            'assets/portraits/2/work1.jpg',
+            'assets/portraits/2/work2.jpg',
+            'assets/portraits/2/work3.jpg',
+            'assets/portraits/2/work4.jpg'
+          ],
+        },
+        {
+          'name': 'XX', // artist name
+          'product': "Midnight Life",
+          'cost': 6000,
+          'type': 'painting',
+          'avatar': 'assets/portraits/3/work1.jpg',
+          'desc': "Pictures of Assassin's Creed",
+          'description': 'lorem ipsum dolor et vet heureux enfant',
+          'available': true,
+          'weight': 5,
+          'dimension': '100 x 300',
+          'material used': 'Wood, Oil, Paint',
+          'images': [
+            'assets/portraits/3/work1.jpg',
+            'assets/portraits/3/work2.jpg',
+            'assets/portraits/3/work3.jpg',
+            'assets/portraits/3/work4.jpg',
+            'assets/portraits/3/work5.jpg'
+          ],
+        },
+        {
+          'name': 'XX', // artist name
+          'product': "Meet Me Half-way",
+          'cost': 7000,
+          'type': 'painting',
+          'avatar': 'assets/portraits/4/work1.jpg',
+          'desc': "Pictures of Assassin's Creed",
+          'description': 'lorem ipsum dolor et vet heureux enfant',
+          'available': true,
+          'weight': 5,
+          'dimension': '100 x 300',
+          'material used': 'Wood, Oil, Paint',
+          'images': [
+            'assets/portraits/4/work1.jpg',
+            'assets/portraits/4/work2.jpg',
+          ],
+        },
+        {
+          'name': 'XX', // artist name
+          'product': "Hello Death",
+          'cost': 70000,
+          'type': 'painting',
+          'avatar': 'assets/portraits/5/work1.jpg',
+          'desc': "Pictures of Assassin's Creed",
+          'description': 'lorem ipsum dolor et vet heureux enfant',
+          'available': true,
+          'weight': 5,
+          'dimension': '100 x 300',
+          'material used': 'Wood, Oil, Paint',
+          'images': [
+            'assets/portraits/5/work1.jpg',
+            'assets/portraits/5/work2.jpg',
+            'assets/portraits/5/work3.jpg',
+            'assets/portraits/5/work4.jpg'
+          ],
+        },
+        {
+          'name': 'XX',
+          'product': 'Beauty in Lies',
+          'cost': 4500,
           'type': 'sculptor',
-          'avatar': 'assets/cod/test1.jpg',
+          'avatar': 'assets/sculptors/1/work1.jpg',
           'desc': 'Call of Duty illustrations on canvas',
           'description': 'lorem ipsum dolor et vet heureux enfant',
           'available': true,
@@ -72,38 +155,68 @@ class Data {
           'dimension': '150 x 300',
           'material used': 'Wood, Oil, Paint',
           'images': [
-            'assets/cod/t1.jpg',
-            'assets/cod/t2.jpg',
-            'assets/cod/t3.jpg'
+            'assets/sculptors/1/work1.jpg',
+            'assets/sculptors/1/work2.jpg',
+            'assets/sculptors/1/work3.jpg',
+            'assets/sculptors/1/work4.jpg'
           ],
         },
-      ],
-    },
-    {
-      'name': 'Jenkins Wiggins',
-      'youtube': '',
-      "code": "aw",
-      'aboutme': '',
-      "address": "House 20, Satelite Avenue, Ring Road",
-      'avatar': '',
-      'works': [
         {
-          'name': 'Jenkins Wiggins',
-          'product': 'V for Vendetta',
-          'cost': 360,
-          'type': 'painting',
-          'avatar': 'assets/v/test1.jpg',
-          'desc': 'A logo of bad boy',
+          'name': 'XX',
+          'product': 'All Around Me',
+          'cost': 5800,
+          'type': 'sculptor',
+          'avatar': 'assets/sculptors/2/work1.jpg',
+          'desc': 'Call of Duty illustrations on canvas',
           'description': 'lorem ipsum dolor et vet heureux enfant',
           'available': true,
           'weight': 5,
-          'dimension': '200 x 300',
-          'material used': "Wood, Oil, Paint",
+          'dimension': '150 x 300',
+          'material used': 'Wood, Oil, Paint',
           'images': [
-            'assets/v/t1.jpg',
-            'assets/v/t2.jpg',
-            'assets/v/t3.jpg',
-            'assets/v/t4.jpg'
+            'assets/sculptors/2/work1.jpg',
+            'assets/sculptors/2/work2.jpg',
+            'assets/sculptors/2/work3.jpg',
+            'assets/sculptors/2/work4.jpg'
+          ],
+        },
+        {
+          'name': 'XX',
+          'product': 'The Beginning',
+          'cost': 3000,
+          'type': 'sculptor',
+          'avatar': 'assets/sculptors/3/work1.jpg',
+          'desc': 'Call of Duty illustrations on canvas',
+          'description': 'lorem ipsum dolor et vet heureux enfant',
+          'available': true,
+          'weight': 5,
+          'dimension': '150 x 300',
+          'material used': 'Wood, Oil, Paint',
+          'images': [
+            'assets/sculptors/3/work1.jpg',
+            'assets/sculptors/3/work2.jpg',
+            'assets/sculptors/3/work3.jpg',
+            'assets/sculptors/3/work4.jpg'
+          ],
+        },
+        {
+          'name': 'XX',
+          'product': 'Call of Duty',
+          'cost': 9700,
+          'type': 'sculptor',
+          'avatar': 'assets/sculptors/4/work1.jpg',
+          'desc': 'Call of Duty illustrations on canvas',
+          'description': 'lorem ipsum dolor et vet heureux enfant',
+          'available': true,
+          'weight': 5,
+          'dimension': '150 x 300',
+          'material used': 'Wood, Oil, Paint',
+          'images': [
+            'assets/sculptors/4/work1.jpg',
+            'assets/sculptors/4/work2.jpg',
+            'assets/sculptors/4/work3.jpg',
+            'assets/sculptors/4/work4.jpg',
+            'assets/sculptors/4/work5.jpg'
           ],
         },
       ],
@@ -122,9 +235,9 @@ class Data {
         {
           'name': 'Obeyi Kuzman',
           'product': "Essence of Life",
-          'cost': 370,
-          'type': 'painting',
-          'avatar': 'assets/obeyi/work1.png',
+          'cost': 3700,
+          'type': 'Painting',
+          'avatar': 'assets/obeyi/1/work1.png',
           'desc': "Pictures of Assassin's Creed",
           'description': 'lorem ipsum dolor et vet heureux enfant',
           'available': true,
@@ -132,18 +245,18 @@ class Data {
           'dimension': '100 x 300',
           'material used': 'Wood, Oil, Paint',
           'images': [
-            'assets/obeyi/work1.png',
-            'assets/obeyi/work2.png',
-            'assets/obeyi/work3.png',
-            'assets/obeyi/work4.png'
+            'assets/obeyi/1/work1.png',
+            'assets/obeyi/1/work2.png',
+            'assets/obeyi/1/work3.png',
+            'assets/obeyi/1/work4.png'
           ],
         },
         {
           'name': 'Obeyi Kuzman',
-          'product': 'Prisoner',
-          'cost': 500,
-          'type': 'sculptor',
-          'avatar': 'assets/obeyi/work2.png',
+          'product': 'Prisoner of Earth',
+          'cost': 5000,
+          'type': 'Painting',
+          'avatar': 'assets/obeyi/2/work1.jpg',
           'desc': 'Call of Duty illustrations on canvas',
           'description': 'lorem ipsum dolor et vet heureux enfant',
           'available': true,
@@ -151,10 +264,28 @@ class Data {
           'dimension': '150 x 300',
           'material used': 'Wood, Oil, Paint',
           'images': [
-            'assets/obeyi/work1.png',
-            'assets/obeyi/work2.png',
-            'assets/obeyi/work3.png',
-            'assets/obeyi/work4.png'
+            'assets/obeyi/2/work1.jpg',
+            'assets/obeyi/2/work2.jpg',
+            'assets/obeyi/2/work3.jpg',
+            'assets/obeyi/2/work4.jpg'
+          ],
+        },
+        {
+          'name': 'Obeyi Kuzman',
+          'product': 'Love Handle',
+          'cost': 3500,
+          'type': 'Painting',
+          'avatar': 'assets/obeyi/3/work1.jpg',
+          'desc': 'Call of Duty illustrations on canvas',
+          'description': 'lorem ipsum dolor et vet heureux enfant',
+          'available': true,
+          'weight': 5,
+          'dimension': '150 x 300',
+          'material used': 'Wood, Oil, Paint',
+          'images': [
+            'assets/obeyi/3/work1.jpg',
+            'assets/obeyi/3/work2.jpg',
+            'assets/obeyi/3/work3.jpg'
           ],
         },
       ],
@@ -169,80 +300,43 @@ class Data {
       'works': [
         {
           'name': 'Yerins Abraham',
-          'product': "Index Numero Uno",
-          'cost': 150000,
-          'type': 'painting',
-          'avatar': 'assets/yerins/index2.jpg',
-          'desc': "Pictures of Assassin's Creed",
-          'description': 'lorem ipsum dolor et vet heureux enfant',
-          'available': true,
-          'weight': 5,
-          'dimension': '100 x 300',
-          'material used': 'Wood, Oil, Paint',
-          'images': [
-            'assets/yerins/index1.jpg',
-            'assets/yerins/index2.jpg',
-            'assets/yerins/index3.jpg',
-            'assets/yerins/index4.jpg'
-          ],
-        },
-        {
-          'name': 'Yerins Abraham',
-          'product': 'Index II',
-          'cost': 500,
-          'type': 'sculptor',
-          'avatar': 'assets/obeyi/work2.png',
-          'desc': 'Call of Duty illustrations on canvas',
-          'description': 'lorem ipsum dolor et vet heureux enfant',
-          'available': true,
-          'weight': 5,
-          'dimension': '150 x 300',
-          'material used': 'Wood, Oil, Paint',
-          'images': [
-            'assets/obeyi/work1.png',
-            'assets/obeyi/work2.png',
-            'assets/obeyi/work3.png',
-            'assets/obeyi/work4.png'
-          ],
-        },
-        {
-          'name': 'Yerins Abraham',
-          'product': 'Index II',
-          'cost': 500,
-          'type': 'sculptor',
-          'avatar': 'assets/obeyi/work2.png',
-          'desc': 'Call of Duty illustrations on canvas',
-          'description': 'lorem ipsum dolor et vet heureux enfant',
-          'available': true,
-          'weight': 5,
-          'dimension': '150 x 300',
-          'material used': 'Wood, Oil, Paint',
-          'images': [
-            'assets/obeyi/work1.png',
-            'assets/obeyi/work2.png',
-            'assets/obeyi/work3.png',
-            'assets/obeyi/work4.png'
-          ],
-        },
-        {
-          'name': 'Yerins Abraham',
           'product': "Index",
-          'cost': 370,
-          'type': 'painting',
-          'avatar': 'assets/obeyi/work1.png',
+          'cost': 15000,
+          'type': 'Painting',
+          'avatar': 'assets/yerins/1/index2.jpg',
           'desc': "Pictures of Assassin's Creed",
           'description': 'lorem ipsum dolor et vet heureux enfant',
           'available': true,
-          'weight': 5,
+          'weight': 10,
           'dimension': '100 x 300',
           'material used': 'Wood, Oil, Paint',
           'images': [
-            'assets/obeyi/work1.png',
-            'assets/obeyi/work2.png',
-            'assets/obeyi/work3.png',
-            'assets/obeyi/work4.png'
+            'assets/yerins/1/index1.jpg',
+            'assets/yerins/1/index2.jpg',
+            'assets/yerins/1/index3.jpg',
+            'assets/yerins/1/index4.jpg',
           ],
-        }
+        },
+        {
+          'name': 'Yerins Abraham',
+          'product': "Index II",
+          'cost': 7000,
+          'type': 'Painting',
+          'avatar': 'assets/yerins/2/work1.jpg',
+          'desc': "Pictures of Assassin's Creed",
+          'description': 'lorem ipsum dolor et vet heureux enfant',
+          'available': true,
+          'weight': 10,
+          'dimension': '100 x 300',
+          'material used': 'Wood, Oil, Paint',
+          'images': [
+            'assets/yerins/2/work1.jpg',
+            'assets/yerins/2/work2.jpg',
+            'assets/yerins/2/work3.jpg',
+            'assets/yerins/2/work4.jpg',
+            'assets/yerins/2/work5.jpg'
+          ],
+        },
       ],
     },
     {
@@ -256,9 +350,9 @@ class Data {
         {
           'name': 'Zakum Smith',
           'product': "Smith and Wesson",
-          'cost': 370,
-          'type': 'painting',
-          'avatar': 'assets/zakum/work1.png',
+          'cost': 4270,
+          'type': 'Sculptor',
+          'avatar': 'assets/zakum/1/work1.jpg',
           'desc': "Pictures of Assassin's Creed",
           'description': 'lorem ipsum dolor et vet heureux enfant',
           'available': true,
@@ -266,16 +360,18 @@ class Data {
           'dimension': '100 x 300',
           'material used': 'Wood, Oil, Paint',
           'images': [
-            'assets/zakum/work1.png',
-            'assets/zakum/work2.png',
+            'assets/zakum/1/work1.jpg',
+            'assets/zakum/1/work2.jpg',
+            'assets/zakum/1/work3.jpg'
+                'assets/zakum/1/work4.jpg'
           ],
         },
         {
           'name': 'Zakum Smith',
-          'product': 'Smith and Wesson II',
-          'cost': 500,
-          'type': 'sculptor',
-          'avatar': 'assets/zakum/work2.png',
+          'product': 'Inception',
+          'cost': 5000,
+          'type': 'Painting',
+          'avatar': 'assets/zakum/2/work1.jpg',
           'desc': 'Call of Duty illustrations on canvas',
           'description': 'lorem ipsum dolor et vet heureux enfant',
           'available': true,
@@ -283,8 +379,30 @@ class Data {
           'dimension': '150 x 300',
           'material used': 'Wood, Oil, Paint',
           'images': [
-            'assets/obeyi/work1.png',
-            'assets/obeyi/work2.png',
+            'assets/zakum/2/work1.jpg',
+            'assets/zakum/2/work2.jpg',
+            'assets/zakum/2/work3.jpg',
+            'assets/zakum/2/work4.jpg',
+          ],
+        },
+        {
+          'name': 'Zakum Smith',
+          'product': 'Smith and Wesson II',
+          'cost': 4500,
+          'type': 'Sculptor',
+          'avatar': 'assets/zakum/3/work1.jpg',
+          'desc': 'Call of Duty illustrations on canvas',
+          'description': 'lorem ipsum dolor et vet heureux enfant',
+          'available': true,
+          'weight': 5,
+          'dimension': '150 x 300',
+          'material used': 'Wood, Oil, Paint',
+          'images': [
+            'assets/zakum/3/work1.jpg',
+            'assets/zakum/3/work2.jpg',
+            'assets/zakum/3/work3.jpg',
+            'assets/zakum/3/work4.jpg',
+            'assets/zakum/3/work5.jpg',
           ],
         },
       ],
@@ -426,5 +544,50 @@ class Widgets {
         ),
       ),
     );
+  }
+}
+
+class DrawerOptions {
+  String option;
+  Icon optionIcon;
+  DrawerOptions({this.option, this.optionIcon});
+}
+
+class Registeration {
+  String fullName = '';
+  String email = '';
+  String password = '';
+  String address = '';
+  String number = '';
+  String location = '';
+  String account = '';
+
+  Future register(BuildContext context) async {
+    String registerdbLink =
+        'https://galleryapp-backend.herokuapp.com/api/signup';
+    Map<String, dynamic> dataBody = {
+      'name': fullName,
+      'email': email,
+      'password': password,
+    };
+    try {
+      var datasend = await http.post(
+        registerdbLink,
+        body: dataBody,
+      );
+      print(datasend.statusCode);
+      return showDialog(
+          context: context,
+          child: AlertDialog(
+            content: Text('The response code is ${datasend.statusCode}'),
+          ));
+    } catch (e) {
+      print(e);
+      return showDialog(
+          context: context,
+          child: AlertDialog(
+            content: Text('Failed'),
+          ));
+    }
   }
 }
