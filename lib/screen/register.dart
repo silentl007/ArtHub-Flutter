@@ -27,7 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    double fontSize15 = size.height * 0.01875;
+    double fontSize15 = size.height * 0.01870;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -102,6 +102,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           onChanged: (text) {
                             setState(() {
                               selectedState = text;
+                              registerClass.location = selectedState;
                             });
                           },
                           items: states.map<DropdownMenuItem<String>>((text) {
@@ -122,7 +123,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             'Account type',
-                            style: TextStyle(fontSize: fontSize15),
+                            style: TextStyle(
+                                fontSize: fontSize15, color: _radiocolor),
                           )),
                       SizedBox(
                         height: 5,
@@ -130,7 +132,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Column(
                           children: accounts.map((data) {
                         return RadioListTile(
-                            activeColor: _radiocolor,
+                            activeColor: AppColors.purple,
                             title: Text('${data.type}'),
                             value: data.index,
                             groupValue: defaultaccount,
@@ -183,74 +185,61 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           }
                         },
                       ),
-                      Row(
-                        children: [
-                          Checkbox(
-                              checkColor: AppColors.purple,
-                              activeColor: Colors.transparent,
-                              value: _check,
-                              onChanged: (bool val) {
-                                setState(() {
-                                  _check = val;
-                                });
-                              }),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          InkWell(
-                              onTap: () => _termsConditions(context),
-                              child: Text(
+                      SizedBox(
+                        height: 5,
+                      ),
+                      CheckboxListTile(
+                        value: _check,
+                        checkColor: AppColors.purple,
+                        activeColor: Colors.transparent,
+                        onChanged: (bool val) {
+                          setState(() {
+                            _check = val;
+                          });
+                        },
+                        title: InkWell(
+                            onTap: () => _termsConditions(context),
+                            child: Text(
                                 'I have read and agreed to terms and conditions',
                                 style: TextStyle(
-                                    color: _terms, fontSize: fontSize15),
-                              ))
-                        ],
+                                  color: _terms,
+                                ))),
                       ),
                       RaisedButton(
-                          color: AppColors.purple,
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
-                          child: Text(
-                            'Register',
-                            style: TextStyle(
-                                fontSize: fontSize15, color: Colors.white),
-                          ),
-                          onPressed: () {
-                            final keyForm = _key.currentState;
-                            if (keyForm.validate() == true) {
-                              if (_check == false ||
-                                  selectedState == 'Select State' ||
-                                  defaultaccount == 0) {
-                                setState(() {
-                                  _terms = Colors.red;
-                                  _stateColor = Colors.red;
-                                  _radiocolor = Colors.red;
-                                });
-                              } else {
-                                setState(() {
-                                  passwordCtrl.clear();
-                                  defaultaccount = 0;
-                                  selectedState = states[0];
-                                  _check = false;
-                                });
-                                registerClass.location = selectedState;
-                                registerClass.account = accountchoice;
-                                keyForm.save();
-                                keyForm.reset();
-                                registerClass.register(context);
-
-                                // comingSoon(context);
-                                // print('${registerClass.account}');
-                                // print('${registerClass.address}');
-                                // print('${registerClass.email}');
-                                // print('${registerClass.fullName}');
-                                // print('${registerClass.location}');
-                                // print('${registerClass.number}');
-                                // print('${registerClass.password}');
-                              }
+                        color: AppColors.purple,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50))),
+                        child: Text(
+                          'Register',
+                          style: TextStyle(
+                              fontSize: fontSize15, color: Colors.white),
+                        ),
+                        onPressed: () {
+                          final keyForm = _key.currentState;
+                          if (keyForm.validate() == true) {
+                            if (_check == false ||
+                                selectedState == 'Select State' ||
+                                defaultaccount == 0) {
+                              setState(() {
+                                _terms = Colors.red;
+                                _stateColor = Colors.red;
+                                _radiocolor = Colors.red;
+                              });
+                            } else {
+                              registerClass.location = selectedState;
+                              registerClass.account = accountchoice;
+                              keyForm.save();
+                              futureDiag(context);
+                              setState(() {
+                                defaultaccount = 0;
+                                selectedState = states[0];
+                                _check = false;
+                              });
                             }
-                          })
+                          }
+                        },
+                      )
                     ],
                   ),
                 ),
@@ -259,6 +248,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  futureDiag(BuildContext context) {
+    return showDialog(
+        context: context,
+        child: FutureBuilder(
+            future: registerClass.register(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData == false) {
+                return AlertDialog(
+                  content: LinearProgressIndicator(
+                    backgroundColor: Colors.white,
+                    valueColor:
+                        new AlwaysStoppedAnimation<Color>(AppColors.purple),
+                  ),
+                );
+              }
+              return Container(
+                child: snapshot.data == 200
+                    ? _registerationSuccess()
+                    : snapshot.data == 401
+                        ? _registerationEmail()
+                        : _registerationFailed(),
+              );
+            }));
+  }
+
+  _registerationSuccess() {
+    return AlertDialog(
+      content: Text(
+          'A verification email is sent. Please verify your email to complete registration'),
+    );
+  }
+
+  _registerationFailed() {
+    print('hello');
+    return AlertDialog(
+      content: Text('Please check your internet connection'),
+    );
+  }
+
+  _registerationEmail() {
+    return AlertDialog(
+      content: Text('This email has been used'),
     );
   }
 

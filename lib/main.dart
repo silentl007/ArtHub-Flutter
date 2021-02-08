@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {'/loginscreen': (context) => LoginScreen()},
       theme: ThemeData(
-          brightness: Brightness.light,
+          // brightness: Brightness.dark,
           appBarTheme: AppBarTheme(
               color: Colors.white,
               elevation: 0,
@@ -70,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 CircularProgressIndicator(
                   valueColor:
                       new AlwaysStoppedAnimation<Color>(AppColors.purple),
-                  strokeWidth: 6.0,
+                  strokeWidth: 9.0,
                 ),
               ],
             ),

@@ -5,7 +5,7 @@ class DrawerWidget extends StatelessWidget {
   final String userName;
   DrawerWidget({this.userName});
   List<DrawerOptions> options = [
-    DrawerOptions(option: 'Profile', optionIcon: Icon(Icons.help_outline)),
+    DrawerOptions(option: 'Profile', optionIcon: Icon(Icons.person)),
     DrawerOptions(option: 'Orders', optionIcon: Icon(Icons.shopping_cart)),
     DrawerOptions(option: 'Settings', optionIcon: Icon(Icons.settings)),
     DrawerOptions(option: 'Contact Us', optionIcon: Icon(Icons.contact_phone)),
@@ -17,33 +17,30 @@ class DrawerWidget extends StatelessWidget {
       child: Container(
         child: Column(
           children: [
-            Expanded(flex: 1, child: Container()),
+            DrawerHeader(child: null),
             Divider(height: 5, color: AppColors.purple,),
-            Expanded(
-              flex: 3,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(100),
-                  ),
-                  image: DecorationImage(
-                      image: AssetImage('assets/appimages/welcomeback.png'),
-                      fit: BoxFit.cover),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(100),
                 ),
-                child: Column(
-                  children: options
-                      .map((data) => ListTile(
-                            tileColor: Colors.transparent,
-                            title: Text(
-                              data.option,
-                              textAlign: TextAlign.justify,
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            leading: data.optionIcon,
-                            onTap: ()=>purchase(context),
-                          ))
-                      .toList(),
-                ),
+                image: DecorationImage(
+                    image: AssetImage('assets/appimages/welcomeback.png'),
+                    fit: BoxFit.cover),
+              ),
+              child: Column(
+                children: options
+                    .map((data) => ListTile(
+                          tileColor: Colors.transparent,
+                          title: Text(
+                            data.option,
+                            textAlign: TextAlign.justify,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          leading: data.optionIcon,
+                          onTap: ()=>purchase(context),
+                        ))
+                    .toList(),
               ),
             ),
           ],

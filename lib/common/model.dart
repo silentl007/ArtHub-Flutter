@@ -512,16 +512,11 @@ class ParsedDataProduct {
   }
 }
 
-class Selecteditems {
-  List selecteditems = [];
-}
-
 class AppColors {
   static const red = Color.fromRGBO(239, 69, 58, 1);
   static const blue = Color.fromRGBO(58, 197, 240, 1);
   static const grey = Color.fromRGBO(232, 232, 232, 1);
   static const purple = Color.fromRGBO(69, 56, 133, 1);
-  static const List hell = [];
 }
 
 class Widgets {
@@ -554,6 +549,7 @@ class DrawerOptions {
 }
 
 class Registeration {
+  int failed = 400;
   String fullName = '';
   String email = '';
   String password = '';
@@ -561,33 +557,90 @@ class Registeration {
   String number = '';
   String location = '';
   String account = '';
+  List orders = [];
+  List works = [];
+  List purchasedworks = [];
 
-  Future register(BuildContext context) async {
+  Future register() async {
     String registerdbLink =
         'https://galleryapp-backend.herokuapp.com/api/signup';
     Map<String, dynamic> dataBody = {
       'name': fullName,
       'email': email,
       'password': password,
+      'address': address,
+      'number': number,
+      'location': location,
+      'account': account,
+      'works': works,
+      'orders': orders,
+      'purchasedworks': purchasedworks,
+    };
+    var encodedData = jsonEncode(dataBody);
+    try {
+      var datasend = await http.post(registerdbLink,
+          body: encodedData,
+          headers: {'Content-Type': 'application/json; charset=UTF-8'});
+      print(dataBody);
+      print(datasend.body);
+      return datasend.statusCode;
+    } catch (exception) {
+      print(exception);
+      return failed;
+    }
+  }
+}
+
+class Login {
+  Map failed = {};
+  String userName;
+  String password;
+  Future login() async {
+    String loginLink = 'https://galleryapp-backend.herokuapp.com/api/signin';
+    Map<String, String> loginData = {
+      'email': userName,
+      'password': password,
+    };
+
+    try {
+      var encodedData = jsonEncode(loginData);
+      var datasend = await http.post(loginLink,
+          body: encodedData,
+          headers: {'Content-Type': 'application/json; charset=UTF-8'});
+      // print(datasend.statusCode);
+      // print(datasend.body);
+      if (datasend.statusCode == 200) {
+        // return datasend.body;
+        return datasend.statusCode;
+      } else {
+        return datasend.body;
+      }
+    } catch (exception) {
+      print(exception);
+      return failed;
+    }
+  }
+}
+
+class ResetPassword {
+  int datasent = 200;
+  int datafailed = 400;
+  String email;
+  Future reset() async {
+    String resetLink =
+        'https://galleryapp-backend.herokuapp.com/api/forgot-password';
+    Map databody = {
+      'email': email,
     };
     try {
-      var datasend = await http.post(
-        registerdbLink,
-        body: dataBody,
-      );
-      print(datasend.statusCode);
-      return showDialog(
-          context: context,
-          child: AlertDialog(
-            content: Text('The response code is ${datasend.statusCode}'),
-          ));
-    } catch (e) {
-      print(e);
-      return showDialog(
-          context: context,
-          child: AlertDialog(
-            content: Text('Failed'),
-          ));
+      var encodedData = jsonEncode(databody);
+      var datasend = http.put(resetLink,
+          body: encodedData,
+          headers: {'Content-Type': 'application/json; charset=UTF-8'});
+      return datasent;
+    } catch (exception) {
+      print(exception);
+      return datafailed;
     }
   }
 }
