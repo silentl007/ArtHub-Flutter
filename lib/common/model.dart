@@ -557,6 +557,7 @@ class DrawerOptions {
 
 class Registeration {
   int failed = 400;
+  int sameemail = 401;
   String fullName = '';
   String email = '';
   String password = '';
@@ -594,9 +595,13 @@ class Registeration {
       var datasend = await http.post(registerdbLink,
           body: encodedData,
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
-
-      return datasend.statusCode;
+      print('this is registration status code - ${datasend.statusCode}');
+      if (datasend.statusCode == 200) {
+        return datasend.statusCode;
+      } else
+        return sameemail;
     } catch (exception) {
+      print('this error occured - $exception');
       return failed;
     }
   }

@@ -1,5 +1,6 @@
 import 'package:ArtHub/screen/freelanceartist/freelanceartistlist.dart';
 import 'package:ArtHub/screen/purchasescreen.dart';
+import 'package:ArtHub/screen/uploads.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'gallery/gallery.dart';
@@ -18,23 +19,17 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<DrawerOptions> options = [
     DrawerOptions(option: 'Profile', optionIcon: Icon(Icons.person)),
     DrawerOptions(option: 'Orders', optionIcon: Icon(Icons.menu)),
-    DrawerOptions(
-        option: 'Cart', optionIcon: Icon(Icons.shopping_cart)),
-    DrawerOptions(
-        option: 'Settings', optionIcon: Icon(Icons.settings)),
+    DrawerOptions(option: 'Cart', optionIcon: Icon(Icons.shopping_cart)),
+    DrawerOptions(option: 'Settings', optionIcon: Icon(Icons.settings)),
   ];
 
   final List<DrawerOptions> options2 = [
     DrawerOptions(option: 'Profile', optionIcon: Icon(Icons.person)),
     DrawerOptions(option: 'Orders', optionIcon: Icon(Icons.menu)),
-    DrawerOptions(
-        option: 'Cart', optionIcon: Icon(Icons.shopping_cart)),
-    DrawerOptions(
-        option: 'Uploads', optionIcon: Icon(Icons.file_upload)),
-    DrawerOptions(
-        option: 'Artwork', optionIcon: Icon(Icons.upload_file)),
-    DrawerOptions(
-        option: 'Settings', optionIcon: Icon(Icons.settings)),
+    DrawerOptions(option: 'Cart', optionIcon: Icon(Icons.shopping_cart)),
+    DrawerOptions(option: 'Artworks', optionIcon: Icon(Icons.file_upload)),
+    DrawerOptions(option: 'Upload', optionIcon: Icon(Icons.upload_file)),
+    DrawerOptions(option: 'Settings', optionIcon: Icon(Icons.settings)),
   ];
 
   @override
@@ -83,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
             showUnselectedLabels: true,
             onTap: (index) {
               if (customerType == 'customer') {
-                _bottomNav(index);
+                _bottomNavCustomer(index);
               }
             },
             items: customerType == 'customer'
@@ -258,10 +253,18 @@ class _HomeScreenState extends State<HomeScreen> {
         ));
   }
 
-  _bottomNav(int index) {
+  _bottomNavCustomer(int index) {
     if (index == 2) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => PurchaseScreen()));
+    } else
+      _comingSoon();
+  }
+
+  _bottomNavOthers(int index) {
+    if (index == 4) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Uploads()));
     } else
       _comingSoon();
   }

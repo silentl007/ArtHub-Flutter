@@ -285,14 +285,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onPressed: () {
                           final keyForm = _key.currentState;
                           if (keyForm.validate() == true) {
-                            if (_check == false ||
-                                selectedState == 'Select State' ||
-                                defaultaccount == 0 ||
-                                registerClass.avatar == '') {
+                            if (_check == false) {
                               setState(() {
                                 _terms = Colors.red;
+                              });
+                            } else if (selectedState == 'Select State') {
+                              setState(() {
                                 _stateColor = Colors.red;
+                              });
+                            } else if (defaultaccount == 0) {
+                              setState(() {
                                 _radiocolor = Colors.red;
+                              });
+                            } else if (registerClass.avatar == '') {
+                              setState(() {
                                 _avatarcolor = Colors.red;
                               });
                             } else {
@@ -301,9 +307,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               keyForm.save();
                               futureDiag(context);
                               setState(() {
+                                keyForm.reset();
                                 defaultaccount = 0;
                                 selectedState = states[0];
                                 _check = false;
+                                 _terms = AppColors.purple;
+                                 _stateColor = Colors.black;
+                                 _radiocolor = AppColors.purple;
+                                 _avatarcolor = Colors.black;
                               });
                             }
                           }
