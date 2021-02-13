@@ -13,6 +13,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final Widgets classWidget = Widgets();
   String displayName = '';
   String customerType = '';
@@ -50,23 +51,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _welcome() {
-    // Scaffold.of(context).showSnackBar(SnackBar(
-    //   content: Text('Welcome back, $displayName'),
-    // ));
-    return showDialog(
-        context: context,
-        child: AlertDialog(
-          content: Text('Welcome! $displayName'),
-        ));
+    _scaffoldKey.currentState
+        .showSnackBar(SnackBar(content: Text('Welcome back, $displayName')));
   }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final double fontSize = size.height * 0.025;
-    // _welcome(context);
     return SafeArea(
       child: Scaffold(
+          key: _scaffoldKey,
           floatingActionButton: FloatingActionButton(
             elevation: 8,
             backgroundColor: AppColors.purple,
@@ -77,12 +72,12 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: AppColors.purple,
             showUnselectedLabels: true,
             onTap: (index) {
-              if (customerType == 'customer') {
+              if (customerType == 'Customer') {
                 _bottomNavCustomer(index);
               } else
                 _bottomNavOthers(index);
             },
-            items: customerType == 'customer'
+            items: customerType == 'Customer'
                 ? options
                     .map((element) => BottomNavigationBarItem(
                         backgroundColor: AppColors.purple,

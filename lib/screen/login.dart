@@ -141,7 +141,6 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           }
           if (snapshot.data == 200) {
-            print(snapshot.data);
             _loginSuccess();
             return Container();
           }
@@ -157,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
   _loginSuccess() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.pop(context);
-      return Navigator.push(
+      return Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
     });
   }

@@ -626,6 +626,7 @@ class Login {
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
       if (datasend.statusCode == 200) {
         var json = jsonDecode(datasend.body);
+        print(json);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         if (prefs.getBool('logged') == null) {
           prefs.setString('displayName', json['user']['name']);
