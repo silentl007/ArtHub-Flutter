@@ -79,7 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
             onTap: (index) {
               if (customerType == 'customer') {
                 _bottomNavCustomer(index);
-              }
+              } else
+                _bottomNavOthers(index);
             },
             items: customerType == 'customer'
                 ? options
