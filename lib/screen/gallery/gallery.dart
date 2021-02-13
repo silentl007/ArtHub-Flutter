@@ -20,7 +20,7 @@ class _GalleriesState extends State<Galleries> {
     Data modeldata = Data();
     List result = modeldata.galleries;
     for (var data in result) {
-      ParsedDataGallery parsed = ParsedDataGallery(data['name'], data['code'],
+      ParsedDataGallery parsed = ParsedDataGallery(data['name'],
           data['address'], data['location'], data['contact']);
       collecteddata.add(parsed);
     }
@@ -52,7 +52,7 @@ class _GalleriesState extends State<Galleries> {
                       ),
                       child: InkWell(
                         onTap: () =>
-                            galleryart(context, filtereddata[index].code),
+                            galleryart(),
                         child: Container(
                             height: size.height * .25,
                             decoration: BoxDecoration(
@@ -94,7 +94,7 @@ class _GalleriesState extends State<Galleries> {
                                                 color: Colors.white,
                                               )),
                                           Text(
-                                              '${filtereddata[index].location}',
+                                              '${filtereddata[index].location} State',
                                               style: TextStyle(
                                                 color: Colors.white,
                                               )),
@@ -114,7 +114,7 @@ class _GalleriesState extends State<Galleries> {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Text('${filtereddata[index].contact}',
+                                      Text('0${filtereddata[index].contact}',
                                           style: TextStyle(
                                             color: Colors.white,
                                           ))
@@ -166,8 +166,8 @@ class _GalleriesState extends State<Galleries> {
     );
   }
 
-  void galleryart(BuildContext context, String sorter) {
+  void galleryart() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => GalleryArt(sorter)));
+        context, MaterialPageRoute(builder: (context) => GalleryArt()));
   }
 }

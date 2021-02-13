@@ -1,7 +1,9 @@
 import 'package:ArtHub/common/model.dart';
+import 'package:ArtHub/screen/homescreen.dart';
 import 'package:ArtHub/screen/login.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Remove flutter rave dependency and replace with paystack
 // return carpetino icons to v1.0.0
@@ -14,7 +16,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      routes: {'/loginscreen': (context) => LoginScreen()},
+      routes: {
+        '/loginscreen': (context) => LoginScreen(),
+        '/homescreen': (context) => HomeScreen()
+      },
       theme: ThemeData(
           // brightness: Brightness.dark,
           appBarTheme: AppBarTheme(
@@ -33,8 +38,12 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   void startTimer() {
-    Timer(Duration(seconds: 5), () {
-      Navigator.of(context).pushReplacementNamed('/loginscreen');
+    Timer(Duration(seconds: 5), () async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (prefs.getBool('logged') == true) {
+        Navigator.of(context).pushReplacementNamed('/homescreen');
+      } else
+        Navigator.of(context).pushReplacementNamed('/loginscreen');
     });
   }
 

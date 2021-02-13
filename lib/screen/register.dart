@@ -1,5 +1,7 @@
 import 'package:ArtHub/common/model.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:cloudinary_client/cloudinary_client.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -24,6 +26,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Color _terms = AppColors.purple;
   Color _stateColor = Colors.black;
   Color _radiocolor = AppColors.purple;
+  Color _avatarcolor = Colors.black;
+  final client = CloudinaryClient(
+      '915364875791742', 'xXs8EIDnGzWGCFVZpr4buRyDOQk', 'mediacontrol');
+  final picker = ImagePicker();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -48,7 +54,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
+                      Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Account type',
+                            style: TextStyle(
+                                fontSize: fontSize15, color: _radiocolor),
+                          )),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Column(
+                          children: accounts.map((data) {
+                        return RadioListTile(
+                            activeColor: AppColors.purple,
+                            title: Text('${data.type}'),
+                            value: data.index,
+                            groupValue: defaultaccount,
+                            onChanged: (value) {
+                              setState(() {
+                                defaultaccount = data.index;
+                                accountchoice = data.type;
+                              });
+                            });
+                      }).toList()),
                       TextFormField(
+                        textCapitalization: TextCapitalization.words,
                         keyboardType: TextInputType.name,
                         decoration: InputDecoration(
                             labelText: 'Full Name', icon: Icon(Icons.title)),
@@ -82,6 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       ),
                       TextFormField(
+                        textCapitalization: TextCapitalization.words,
                         decoration: InputDecoration(
                             labelText: 'Address', icon: Icon(Icons.gps_fixed)),
                         onSaved: (text) {
@@ -94,6 +126,67 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             return 'This field is empty';
                           }
                         },
+                      ),
+                      accountchoice == 'Freelancer'
+                          ? Column(
+                              children: [
+                                TextFormField(
+                                  maxLength: 400,
+                                  decoration: InputDecoration(
+                                      labelText: 'About me',
+                                      icon: Icon(Icons.text_fields)),
+                                  onSaved: (text) {
+                                    setState(() {
+                                      return registerClass.aboutme = text;
+                                    });
+                                  },
+                                  validator: (value) {
+                                    if (value.isEmpty) {
+                                      return 'This field is empty';
+                                    }
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Upload your avatar',
+                                      style: TextStyle(
+                                          fontSize: fontSize15,
+                                          color: _avatarcolor),
+                                    )),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                RaisedButton(
+                                  onPressed: () => _avatarFuture(),
+                                  color: AppColors.purple,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(150))),
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.upload_file,
+                                          color: Colors.white),
+                                      SizedBox(
+                                        width: 3,
+                                      ),
+                                      Text(
+                                        'Upload',
+                                        style: TextStyle(
+                                            fontSize: fontSize15,
+                                            color: Colors.white),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Container(),
+                      SizedBox(
+                        height: 5,
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
@@ -109,40 +202,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             return DropdownMenuItem(
                               child: Text(
                                 text,
-                                style: TextStyle(color: _stateColor),
+                                style:
+                                    TextStyle(color: _stateColor, fontSize: 18),
                               ),
                               value: text,
                             );
                           }).toList(),
                         ),
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Account type',
-                            style: TextStyle(
-                                fontSize: fontSize15, color: _radiocolor),
-                          )),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Column(
-                          children: accounts.map((data) {
-                        return RadioListTile(
-                            activeColor: AppColors.purple,
-                            title: Text('${data.type}'),
-                            value: data.index,
-                            groupValue: defaultaccount,
-                            onChanged: (value) {
-                              setState(() {
-                                defaultaccount = data.index;
-                                accountchoice = data.type;
-                              });
-                            });
-                      }).toList()),
                       TextFormField(
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
@@ -220,11 +287,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           if (keyForm.validate() == true) {
                             if (_check == false ||
                                 selectedState == 'Select State' ||
-                                defaultaccount == 0) {
+                                defaultaccount == 0 ||
+                                registerClass.avatar == '') {
                               setState(() {
                                 _terms = Colors.red;
                                 _stateColor = Colors.red;
                                 _radiocolor = Colors.red;
+                                _avatarcolor = Colors.red;
                               });
                             } else {
                               registerClass.location = selectedState;
@@ -258,11 +327,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
             future: registerClass.register(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData == false) {
-                return AlertDialog(
-                  content: LinearProgressIndicator(
-                    backgroundColor: Colors.white,
-                    valueColor:
-                        new AlwaysStoppedAnimation<Color>(AppColors.purple),
+                return Container(
+                  color: Colors.transparent,
+                  child: AlertDialog(
+                    content: LinearProgressIndicator(
+                      backgroundColor: Colors.white,
+                      valueColor:
+                          new AlwaysStoppedAnimation<Color>(AppColors.purple),
+                    ),
                   ),
                 );
               }
@@ -284,7 +356,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   _registerationFailed() {
-    print('hello');
     return AlertDialog(
       content: Text('Please check your internet connection'),
     );
@@ -315,22 +386,53 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ));
   }
 
-  comingSoon(BuildContext context) {
+  _avatarimagePicker() async {
+    if (registerClass.avatar != '') {
+      return null;
+    } else {
+      var image = await picker.getImage(source: ImageSource.gallery);
+      try {
+        var response =
+            await client.uploadImage(image.path, folder: 'arthub_folder');
+        return response.secure_url;
+      } catch (exception) {
+        print(exception);
+      }
+    }
+  }
+
+  _avatarFuture() {
     return showDialog(
         context: context,
-        child: AlertDialog(
-          title: Text(
-            'Under Construction',
-            textAlign: TextAlign.center,
-          ),
-          scrollable: true,
-          content: Text('Coming soon!'),
-          actions: [
-            FlatButton(
-              onPressed: null,
-              child: Text('OK'),
-            )
-          ],
+        child: FutureBuilder(
+          future: _avatarimagePicker(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (registerClass.avatar != '') {
+              return AlertDialog(
+                content: Text('Avatar already uploaded'),
+              );
+            } else if (snapshot.connectionState != ConnectionState.done) {
+              return Container(
+                color: Colors.transparent,
+                child: AlertDialog(
+                  content: LinearProgressIndicator(
+                    backgroundColor: Colors.white,
+                    valueColor:
+                        new AlwaysStoppedAnimation<Color>(AppColors.purple),
+                  ),
+                ),
+              );
+            } else if (snapshot.hasData) {
+              registerClass.avatar = snapshot.data;
+              return AlertDialog(
+                content: Text('Avatar upload complete'),
+              );
+            } else
+              return AlertDialog(
+                content: Text(
+                    'Unable to upload connect, please check your connetion'),
+              );
+          },
         ));
   }
 }

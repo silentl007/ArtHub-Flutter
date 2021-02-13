@@ -1,79 +1,286 @@
 import 'package:ArtHub/screen/freelanceartist/freelanceartistlist.dart';
+import 'package:ArtHub/screen/purchasescreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'gallery/gallery.dart';
 import 'package:ArtHub/common/model.dart';
-import 'package:ArtHub/common/drawer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final Widgets classWidget = Widgets();
+  String displayName = '';
+  String customerType = '';
+  final List<DrawerOptions> options = [
+    DrawerOptions(option: 'Profile', optionIcon: Icon(Icons.person)),
+    DrawerOptions(option: 'Orders', optionIcon: Icon(Icons.menu)),
+    DrawerOptions(
+        option: 'Cart', optionIcon: Icon(Icons.shopping_cart)),
+    DrawerOptions(
+        option: 'Settings', optionIcon: Icon(Icons.settings)),
+  ];
+
+  final List<DrawerOptions> options2 = [
+    DrawerOptions(option: 'Profile', optionIcon: Icon(Icons.person)),
+    DrawerOptions(option: 'Orders', optionIcon: Icon(Icons.menu)),
+    DrawerOptions(
+        option: 'Cart', optionIcon: Icon(Icons.shopping_cart)),
+    DrawerOptions(
+        option: 'Uploads', optionIcon: Icon(Icons.file_upload)),
+    DrawerOptions(
+        option: 'Artwork', optionIcon: Icon(Icons.upload_file)),
+    DrawerOptions(
+        option: 'Settings', optionIcon: Icon(Icons.settings)),
+  ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPref();
+  }
+
+  getPref() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      displayName = prefs.getString('displayName');
+      customerType = prefs.getString('customerType');
+    });
+    print(customerType);
+    _welcome();
+  }
+
+  _welcome() {
+    // Scaffold.of(context).showSnackBar(SnackBar(
+    //   content: Text('Welcome back, $displayName'),
+    // ));
+    return showDialog(
+        context: context,
+        child: AlertDialog(
+          content: Text('Welcome! $displayName'),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final double fontSize = size.height * 0.025;
+    // _welcome(context);
     return SafeArea(
       child: Scaffold(
-          appBar: classWidget.apptitleBar('Home'),
-          drawer: DrawerWidget(),
-          body: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('assets/appimages/welcomeback.png'),
-                    fit: BoxFit.cover)),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: size.width * .7,
-                  height: size.height * .08,
-                  child: RaisedButton(
-                    color: AppColors.purple,
-                    onPressed: () => galleries(context),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(50))),
-                    child: Text(
-                      'Galleries',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w900,
-                          fontSize: fontSize),
+          floatingActionButton: FloatingActionButton(
+            elevation: 8,
+            backgroundColor: AppColors.purple,
+            child: Icon(Icons.contact_support),
+            onPressed: () => _comingSoon(),
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: AppColors.purple,
+            showUnselectedLabels: true,
+            onTap: (index) {
+              if (customerType == 'customer') {
+                _bottomNav(index);
+              }
+            },
+            items: customerType == 'customer'
+                ? options
+                    .map((element) => BottomNavigationBarItem(
+                        backgroundColor: AppColors.purple,
+                        icon: element.optionIcon,
+                        label: element.option))
+                    .toList()
+                : options2
+                    .map((element) => BottomNavigationBarItem(
+                        backgroundColor: AppColors.purple,
+                        icon: element.optionIcon,
+                        label: element.option))
+                    .toList(),
+          ),
+          appBar: _apptitleBar('Home'),
+          body: WillPopScope(
+            onWillPop: () => _backFunction(),
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/appimages/welcomeback.png'),
+                      fit: BoxFit.cover)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    width: size.width * .7,
+                    height: size.height * .08,
+                    child: RaisedButton(
+                      color: AppColors.purple,
+                      onPressed: () => galleries(),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(50))),
+                      child: Text(
+                        'Galleries',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w900,
+                            fontSize: fontSize),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Container(
-                  width: size.width * .7,
-                  height: size.height * .08,
-                  child: RaisedButton(
-                    color: AppColors.red,
-                    onPressed: () => freelancers(context),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(50))),
-                    child: Text(
-                      'Freelance',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w900,
-                          fontSize: fontSize),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    width: size.width * .7,
+                    height: size.height * .08,
+                    child: RaisedButton(
+                      color: AppColors.red,
+                      onPressed: () => freelancers(),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(50))),
+                      child: Text(
+                        'Freelance',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w900,
+                            fontSize: fontSize),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           )),
     );
   }
 
-  void galleries(BuildContext context) {
+  void galleries() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => Galleries()));
   }
 
-  void freelancers(BuildContext context) {
+  void freelancers() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => FreeLanceArtist()));
+  }
+
+  Future<bool> _backFunction() {
+    return showDialog(
+        context: context,
+        child: AlertDialog(
+          title: Text('Are you sure?'),
+          content: Text('You are going to exit the application!'),
+          actions: [
+            RaisedButton(
+              onPressed: () => SystemNavigator.pop(),
+              child: Text('Yes'),
+            ),
+            RaisedButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text('No'),
+            )
+          ],
+        ));
+  }
+
+  Widget _apptitleBar(String text) {
+    return AppBar(
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 30),
+          child: Row(
+            children: [
+              IconButton(
+                padding: const EdgeInsets.only(right: 0),
+                icon: Icon(Icons.exit_to_app),
+                onPressed: () => _logout(),
+              ),
+              Text(
+                'Log out',
+                style: TextStyle(
+                    color: AppColors.purple,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        )
+      ],
+      title: Padding(
+        padding: const EdgeInsets.only(right: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              text,
+              style: TextStyle(
+                color: AppColors.purple,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return showDialog(
+        context: context,
+        child: AlertDialog(
+          title: Text(
+            'Log Out',
+            textAlign: TextAlign.center,
+          ),
+          scrollable: true,
+          content: Text('Are you sure you want to log out?'),
+          actions: [
+            RaisedButton(
+              onPressed: () async {
+                var variable = await prefs.clear();
+                if (variable == true) {
+                  SystemNavigator.pop();
+                }
+              },
+              child: Text('Yes'),
+            ),
+            RaisedButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text('No'),
+            )
+          ],
+        ));
+  }
+
+  _bottomNav(int index) {
+    if (index == 2) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => PurchaseScreen()));
+    } else
+      _comingSoon();
+  }
+
+  _comingSoon() {
+    return showDialog(
+        context: context,
+        child: AlertDialog(
+            title: Text(
+              'Under Construction',
+              textAlign: TextAlign.center,
+            ),
+            scrollable: true,
+            content: Text('Coming soon!'),
+            actions: [
+              FlatButton(
+                onPressed: null,
+                child: Text('Ok'),
+              ),
+            ]));
   }
 }

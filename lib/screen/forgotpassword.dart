@@ -20,42 +20,50 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     return SafeArea(
       child: Scaffold(
         appBar: classWidget.apptitleBar('Forgot Password'),
-        body: Form(
-          key: textKey,
-                  child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: Container(
-                  width: 300,
-                  child: TextFormField(
-                    controller: emailText,
-                    decoration: InputDecoration(
-                        labelText: 'Email', icon: Icon(Icons.email)),
-                    validator: (text) {
-                      if (text.length == 0) {
-                        return 'This field is empty';
-                      }
-                    },
+        body: Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/appimages/welcomeback.png'),
+                  fit: BoxFit.cover)),
+          child: Form(
+            key: textKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: Container(
+                    width: 300,
+                    child: TextFormField(
+                      controller: emailText,
+                      decoration: InputDecoration(
+                          labelText: 'Email', icon: Icon(Icons.email)),
+                      validator: (text) {
+                        if (text.length == 0) {
+                          return 'This field is empty';
+                        }
+                      },
+                    ),
                   ),
                 ),
-              ),
-              RaisedButton(
-                onPressed: () {
-                  var keyform = textKey.currentState;
-                  if (keyform.validate()){
-                  resetClass.email = emailText.text;
-                  futureDiag(context);}
-                },
-                child: Text(
-                  'Reset',
-                  style: TextStyle(fontSize: 15, color: Colors.white),
-                ),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(50))),
-                color: AppColors.purple,
-              )
-            ],
+                SizedBox(height: 5,),
+                RaisedButton(
+                  onPressed: () {
+                    var keyform = textKey.currentState;
+                    if (keyform.validate()) {
+                      resetClass.email = emailText.text;
+                      futureDiag(context);
+                    }
+                  },
+                  child: Text(
+                    'Reset',
+                    style: TextStyle(fontSize: 15, color: Colors.white),
+                  ),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(50))),
+                  color: AppColors.purple,
+                )
+              ],
+            ),
           ),
         ),
       ),

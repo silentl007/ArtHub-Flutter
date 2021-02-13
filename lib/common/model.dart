@@ -1,37 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Data {
   static List<String> states = ['Lagos', 'Abuja', 'Bayelsa', 'Benin'];
   List<Map> galleries = [
     {
+      "_id":
+          '', // automatically added by you, used to identify where to send the uploaded links to
       "name": "Art World",
-      "code": "aw",
+      "email": 'artworld@gmail.com',
       "address": "Block 5 off Lakers, Lagos Island",
-      "location": "Lagos State",
-      "contact": "08038474317, 08033066026"
+      "location": "Lagos",
+      "account": 'gallery',
+      "contact": 08038474317, // this is datatype INTEGER 0
+      'orders': [],
+      'works': [],
+      'soldworks': [],
+      'cart': [],
     },
     {
       "name": "World of Art",
-      "code": "woa",
       "address": "House 20, Satelite Avenue, Ring Road",
-      "location": "Benin State",
-      "contact": "07063527397"
+      "location": "Benin",
+      "contact": 07063527397
     },
     {
       "name": "Stooges Artistic Palace",
-      "code": "sap",
       "address": "Off Houston Street, Lagos Island",
-      "location": "Lagos State",
-      "contact": "08038474317, 08033066026"
+      "location": "Lagos",
+      "contact": 08033066026
     },
     {
       "name": "Faux Leurve",
-      "code": "fl",
       "address": "Palm Venue, Okaka, Yenagoa",
-      "location": "Bayelsa State",
-      "contact": "08038474317, 08033066026"
+      "location": "Bayelsa",
+      "contact": 08038474317
     },
   ];
   /* this item section represents a collection of galleries, first part of the map is the details of the
@@ -224,15 +229,17 @@ class Data {
   ];
 
   List<Map> artists = [
+    // when the endpoint is queried, returns an array of map
     {
+      // artist 1, details are below
       'name': 'Obeyi Kuzman',
       'avatar': 'assets/obeyi/avatar.png',
-      'youtube': '',
       'aboutme':
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt',
       "address": "41 Road B Close Block 1 Flat 14",
       'works': [
         {
+          // work 1 for Obeyi Kuzman
           'name': 'Obeyi Kuzman',
           'product': "Essence of Life",
           'cost': 3700,
@@ -252,6 +259,7 @@ class Data {
           ],
         },
         {
+          // work 2 for Obeyi Kuzman
           'name': 'Obeyi Kuzman',
           'product': 'Prisoner of Earth',
           'cost': 5000,
@@ -428,12 +436,10 @@ class ParsedDataFreeLanceArts {
 
 class ParsedDataGallery {
   String name;
-  String code;
   String address;
   String location;
-  String contact;
-  ParsedDataGallery(
-      this.name, this.code, this.address, this.location, this.contact);
+  int contact;
+  ParsedDataGallery(this.name, this.address, this.location, this.contact);
 }
 
 class ParsedDataProduct {
@@ -545,7 +551,8 @@ class Widgets {
 class DrawerOptions {
   String option;
   Icon optionIcon;
-  DrawerOptions({this.option, this.optionIcon});
+  int index;
+  DrawerOptions({this.option, this.optionIcon, this.index});
 }
 
 class Registeration {
@@ -554,12 +561,16 @@ class Registeration {
   String email = '';
   String password = '';
   String address = '';
+  String avatar = '';
   String number = '';
   String location = '';
   String account = '';
-  List orders = [];
-  List works = [];
-  List purchasedworks = [];
+  String aboutme = ''; // for only freelancers, short description of themselves
+  List orders = []; // for customers to see their purchased artworks
+  List works =
+      []; // for freelancers and gallery, this is where artwork uploads will enter
+  List purchasedworks =
+      []; // for freelancers and gallery, this is where sold artworks will enter
 
   Future register() async {
     String registerdbLink =
@@ -569,9 +580,11 @@ class Registeration {
       'email': email,
       'password': password,
       'address': address,
+      'avatar': avatar,
       'number': number,
       'location': location,
       'account': account,
+      'aboutme': aboutme,
       'works': works,
       'orders': orders,
       'purchasedworks': purchasedworks,
@@ -581,18 +594,17 @@ class Registeration {
       var datasend = await http.post(registerdbLink,
           body: encodedData,
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
-      print(dataBody);
-      print(datasend.body);
+
       return datasend.statusCode;
     } catch (exception) {
-      print(exception);
       return failed;
     }
   }
 }
 
 class Login {
-  Map failed = {};
+  int failed = 400;
+  int wrong = 500;
   String userName;
   String password;
   Future login() async {
@@ -607,23 +619,31 @@ class Login {
       var datasend = await http.post(loginLink,
           body: encodedData,
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
-      // print(datasend.statusCode);
-      // print(datasend.body);
       if (datasend.statusCode == 200) {
-        // return datasend.body;
+        var json = jsonDecode(datasend.body);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        if (prefs.getBool('logged') == null) {
+          prefs.setString('displayName', json['user']['name']);
+          prefs.setString('id', json['user']['_id']);
+          prefs.setString('customerType', json['user']['role']);
+          prefs.setString('email', userName);
+          prefs.setString('password', password);
+          prefs.setBool('logged', true);
+        }
         return datasend.statusCode;
-      } else {
-        return datasend.body;
+      }
+      // else if to return a status code for wrong email or password, will determine to show
+      // pseudo statuscode is 500
+      else {
+        return wrong;
       }
     } catch (exception) {
-      print(exception);
       return failed;
     }
   }
 }
 
 class ResetPassword {
-  int datasent = 200;
   int datafailed = 400;
   String email;
   Future reset() async {
@@ -634,13 +654,55 @@ class ResetPassword {
     };
     try {
       var encodedData = jsonEncode(databody);
-      var datasend = http.put(resetLink,
+      var datasend = await http.put(resetLink,
           body: encodedData,
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
-      return datasent;
+      return datasend.statusCode;
     } catch (exception) {
       print(exception);
       return datafailed;
+    }
+  }
+}
+
+class UploadWorks {
+  int failed = 400;
+  String name = '';
+  String productName = '';
+  int cost = 0;
+  String type = '';
+  String avatar = '';
+  String description = '';
+  int height = 0;
+  int width = 0;
+  int weight = 0;
+  String materials = '';
+  List<String> images = [];
+  Future upload() async {
+    String uploadLink = '';
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Map<String, dynamic> uploadData = {
+      'id': prefs.getString('id'),
+      'name': prefs.getString('displayName'),
+      'product': productName,
+      'cost': cost,
+      'type': type,
+      'avatar': avatar,
+      'description': description,
+      'dimension': '$height x $width',
+      'weight': weight,
+      'material used': materials,
+      'images': images,
+    };
+    try {
+      var encodedData = jsonEncode(uploadData);
+      var datasend = await http.post(uploadLink,
+          body: encodedData,
+          headers: {'Content-Type': 'application/json; charset=UTF-8'});
+      return datasend.statusCode;
+    } catch (exception) {
+      print(exception);
+      return failed;
     }
   }
 }

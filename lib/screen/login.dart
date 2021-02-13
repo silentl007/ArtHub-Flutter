@@ -77,15 +77,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 10,
                 ),
-                _ink(context, 'Login', fontSize),
+                _ink('Login', fontSize),
                 SizedBox(
                   height: 10,
                 ),
-                _ink(context, 'New user? Register', fontSize),
+                _ink('New user? Register', fontSize),
                 SizedBox(
                   height: 10,
                 ),
-                _ink(context, 'Forgot Password?', fontSize),
+                _ink('Forgot Password?', fontSize),
               ],
             ),
           ),
@@ -94,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  _ink(BuildContext context, String text, double font) {
+  _ink(String text, double font) {
     return InkWell(
       child: Text(
         text,
@@ -105,10 +105,8 @@ class _LoginScreenState extends State<LoginScreen> {
           var keyState = _key.currentState;
           if (keyState.validate()) {
             keyState.save();
-            _loginLogic(context);
+            _loginLogic();
           }
-          // Navigator.push(
-          //     context, MaterialPageRoute(builder: (context) => HomeScreen()));
         } else if (text == 'New user? Register') {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => RegisterScreen()));
@@ -119,40 +117,48 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  _loginLogic(BuildContext context) {
+  _loginLogic() {
     return showDialog(
       context: context,
       child: FutureBuilder(
         future: loginClass.login(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData == false) {
-            return AlertDialog(
-              content: LinearProgressIndicator(
-                backgroundColor: Colors.white,
-                valueColor: new AlwaysStoppedAnimation<Color>(AppColors.purple),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return Container(
+              color: Colors.transparent,
+              child: AlertDialog(
+                content: LinearProgressIndicator(
+                  backgroundColor: Colors.white,
+                  valueColor:
+                      new AlwaysStoppedAnimation<Color>(AppColors.purple),
+                ),
               ),
             );
           }
-          return snapshot.data == 200
-              ? Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()))
-              : AlertDialog(
-                  title: Text('${snapshot.data}'),
-                );
+          if (snapshot.data == 500) {
+            return AlertDialog(
+              title: Text('Wrong email or password'),
+            );
+          }
+          if (snapshot.data == 200) {
+            print(snapshot.data);
+            _loginSuccess();
+            return Container();
+          }
+          return AlertDialog(
+            title: Text(
+                'Unable to connect, please check your internet connection'),
+          );
         },
       ),
     );
   }
 
   _loginSuccess() {
-    return Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HomeScreen()));
-    // return SafeArea(
-    //   child: Scaffold(
-    //     body: Center(
-    //       child: Text('Hello World'),
-    //     ),
-    //   ),
-    // );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.pop(context);
+      return Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    });
   }
 }

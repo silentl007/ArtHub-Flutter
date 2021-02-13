@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
 
 class GalleryArt extends StatefulWidget {
-  final String sorter;
-  GalleryArt(this.sorter);
   @override
   _GalleryArtState createState() => _GalleryArtState();
 }
