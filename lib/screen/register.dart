@@ -284,6 +284,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         onPressed: () {
                           final keyForm = _key.currentState;
+
                           if (keyForm.validate() == true) {
                             if (_check == false) {
                               setState(() {
@@ -297,25 +298,44 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               setState(() {
                                 _radiocolor = Colors.red;
                               });
-                            } else if (registerClass.avatar == '') {
-                              setState(() {
-                                _avatarcolor = Colors.red;
-                              });
                             } else {
-                              registerClass.location = selectedState;
-                              registerClass.account = accountchoice;
-                              keyForm.save();
-                              futureDiag(context);
-                              setState(() {
-                                keyForm.reset();
-                                defaultaccount = 0;
-                                selectedState = states[0];
-                                _check = false;
-                                 _terms = AppColors.purple;
-                                 _stateColor = Colors.black;
-                                 _radiocolor = AppColors.purple;
-                                 _avatarcolor = Colors.black;
-                              });
+                              if (accountchoice == 'Freelancer') {
+                                if (registerClass.avatar == '') {
+                                  setState(() {
+                                    _avatarcolor = Colors.red;
+                                  });
+                                } else {
+                                  registerClass.location = selectedState;
+                                  registerClass.account = accountchoice;
+                                  keyForm.save();
+                                  futureDiag(context);
+                                  setState(() {
+                                    keyForm.reset();
+                                    defaultaccount = 0;
+                                    selectedState = states[0];
+                                    _check = false;
+                                    _terms = AppColors.purple;
+                                    _stateColor = Colors.black;
+                                    _radiocolor = AppColors.purple;
+                                    _avatarcolor = Colors.black;
+                                  });
+                                }
+                              } else {
+                                registerClass.location = selectedState;
+                                registerClass.account = accountchoice;
+                                keyForm.save();
+                                futureDiag(context);
+                                setState(() {
+                                  keyForm.reset();
+                                  defaultaccount = 0;
+                                  selectedState = states[0];
+                                  _check = false;
+                                  _terms = AppColors.purple;
+                                  _stateColor = Colors.black;
+                                  _radiocolor = AppColors.purple;
+                                  _avatarcolor = Colors.black;
+                                });
+                              }
                             }
                           }
                         },
