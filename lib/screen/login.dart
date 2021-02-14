@@ -3,6 +3,7 @@ import 'package:ArtHub/screen/register.dart';
 import 'package:ArtHub/screen/forgotpassword.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -13,8 +14,29 @@ class _LoginScreenState extends State<LoginScreen> {
   Login loginClass = Login();
   Widgets classWidget = Widgets();
   final _key = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final usernameControl = TextEditingController();
   final passwordControl = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getLogin();
+  }
+
+  getLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('logged') == true) {
+      _sneakerAlert();
+    }
+  }
+
+  _sneakerAlert() {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text(
+            'Unable to login automatically, please check internet connection')));
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -22,6 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
     bool showpassword = true;
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: classWidget.apptitleBar('Login'),
         body: Form(
           key: _key,

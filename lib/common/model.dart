@@ -613,6 +613,14 @@ class Login {
   String userName;
   String password;
   Future login() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getBool('logged') == true) {
+      userName = prefs.getString('email');
+      password = prefs.getString('password');
+    }
+
+    print('from login beginning function username - $userName');
+    print('from login beginning function password - $password');
     String loginLink = 'https://galleryapp-backend.herokuapp.com/api/signin';
     Map<String, String> loginData = {
       'email': userName,
@@ -636,14 +644,21 @@ class Login {
           prefs.setString('password', password);
           prefs.setBool('logged', true);
         }
+        print('login success');
         return datasend.statusCode;
       }
       // else if to return a status code for wrong email or password, will determine to show
       // pseudo statuscode is 500
       else {
+        print('Wrong else in login');
+        print(' username - $userName');
+        print(' password - $password');
+        print(datasend.statusCode);
+
         return wrong;
       }
     } catch (exception) {
+      print('Error from login - $exception');
       return failed;
     }
   }
