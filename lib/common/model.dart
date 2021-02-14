@@ -618,7 +618,6 @@ class Login {
       userName = prefs.getString('email');
       password = prefs.getString('password');
     }
-
     print('from login beginning function username - $userName');
     print('from login beginning function password - $password');
     String loginLink = 'https://galleryapp-backend.herokuapp.com/api/signin';
@@ -634,7 +633,7 @@ class Login {
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
       if (datasend.statusCode == 200) {
         var json = jsonDecode(datasend.body);
-        print(json);
+        print('this is the data received when logged in - $json');
         SharedPreferences prefs = await SharedPreferences.getInstance();
         if (prefs.getBool('logged') == null) {
           prefs.setString('displayName', json['user']['name']);
@@ -653,8 +652,7 @@ class Login {
         print('Wrong else in login');
         print(' username - $userName');
         print(' password - $password');
-        print(datasend.statusCode);
-
+        print('this is the status code - ${datasend.statusCode}');
         return wrong;
       }
     } catch (exception) {

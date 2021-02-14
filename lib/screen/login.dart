@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
   _sneakerAlert() {
     _scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text(
-            'Unable to login automatically, please check internet connection')));
+            'Something went wrong, please try again')));
   }
 
   @override

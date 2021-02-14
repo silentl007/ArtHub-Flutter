@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     DrawerOptions(option: 'Profile', optionIcon: Icon(Icons.person)),
     DrawerOptions(option: 'Orders', optionIcon: Icon(Icons.menu)),
     DrawerOptions(option: 'Cart', optionIcon: Icon(Icons.shopping_cart)),
-    DrawerOptions(option: 'Settings', optionIcon: Icon(Icons.settings)),
+    DrawerOptions(option: 'Support', optionIcon: Icon(Icons.contact_support)),
   ];
 
   final List<DrawerOptions> options2 = [
@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     DrawerOptions(option: 'Cart', optionIcon: Icon(Icons.shopping_cart)),
     DrawerOptions(option: 'Artworks', optionIcon: Icon(Icons.file_upload)),
     DrawerOptions(option: 'Upload', optionIcon: Icon(Icons.upload_file)),
-    DrawerOptions(option: 'Settings', optionIcon: Icon(Icons.settings)),
+    DrawerOptions(option: 'Support', optionIcon: Icon(Icons.contact_support)),
   ];
 
   @override
@@ -62,12 +62,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
           key: _scaffoldKey,
-          floatingActionButton: FloatingActionButton(
-            elevation: 8,
-            backgroundColor: AppColors.purple,
-            child: Icon(Icons.contact_support),
-            onPressed: () => _comingSoon(),
-          ),
           bottomNavigationBar: BottomNavigationBar(
             backgroundColor: AppColors.purple,
             showUnselectedLabels: true,
@@ -261,6 +255,9 @@ class _HomeScreenState extends State<HomeScreen> {
     if (index == 4) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Uploads()));
+    } else if (index == 2) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => PurchaseScreen()));
     } else
       _comingSoon();
   }

@@ -14,6 +14,7 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   final ParsedDataProduct data;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   DataBaseFunctions _dataBaseFunctions;
   List<String> itemcheck = [];
   int itemnumber = 0;
@@ -51,18 +52,22 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    // print(size.width);
     double fontSize20 = size.height * 0.025;
     double fontSize18 = size.height * 0.0225;
     double fontSize25 = size.height * 0.03125;
+    double costHeight40 = size.height * 0.05;
+    double costWidth90 = size.width * 0.2;
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text('Details'),
           actions: [
             InkWell(
               onTap: () {
-                purchasecreen(context);
+                purchasecreen();
               },
               child: Padding(
                 padding: const EdgeInsets.only(right: 30),
@@ -184,10 +189,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                               Expanded(
                                 flex: 1,
                                 child: Align(
-                                  alignment: Alignment.bottomLeft,
+                                  alignment: Alignment.bottomCenter,
                                   child: Container(
-                                    height: 40,
-                                    width: 90,
+                                    height: costHeight40,
+                                    width: costWidth90,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10)),
@@ -281,11 +286,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
-                                width: size.width * .35,
-                                height: size.height * .07,
+                                width: size.width * .331,
+                                height: size.height * .0625,
                                 child: RaisedButton(
                                     elevation: 8,
-                                    onPressed: () => addcart(context, data),
+                                    onPressed: () => addcart(data),
                                     color: AppColors.purple,
                                     child: Row(
                                       mainAxisAlignment:
@@ -320,26 +325,26 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 
-  void purchasecreen(BuildContext context) {
+  void purchasecreen() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => PurchaseScreen()));
   }
 
-  addcart(BuildContext context, ParsedDataProduct cartitem) async {
+  addcart(ParsedDataProduct cartitem) async {
     if (itemcheck.contains(cartitem.productname)) {
-      return showDialog(
-          context: context,
-          child: AlertDialog(
-            content: Text('Already in cart'),
-          ));
+      return _scaffoldKey.currentState.showSnackBar(SnackBar(
+        duration: Duration(seconds: 1),
+        content: Text('Already in cart!'),
+        backgroundColor: AppColors.red,
+      ));
     } else {
       await _dataBaseFunctions.insertitem(cartitem);
       getdata();
-      return showDialog(
-          context: context,
-          child: AlertDialog(
-            content: Text('Added to cart'),
-          ));
+      return _scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text('Added to cart!'),
+        duration: Duration(seconds: 1),
+        backgroundColor: AppColors.purple,
+      ));
     }
   }
 }

@@ -9,10 +9,14 @@ class FreeLanceArtist extends StatefulWidget {
 
 class _FreeLanceArtistState extends State<FreeLanceArtist> {
   Widgets classWidget = Widgets();
+  List artnamelist = [];
+  List filteredartname = List();
+
+  // Pseudo Future logic using initState
+  // real life application use a future builder because of data fetching
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     Data artistname = Data();
-    List artname = [];
     List artlist = artistname.artists;
     for (var data in artlist) {
       ParsedDataFreeLanceArts parsed = ParsedDataFreeLanceArts(
@@ -21,8 +25,13 @@ class _FreeLanceArtistState extends State<FreeLanceArtist> {
           avatar: data['avatar'],
           works: data['works'],
           aboutme: data['aboutme']);
-      artname.add(parsed);
+      artnamelist.add(parsed);
     }
+    filteredartname = artnamelist;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -34,7 +43,7 @@ class _FreeLanceArtistState extends State<FreeLanceArtist> {
               searchbar(),
               Expanded(
                 child: GridView.builder(
-                  itemCount: artname.length,
+                  itemCount: filteredartname.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       mainAxisSpacing: 20,
@@ -44,13 +53,14 @@ class _FreeLanceArtistState extends State<FreeLanceArtist> {
                     return Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: InkWell(
-                        onTap: () => profile(context, artname[index]),
+                        onTap: () => profile(filteredartname[index]),
                         child: Container(
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(70)),
                               image: DecorationImage(
-                                  image: AssetImage(artname[index].avatar),
+                                  image:
+                                      AssetImage(filteredartname[index].avatar),
                                   fit: BoxFit.cover)),
                           child: Container(
                             child: Align(
@@ -58,7 +68,7 @@ class _FreeLanceArtistState extends State<FreeLanceArtist> {
                               child: ListTile(
                                 tileColor: AppColors.purple,
                                 title: Text(
-                                  '${artname[index].name}',
+                                  '${filteredartname[index].name}',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
@@ -96,11 +106,19 @@ class _FreeLanceArtistState extends State<FreeLanceArtist> {
           ),
           border: InputBorder.none,
         ),
+        onChanged: (text) {
+          text = text.toLowerCase();
+          setState(() {
+            filteredartname = artnamelist
+                .where((items) => (items.name.toLowerCase().contains(text)))
+                .toList();
+          });
+        },
       ),
     );
   }
 
-  void profile(BuildContext context, ParsedDataFreeLanceArts profiledata) {
+  void profile(ParsedDataFreeLanceArts profiledata) {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => FreeLanceProfile(profiledata)));
   }

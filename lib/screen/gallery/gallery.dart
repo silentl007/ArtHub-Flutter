@@ -14,6 +14,7 @@ class _GalleriesState extends State<Galleries> {
   List<ParsedDataGallery> filtereddata = List();
 
   // Pseudo Future logic using initState
+  // real life application use a future builder because of data fetching 
   @override
   void initState() {
     super.initState();
