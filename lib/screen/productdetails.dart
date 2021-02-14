@@ -52,7 +52,6 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    // print(size.width);
     double fontSize20 = size.height * 0.025;
     double fontSize18 = size.height * 0.0225;
     double fontSize25 = size.height * 0.03125;
