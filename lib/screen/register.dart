@@ -216,7 +216,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             labelText: 'E-mail', icon: Icon(Icons.email)),
                         onSaved: (text) {
                           setState(() {
-                            return registerClass.email = text;
+                            return registerClass.email = text.toLowerCase();
                           });
                         },
                         validator: (value) {

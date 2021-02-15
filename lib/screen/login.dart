@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: usernameControl,
                   onSaved: (value) {
                     setState(() {
-                      loginClass.userName = value;
+                      loginClass.userName = value.toLowerCase();
                     });
                   },
                 ),
