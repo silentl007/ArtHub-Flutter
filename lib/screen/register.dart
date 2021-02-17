@@ -38,7 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: classWidget.apptitleBar('Register'),
+        appBar: classWidget.apptitleBar(context, 'Register'),
         body: Stack(
           children: [
             Container(

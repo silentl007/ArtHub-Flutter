@@ -19,7 +19,7 @@ class FreeLanceProfile extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: classWidget.apptitleBar('${artistdata.name}'),
+        appBar: classWidget.apptitleBar(context, '${artistdata.name}'),
         body: Padding(
           padding:  EdgeInsets.all(padding22),
           child: Column(

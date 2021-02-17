@@ -19,7 +19,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: classWidget.apptitleBar('Forgot Password'),
+        appBar: classWidget.apptitleBar(context, 'Forgot Password'),
         body: Container(
           decoration: BoxDecoration(
               image: DecorationImage(

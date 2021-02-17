@@ -172,10 +172,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _apptitleBar(String text) {
+    final Size size = MediaQuery.of(context).size;
+
+    double padding30 = size.height * 0.03755;
     return AppBar(
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 30),
+          padding: EdgeInsets.only(right: padding30),
           child: Row(
             children: [
               IconButton(
@@ -196,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
         )
       ],
       title: Padding(
-        padding: const EdgeInsets.only(right: 30),
+        padding:  EdgeInsets.only(right: padding30),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

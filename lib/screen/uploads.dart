@@ -31,7 +31,7 @@ class _UploadsState extends State<Uploads> {
     double padding40 = size.height * 0.05;
     return SafeArea(
       child: Scaffold(
-        appBar: classWidget.apptitleBar('Uploads'),
+        appBar: classWidget.apptitleBar(context, 'Uploads'),
         body: Stack(
           children: [
             Container(

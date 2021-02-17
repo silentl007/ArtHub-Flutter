@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
-        appBar: classWidget.apptitleBar('Login'),
+        appBar: classWidget.apptitleBar(context, 'Login'),
         body: Form(
           key: _key,
           child: Container(

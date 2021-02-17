@@ -40,7 +40,7 @@ class _FreeLanceArtistState extends State<FreeLanceArtist> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: classWidget.apptitleBar('Freelancers'),
+        appBar: classWidget.apptitleBar(context, 'Freelancers'),
         body: Container(
           padding: EdgeInsets.fromLTRB(padding20, padding15, padding10, 0),
           child: Column(

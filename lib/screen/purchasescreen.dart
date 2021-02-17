@@ -55,7 +55,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: classWidget.apptitleBar('My Cart'),
+        appBar: classWidget.apptitleBar(context, 'My Cart'),
         body: Container(
           color: Colors.white,
           child: FutureBuilder(

@@ -526,10 +526,12 @@ class AppColors {
 }
 
 class Widgets {
-  Widget apptitleBar(String text) {
+  Widget apptitleBar(BuildContext context, String text) {
+    final Size size = MediaQuery.of(context).size;
+    double padding30 = size.height * 0.03755;
     return AppBar(
       title: Padding(
-        padding: const EdgeInsets.only(right: 30),
+        padding:  EdgeInsets.only(right: padding30),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [

@@ -39,7 +39,7 @@ class _GalleriesState extends State<Galleries> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: classWidget.apptitleBar('Galleries'),
+        appBar: classWidget.apptitleBar(context, 'Galleries'),
         body: Column(
           children: <Widget>[
             searchbar(),
