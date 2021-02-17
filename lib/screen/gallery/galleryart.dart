@@ -12,6 +12,7 @@ class _GalleryArtState extends State<GalleryArt> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double fontSize20 = size.height * 0.025;
+    double padding30 = size.height * 0.03755;
     Data datacollect = Data();
     List<ParsedDataProduct> portraitworks = [];
     List<ParsedDataProduct> sculpworks = [];
@@ -60,7 +61,7 @@ class _GalleryArtState extends State<GalleryArt> {
           backgroundColor: Colors.white,
           appBar: AppBar(
               title: Padding(
-                padding: const EdgeInsets.only(right: 30),
+                padding:  EdgeInsets.only(right: padding30),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [

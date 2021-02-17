@@ -53,14 +53,21 @@ class _ProductDetailsState extends State<ProductDetails> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double fontSize20 = size.height * 0.025;
-    double fontSize18 = size.height * 0.0225;
     double fontSize25 = size.height * 0.03125;
     double costHeight40 = size.height * 0.05;
     double costWidth90 = size.width * 0.2;
+    double padding30 = size.height * 0.0375;
+    double padding70 = size.height * 0.0876;
+    double padding10 = size.height * 0.01252;
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => addcart(data),
+          child: Icon(Icons.add_shopping_cart),
+          backgroundColor: AppColors.purple,
+        ),
         appBar: AppBar(
           title: Text('Details'),
           actions: [
@@ -69,7 +76,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 purchasecreen();
               },
               child: Padding(
-                padding: const EdgeInsets.only(right: 30),
+                padding: EdgeInsets.only(right: padding30),
                 child: Row(
                   children: [
                     Text(
@@ -94,7 +101,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 25.0),
+                    padding: EdgeInsets.only(top: fontSize25),
                     child: CarouselSlider(
                       height: size.height * 0.35,
                       autoPlay: true,
@@ -171,7 +178,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               Expanded(
                                   flex: 2,
                                   child: Padding(
-                                    padding: const EdgeInsets.only(left: 70.0),
+                                    padding: EdgeInsets.only(left: padding70),
                                     child: Container(
                                       color: Colors.transparent,
                                       child: Align(
@@ -215,8 +222,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                         children: [
                           Container(
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 70.0, top: 10),
+                              padding: EdgeInsets.only(
+                                  left: padding70, top: padding10),
                               child: SingleChildScrollView(
                                 child: Column(
                                   crossAxisAlignment:
@@ -280,39 +287,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                               ),
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                width: size.width * .331,
-                                height: size.height * .0625,
-                                child: RaisedButton(
-                                    elevation: 8,
-                                    onPressed: () => addcart(data),
-                                    color: AppColors.purple,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.shopping_cart,
-                                          color: Colors.white,
-                                        ),
-                                        Text(
-                                          'Add to Cart',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: fontSize18),
-                                        ),
-                                      ],
-                                    ),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(50)))),
-                              ),
-                            ),
-                          )
                         ],
                       ),
                     ),

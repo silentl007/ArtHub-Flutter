@@ -66,13 +66,16 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               double fontSize20 = size.height * 0.025;
               double fontSize25 = size.height * 0.03125;
               double fontSize15 = size.height * 0.01875;
+              double padding40 = size.height * 0.05;
+              double padding8 = size.height * 0.01001;
+              double padding5 = size.height * 0.00625;
               if (snapshot.hasData == false) {
                 return Container();
               }
               return Container(
                 child: itemnumber != 0
                     ? Padding(
-                        padding: const EdgeInsets.all(40.0),
+                        padding: EdgeInsets.all(padding40),
                         child: Column(
                           children: [
                             Expanded(
@@ -84,11 +87,11 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         return Padding(
-                                          padding: const EdgeInsets.only(
-                                            top: 8.0,
-                                            bottom: 8,
-                                            left: 5,
-                                            right: 5,
+                                          padding: EdgeInsets.only(
+                                            top: padding8,
+                                            bottom: padding8,
+                                            left: padding5,
+                                            right: padding5,
                                           ),
                                           child: Material(
                                             elevation: 3,
@@ -101,7 +104,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                               ),
                                               child: Padding(
                                                 padding:
-                                                    const EdgeInsets.all(8.0),
+                                                    EdgeInsets.all(padding8),
                                                 child: Row(
                                                   children: [
                                                     Container(
@@ -126,7 +129,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                                       color: Colors.transparent,
                                                       width: size.height * .22,
                                                       padding: EdgeInsets.only(
-                                                          left: 20),
+                                                          left: fontSize20),
                                                       child: Column(
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment

@@ -11,12 +11,17 @@ class FreeLanceProfile extends StatelessWidget {
     ScrollController scrollController;
     Size size = MediaQuery.of(context).size;
     double fontSize40 = size.height * 0.05;
+    double padding22 = size.height * 0.0275;
+    double padding15 = size.height * 0.01875;
+    double padding10 = size.height * 0.01252;
+    double padding18 = size.height * 0.02253;
+    double padding8 = size.height * 0.01001;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: classWidget.apptitleBar('${artistdata.name}'),
         body: Padding(
-          padding: const EdgeInsets.all(22.0),
+          padding:  EdgeInsets.all(padding22),
           child: Column(
             children: [
               Expanded(
@@ -40,7 +45,7 @@ class FreeLanceProfile extends StatelessWidget {
                             alignment: Alignment.bottomCenter,
                             child: Container(
                               child: Padding(
-                                padding: const EdgeInsets.only(left: 18.0),
+                                padding:  EdgeInsets.only(left: padding18),
                                 child: Text(
                                   '${artistdata.name}',
                                   style: TextStyle(
@@ -59,7 +64,7 @@ class FreeLanceProfile extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 15.0, bottom: 10),
+                  padding:  EdgeInsets.only(top: padding15, bottom: padding10),
                   child: Container(
                     child: SingleChildScrollView(
                       child: Text(
@@ -75,7 +80,7 @@ class FreeLanceProfile extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: EdgeInsets.only(top: padding8),
                   child: GridView.builder(
                     itemCount: artistdata.works.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

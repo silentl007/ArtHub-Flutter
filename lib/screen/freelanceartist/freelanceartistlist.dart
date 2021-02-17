@@ -32,12 +32,17 @@ class _FreeLanceArtistState extends State<FreeLanceArtist> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    double padding8 = size.height * 0.01001;
+    double padding20 = size.height * 0.025;
+    double padding15 = size.height * 0.01875;
+    double padding10 = size.height * 0.01252;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: classWidget.apptitleBar('Freelancers'),
         body: Container(
-          padding: EdgeInsets.fromLTRB(20, 15, 10, 0),
+          padding: EdgeInsets.fromLTRB(padding20, padding15, padding10, 0),
           child: Column(
             children: <Widget>[
               searchbar(),
@@ -51,7 +56,7 @@ class _FreeLanceArtistState extends State<FreeLanceArtist> {
                       childAspectRatio: .8),
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
+                      padding:  EdgeInsets.only(top:padding8),
                       child: InkWell(
                         onTap: () => profile(filteredartname[index]),
                         child: Container(

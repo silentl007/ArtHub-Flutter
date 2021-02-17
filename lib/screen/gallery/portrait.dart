@@ -19,6 +19,9 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
     Size size = MediaQuery.of(context).size;
     double innerheight = size.height * .20;
     double fontSize20 = size.height * 0.020;
+    double padding40 = size.height * 0.05;
+    double padding10 = size.height * 0.01252;
+    double padding20 = size.height * 0.025;
     searchbar();
     return SingleChildScrollView(
       child: Container(
@@ -29,8 +32,8 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
               child: Column(
                 children: works.map((data) {
                   return Padding(
-                    padding:
-                        const EdgeInsets.only(left: 40, right: 40, top: 10),
+                    padding: EdgeInsets.only(
+                        left: padding40, right: padding40, top: padding10),
                     child: Material(
                       elevation: 10,
                       borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -41,7 +44,7 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
                           borderRadius: BorderRadius.all(Radius.circular(30)),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.all(20.0),
+                          padding:  EdgeInsets.all(padding20),
                           child: Row(
                             children: [
                               Container(
@@ -58,7 +61,7 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
                                 child: Container(
                                   color: Colors.transparent,
                                   width: size.height * .22,
-                                  padding: EdgeInsets.only(left: 20),
+                                  padding: EdgeInsets.only(left: padding20),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,

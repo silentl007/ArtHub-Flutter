@@ -34,6 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double fontSize15 = size.height * 0.01870;
+    double padding40 = size.height * 0.05;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -49,7 +50,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             Form(
               key: _key,
               child: Container(
-                padding: EdgeInsets.only(left: 40, right: 40),
+                padding: EdgeInsets.only(left: padding40, right: padding40),
                 width: double.infinity,
                 child: SingleChildScrollView(
                   child: Column(

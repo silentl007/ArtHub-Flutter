@@ -8,21 +8,20 @@ class Galleries extends StatefulWidget {
 }
 
 class _GalleriesState extends State<Galleries> {
-  
   Widgets classWidget = Widgets();
   List<ParsedDataGallery> collecteddata = List();
   List<ParsedDataGallery> filtereddata = List();
 
   // Pseudo Future logic using initState
-  // real life application use a future builder because of data fetching 
+  // real life application use a future builder because of data fetching
   @override
   void initState() {
     super.initState();
     Data modeldata = Data();
     List result = modeldata.galleries;
     for (var data in result) {
-      ParsedDataGallery parsed = ParsedDataGallery(data['name'],
-          data['address'], data['location'], data['contact']);
+      ParsedDataGallery parsed = ParsedDataGallery(
+          data['name'], data['address'], data['location'], data['contact']);
       collecteddata.add(parsed);
     }
     filtereddata = collecteddata;
@@ -33,7 +32,9 @@ class _GalleriesState extends State<Galleries> {
     Size size = MediaQuery.of(context).size;
     double fontSize = size.height * 0.03875;
     double imageHeight20 = size.height * 0.025;
-    double paddingTop = size.height * 0.05;
+    double padding20 = size.height * 0.025;
+    double padding50 = size.height * 0.06257;
+    double padding30 = size.height * 0.03755;
     collecteddata.shuffle();
     return SafeArea(
       child: Scaffold(
@@ -47,13 +48,12 @@ class _GalleriesState extends State<Galleries> {
                   itemCount: filtereddata.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
-                      padding: const EdgeInsets.only(
-                        left: 20,
-                        right: 20,
+                      padding: EdgeInsets.only(
+                        left: padding20,
+                        right: padding20,
                       ),
                       child: InkWell(
-                        onTap: () =>
-                            galleryart(),
+                        onTap: () => galleryart(),
                         child: Container(
                             height: size.height * .25,
                             decoration: BoxDecoration(
@@ -64,8 +64,8 @@ class _GalleriesState extends State<Galleries> {
                                         'assets/appimages/gallerylistback.png'),
                                     fit: BoxFit.cover)),
                             child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 50.0, top: 30),
+                              padding: EdgeInsets.only(
+                                  left: padding50, top: padding30),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
