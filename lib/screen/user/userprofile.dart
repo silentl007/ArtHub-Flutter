@@ -1,6 +1,7 @@
 import 'package:ArtHub/screen/user/editprofile.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -14,6 +15,11 @@ class _ProfileState extends State<Profile> {
     // TODO: implement initState
     super.initState();
     print('fetch, and read user data in pref');
+  }
+
+  getData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {});
   }
 
   @override
@@ -30,6 +36,15 @@ class _ProfileState extends State<Profile> {
         child: Icon(Icons.edit),
       ),
       appBar: classWidget.apptitleBar(context, 'Profile'),
+      body: Column(),
     ));
+  }
+
+  _title(String title) {
+    return Text(title);
+  }
+
+  _content(String content) {
+    return Text(content);
   }
 }

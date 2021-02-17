@@ -161,7 +161,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                 width: size.width,
                 height: size.height * .45,
                 decoration: BoxDecoration(
-                    color: AppColors.grey,
+                    // color: AppColors.grey,
+                    // border: Border.all(color: AppColors.purple),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(100),
                       topRight: Radius.circular(100),
@@ -182,7 +183,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     child: Container(
                                       color: Colors.transparent,
                                       child: Align(
-                                          alignment: Alignment.bottomCenter,
+                                          alignment: Alignment.center,
                                           child: Text(
                                             data.productname,
                                             style: TextStyle(
@@ -195,7 +196,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               Expanded(
                                 flex: 1,
                                 child: Align(
-                                  alignment: Alignment.bottomCenter,
+                                  alignment: Alignment.center,
                                   child: Container(
                                     height: costHeight40,
                                     width: costWidth90,
@@ -223,7 +224,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           Container(
                             child: Padding(
                               padding: EdgeInsets.only(
-                                  left: padding70, top: padding10),
+                                  left: padding70, top: 0),
                               child: SingleChildScrollView(
                                 child: Column(
                                   crossAxisAlignment:

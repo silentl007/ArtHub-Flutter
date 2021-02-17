@@ -23,6 +23,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _key = GlobalKey<FormState>();
   final passwordCtrl = TextEditingController();
   bool _check = false;
+  bool showpassword = true;
+  bool showpassword1 = true;
   Color _terms = AppColors.purple;
   Color _stateColor = Colors.black;
   Color _radiocolor = AppColors.purple;
@@ -33,6 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    final node = FocusScope.of(context);
     double fontSize15 = size.height * 0.01870;
     double padding40 = size.height * 0.05;
     return SafeArea(
@@ -80,10 +83,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             });
                       }).toList()),
                       TextFormField(
+                        cursorColor: AppColors.purple,
                         textCapitalization: TextCapitalization.words,
                         keyboardType: TextInputType.name,
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () => node.nextFocus(),
                         decoration: InputDecoration(
-                            labelText: 'Full Name', icon: Icon(Icons.title)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppColors.purple)),
+                            labelText: 'Full Name',
+                            icon: Icon(Icons.title, color: AppColors.purple)),
                         onSaved: (text) {
                           setState(() {
                             return registerClass.fullName = text;
@@ -96,10 +106,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       ),
                       TextFormField(
+                        cursorColor: AppColors.purple,
                         keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () => node.nextFocus(),
                         maxLength: 11,
                         decoration: InputDecoration(
-                            labelText: 'Phone No.', icon: Icon(Icons.phone)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppColors.purple)),
+                            labelText: 'Phone No.',
+                            icon: Icon(Icons.phone, color: AppColors.purple)),
                         onSaved: (text) {
                           setState(() {
                             return registerClass.number = text;
@@ -114,9 +131,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       ),
                       TextFormField(
+                        cursorColor: AppColors.purple,
                         textCapitalization: TextCapitalization.words,
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () => node.nextFocus(),
                         decoration: InputDecoration(
-                            labelText: 'Address', icon: Icon(Icons.gps_fixed)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppColors.purple)),
+                            labelText: 'Address',
+                            icon:
+                                Icon(Icons.gps_fixed, color: AppColors.purple)),
                         onSaved: (text) {
                           setState(() {
                             return registerClass.address = text;
@@ -132,10 +157,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ? Column(
                               children: [
                                 TextFormField(
+                                  cursorColor: AppColors.purple,
                                   maxLength: 400,
                                   decoration: InputDecoration(
+                                      focusedBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: AppColors.purple)),
                                       labelText: 'About me',
-                                      icon: Icon(Icons.text_fields)),
+                                      icon: Icon(Icons.text_fields,
+                                          color: AppColors.purple)),
                                   onSaved: (text) {
                                     setState(() {
                                       return registerClass.aboutme = text;
@@ -212,9 +242,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                       TextFormField(
+                        cursorColor: AppColors.purple,
                         keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () => node.nextFocus(),
                         decoration: InputDecoration(
-                            labelText: 'E-mail', icon: Icon(Icons.email)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppColors.purple)),
+                            labelText: 'E-mail',
+                            icon: Icon(Icons.email, color: AppColors.purple)),
                         onSaved: (text) {
                           setState(() {
                             return registerClass.email = text.toLowerCase();
@@ -227,10 +264,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       ),
                       TextFormField(
-                        obscureText: true,
+                        cursorColor: AppColors.purple,
+                        obscureText: showpassword,
                         controller: passwordCtrl,
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () => node.nextFocus(),
                         decoration: InputDecoration(
-                            labelText: 'Password', icon: Icon(Icons.security)),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppColors.purple)),
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.remove_red_eye),
+                              color: AppColors.purple,
+                              onPressed: () {
+                                if (showpassword == true) {
+                                  setState(() {
+                                    showpassword = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    showpassword = true;
+                                  });
+                                }
+                              },
+                            ),
+                            labelText: 'Password',
+                            icon:
+                                Icon(Icons.security, color: AppColors.purple)),
                         onSaved: (text) {
                           setState(() {
                             return registerClass.password = text;
@@ -243,10 +303,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       ),
                       TextFormField(
-                        obscureText: true,
+                        cursorColor: AppColors.purple,
+                        obscureText: showpassword1,
+                        textInputAction: TextInputAction.done,
+                        onEditingComplete: () => node.unfocus(),
                         decoration: InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppColors.purple)),
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.remove_red_eye),
+                              color: AppColors.purple,
+                              onPressed: () {
+                                if (showpassword1 == true) {
+                                  setState(() {
+                                    showpassword1 = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    showpassword1 = true;
+                                  });
+                                }
+                              },
+                            ),
                             labelText: 'Repeat Password',
-                            icon: Icon(Icons.repeat)),
+                            icon: Icon(Icons.repeat, color: AppColors.purple)),
                         validator: (text) {
                           if (text != passwordCtrl.text) {
                             return 'Passwords do not match!';
@@ -312,6 +393,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   futureDiag(context);
                                   setState(() {
                                     keyForm.reset();
+                                    passwordCtrl.text = '';
                                     defaultaccount = 0;
                                     selectedState = states[0];
                                     _check = false;
@@ -328,6 +410,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 futureDiag(context);
                                 setState(() {
                                   keyForm.reset();
+                                  passwordCtrl.text = '';
                                   defaultaccount = 0;
                                   selectedState = states[0];
                                   _check = false;

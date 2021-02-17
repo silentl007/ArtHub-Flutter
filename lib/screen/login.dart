@@ -17,6 +17,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final usernameControl = TextEditingController();
   final passwordControl = TextEditingController();
+  bool showpassword = true;
+  String he = '';
   @override
   void initState() {
     // TODO: implement initState
@@ -32,16 +34,15 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _sneakerAlert() {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(
-            'Something went wrong, please try again')));
+    _scaffoldKey.currentState.showSnackBar(
+        SnackBar(content: Text('Something went wrong, please try again')));
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double fontSize = size.height * 0.025;
-    bool showpassword = true;
+
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
@@ -58,8 +59,12 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextFormField(
+                  cursorColor: AppColors.purple,
                   decoration: InputDecoration(
-                      labelText: 'Email', icon: Icon(Icons.email)),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.purple)),
+                      labelText: 'Email',
+                      icon: Icon(Icons.email, color: AppColors.purple)),
                   controller: usernameControl,
                   onSaved: (value) {
                     setState(() {
@@ -68,24 +73,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                 ),
                 TextFormField(
+                    cursorColor: AppColors.purple,
                     controller: passwordControl,
                     decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                          icon: Icon(Icons.remove_red_eye),
-                          onPressed: () {
-                            print('object');
-                            if (showpassword == true) {
-                              setState(() {
-                                showpassword = false;
-                              });
-                            } else
-                              setState(() {
-                                showpassword = true;
-                              });
-                          },
-                        ),
-                        labelText: 'Password',
-                        icon: Icon(Icons.security)),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.purple)),
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.remove_red_eye),
+                        color: AppColors.purple,
+                        onPressed: () {
+                          if (showpassword == true) {
+                            setState(() {
+                              showpassword = false;
+                            });
+                          } else {
+                            setState(() {
+                              showpassword = true;
+                            });
+                          }
+                        },
+                      ),
+                      labelText: 'Password',
+                      icon: Icon(Icons.security, color: AppColors.purple),
+                    ),
                     obscureText: showpassword,
                     onSaved: (value) {
                       setState(() {
