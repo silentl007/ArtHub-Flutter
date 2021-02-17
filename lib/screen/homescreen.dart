@@ -160,10 +160,12 @@ class _HomeScreenState extends State<HomeScreen> {
           content: Text('You are going to exit the application!'),
           actions: [
             RaisedButton(
+              color: AppColors.purple,
               onPressed: () => SystemNavigator.pop(),
               child: Text('Yes'),
             ),
             RaisedButton(
+              color: AppColors.purple,
               onPressed: () => Navigator.of(context).pop(false),
               child: Text('No'),
             )
@@ -173,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _apptitleBar(String text) {
     final Size size = MediaQuery.of(context).size;
-
+    final double fontSize = size.height * 0.025;
     double padding30 = size.height * 0.03755;
     return AppBar(
       actions: [
@@ -186,20 +188,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: Icon(Icons.exit_to_app),
                 onPressed: () => _logout(),
               ),
-              Text(
-                'Log out',
-                style: TextStyle(
-                    color: AppColors.purple,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20),
-                textAlign: TextAlign.center,
+              InkWell(
+                onTap: () => _logout(),
+                child: Text(
+                  'Log out',
+                  style: TextStyle(
+                      color: AppColors.purple,
+                      fontWeight: FontWeight.bold,
+                      fontSize: fontSize),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ],
           ),
         )
       ],
       title: Padding(
-        padding:  EdgeInsets.only(right: padding30),
+        padding: EdgeInsets.only(right: padding30),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -230,6 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
           content: Text('Are you sure you want to log out?'),
           actions: [
             RaisedButton(
+              color: AppColors.purple,
               onPressed: () async {
                 var variable = await prefs.clear();
                 if (variable == true) {
@@ -239,6 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text('Yes'),
             ),
             RaisedButton(
+              color: AppColors.purple,
               onPressed: () => Navigator.of(context).pop(false),
               child: Text('No'),
             )
