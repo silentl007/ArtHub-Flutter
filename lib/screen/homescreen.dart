@@ -1,6 +1,10 @@
+import 'package:ArtHub/screen/aboutus.dart';
 import 'package:ArtHub/screen/freelanceartist/freelanceartistlist.dart';
 import 'package:ArtHub/screen/purchasescreen.dart';
 import 'package:ArtHub/screen/uploads.dart';
+import 'package:ArtHub/screen/user/userartworks.dart';
+import 'package:ArtHub/screen/user/userorders.dart';
+import 'package:ArtHub/screen/user/userprofile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'gallery/gallery.dart';
@@ -47,7 +51,9 @@ class _HomeScreenState extends State<HomeScreen> {
       customerType = prefs.getString('customerType');
     });
     print(customerType);
-    _welcome();
+    if (prefs.getBool('logged')) {
+      _welcome();
+    }
   }
 
   _welcome() {
@@ -66,12 +72,12 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: AppColors.purple,
             showUnselectedLabels: true,
             onTap: (index) {
-              if (customerType == 'Customer') {
+              if (customerType == 'customer') {
                 _bottomNavCustomer(index);
               } else
                 _bottomNavOthers(index);
             },
-            items: customerType == 'Customer'
+            items: customerType == 'customer'
                 ? options
                     .map((element) => BottomNavigationBarItem(
                         backgroundColor: AppColors.purple,
@@ -254,22 +260,41 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _bottomNavCustomer(int index) {
-    if (index == 2) {
+    if (index == 0) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => PurchaseScreen()));
-    } else
-      _comingSoon();
-  }
-
-  _bottomNavOthers(int index) {
-    if (index == 4) {
+          context, MaterialPageRoute(builder: (context) => Profile()));
+    } else if (index == 1) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Uploads()));
+          context, MaterialPageRoute(builder: (context) => Orders()));
     } else if (index == 2) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => PurchaseScreen()));
-    } else
-      _comingSoon();
+    } else {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => AboutUs()));
+    }
+  }
+
+  _bottomNavOthers(int index) {
+    if (index == 0) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Profile()));
+    } else if (index == 1) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Orders()));
+    } else if (index == 2) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => PurchaseScreen()));
+    } else if (index == 3) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Artworks()));
+    } else if (index == 4) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Uploads()));
+    } else {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => AboutUs()));
+    }
   }
 
   _comingSoon() {
