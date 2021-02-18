@@ -644,8 +644,9 @@ class Login {
           prefs.setString('email', userName);
           prefs.setString('password', password);
           prefs.setBool('logged', true);
-          prefs.setBool('inapp', true);
+          
         }
+        prefs.setBool('inapp', false);
         print('login success');
         return datasend.statusCode;
       }

@@ -1,5 +1,6 @@
 import 'package:ArtHub/screen/aboutus.dart';
 import 'package:ArtHub/screen/freelanceartist/freelanceartistlist.dart';
+import 'package:ArtHub/screen/login.dart';
 import 'package:ArtHub/screen/purchasescreen.dart';
 import 'package:ArtHub/screen/uploads.dart';
 import 'package:ArtHub/screen/user/userartworks.dart';
@@ -51,14 +52,17 @@ class _HomeScreenState extends State<HomeScreen> {
       customerType = prefs.getString('customerType');
     });
     print(customerType);
-    if (prefs.getBool('logged')) {
+    print('${prefs.getBool('inapp')}');
+    if (prefs.getBool('inapp') == true) {
+    } else {
       _welcome();
     }
   }
 
   _welcome() {
-    _scaffoldKey.currentState
-        .showSnackBar(SnackBar(content: Text('Welcome back, $displayName')));
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      backgroundColor: AppColors.purple,
+        content: Text('Welcome back, $displayName')));
   }
 
   @override
@@ -245,7 +249,10 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () async {
                 var variable = await prefs.clear();
                 if (variable == true) {
-                  SystemNavigator.pop();
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      (Route<dynamic> route) => false);
                 }
               },
               child: Text('Yes'),

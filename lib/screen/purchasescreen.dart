@@ -2,6 +2,7 @@ import 'package:ArtHub/screen/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
 import 'package:ArtHub/common/sqliteoperations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PurchaseScreen extends StatefulWidget {
   @override
@@ -22,6 +23,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     });
     getdata();
     interfacedata();
+    getprefs();
   }
 
   getdata() async {
@@ -52,10 +54,25 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     return interfacedatalist;
   }
 
+  getprefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('inapp', true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+                (Route<dynamic> route) => false);
+          },
+          child: Icon(Icons.home),
+          backgroundColor: AppColors.purple,
+        ),
         appBar: classWidget.apptitleBar(context, 'My Cart'),
         body: Container(
           color: Colors.white,

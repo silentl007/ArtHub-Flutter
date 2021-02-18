@@ -1,6 +1,7 @@
 import 'package:ArtHub/screen/gallery/galleryart.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Galleries extends StatefulWidget {
   @override
@@ -25,12 +26,20 @@ class _GalleriesState extends State<Galleries> {
       collecteddata.add(parsed);
     }
     filtereddata = collecteddata;
+    getprefs();
+  }
+
+  getprefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('inapp', true);
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double fontSize = size.height * 0.03875;
+    double sizedBox9 = size.height * 0.01126;
+    double sizedBox10 = size.height * 0.01252;
     double imageHeight20 = size.height * 0.025;
     double padding20 = size.height * 0.025;
     double padding50 = size.height * 0.06257;
@@ -55,75 +64,76 @@ class _GalleriesState extends State<Galleries> {
                       child: InkWell(
                         onTap: () => galleryart(),
                         child: Container(
-                            height: size.height * .25,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/appimages/gallerylistback.png'),
-                                    fit: BoxFit.cover)),
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: padding50, top: padding30),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("${filtereddata[index].name}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
+                          height: size.height * .25,
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                      'assets/appimages/gallerylistback.png'),
+                                  fit: BoxFit.cover)),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: padding50, top: padding30),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("${filtereddata[index].name}",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white,
+                                        fontSize: fontSize)),
+                                SizedBox(
+                                  height: sizedBox9,
+                                ),
+                                Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/appimages/addressicon.png',
+                                      height: imageHeight20,
+                                    ),
+                                    SizedBox(
+                                      width: sizedBox10,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text('${filtereddata[index].address}',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            )),
+                                        Text(
+                                            '${filtereddata[index].location} State',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            )),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: sizedBox9,
+                                ),
+                                Row(
+                                  children: [
+                                    Image.asset(
+                                      'assets/appimages/callicon.png',
+                                      height: imageHeight20,
+                                    ),
+                                    SizedBox(
+                                      width: sizedBox10,
+                                    ),
+                                    Text('0${filtereddata[index].contact}',
+                                        style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: fontSize)),
-                                  SizedBox(
-                                    height: 9,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Image.asset(
-                                        'assets/appimages/addressicon.png',
-                                        height: imageHeight20,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text('${filtereddata[index].address}',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              )),
-                                          Text(
-                                              '${filtereddata[index].location} State',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                              )),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 9,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Image.asset(
-                                        'assets/appimages/callicon.png',
-                                        height: imageHeight20,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text('0${filtereddata[index].contact}',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                          ))
-                                    ],
-                                  )
-                                ],
-                              ),
-                            )),
+                                        ))
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                     );
                   }),

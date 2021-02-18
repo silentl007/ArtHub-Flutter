@@ -1,6 +1,7 @@
 import 'package:ArtHub/screen/freelanceartist/freelanceartistprofile.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FreeLanceArtist extends StatefulWidget {
   @override
@@ -28,6 +29,12 @@ class _FreeLanceArtistState extends State<FreeLanceArtist> {
       artnamelist.add(parsed);
     }
     filteredartname = artnamelist;
+    getprefs();
+  }
+
+  getprefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('inapp', true);
   }
 
   @override
@@ -56,7 +63,7 @@ class _FreeLanceArtistState extends State<FreeLanceArtist> {
                       childAspectRatio: .8),
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
-                      padding:  EdgeInsets.only(top:padding8),
+                      padding: EdgeInsets.only(top: padding8),
                       child: InkWell(
                         onTap: () => profile(filteredartname[index]),
                         child: Container(
