@@ -41,9 +41,11 @@ class _GalleriesState extends State<Galleries> {
     double sizedBox9 = size.height * 0.01126;
     double sizedBox10 = size.height * 0.01252;
     double imageHeight20 = size.height * 0.025;
+    double containerHeight = size.height * .30;
     double padding20 = size.height * 0.025;
     double padding50 = size.height * 0.06257;
-    double padding30 = size.height * 0.03755;
+    double padding5 = size.height * 0.006257;
+    double padding40 = size.height * 0.05;
     collecteddata.shuffle();
     return SafeArea(
       child: Scaffold(
@@ -58,23 +60,21 @@ class _GalleriesState extends State<Galleries> {
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: EdgeInsets.only(
-                        left: padding20,
-                        right: padding20,
-                      ),
+                          left: padding20, right: padding20, bottom: padding5),
                       child: InkWell(
                         onTap: () => galleryart(),
                         child: Container(
-                          height: size.height * .25,
+                          height: containerHeight,
                           decoration: BoxDecoration(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                                  BorderRadius.all(Radius.circular(30)),
                               image: DecorationImage(
                                   image: AssetImage(
                                       'assets/appimages/gallerylistback.png'),
                                   fit: BoxFit.cover)),
                           child: Padding(
                             padding: EdgeInsets.only(
-                                left: padding50, top: padding30),
+                                left: padding50, top: padding40),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
