@@ -10,6 +10,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   Widgets classWidget = Widgets();
+  final _formKey = GlobalKey<FormState>();
   final List<String> states = ['Select State', 'Lagos', 'Bayelsa'];
   String selectedState = 'Select State';
   String displayName = '';
@@ -17,7 +18,7 @@ class _ProfileState extends State<Profile> {
   String aboutme = 'Lorem ipsum dolor';
   String number = '08038474317';
   String customerType = '';
-  String edit = 'profile';
+  String edit = '';
   String appbarTitle = 'Profile';
   Color _stateColor = Colors.black;
   Icon editIcon = Icon(Icons.edit);
@@ -33,6 +34,7 @@ class _ProfileState extends State<Profile> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('inapp', true);
     setState(() {
+      edit = 'profile';
       customerType = 'freelancer';
       displayName = prefs.getString('displayName');
       // customerType = prefs.getString('customerType');
@@ -66,33 +68,101 @@ class _ProfileState extends State<Profile> {
     ));
   }
 
-  _title(String title) {
-    return Text(title);
-  }
-
-  _content(String content) {
-    return Text(content);
-  }
-
   _profile() {
+    Size size = MediaQuery.of(context).size;
+    final node = FocusScope.of(context);
+    double fontSize15 = size.height * 0.01870;
+    double padding40 = size.height * 0.05;
     return Container(
       width: double.infinity,
       height: double.infinity,
+      padding: EdgeInsets.only(left: padding40, right: padding40),
       decoration: BoxDecoration(
         image: DecorationImage(
             image: AssetImage('assets/appimages/welcomeback.png'),
             fit: BoxFit.cover),
       ),
-      child: Column(
-        children: [
-          _title('Full Name'),
-          _content(displayName),
-          _title('Address'),
-          _content(address),
-          _title('Number'),
-          _content(number),
-        ],
-      ),
+      child: Column(children: [
+        TextFormField(
+          readOnly: true,
+          initialValue: displayName,
+          cursorColor: AppColors.purple,
+          textCapitalization: TextCapitalization.words,
+          keyboardType: TextInputType.name,
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () => node.nextFocus(),
+          decoration: InputDecoration(
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.purple)),
+              labelText: 'Full Name',
+              icon: Icon(Icons.title, color: AppColors.purple)),
+        ),
+        TextFormField(
+          readOnly: true,
+          initialValue: number,
+          cursorColor: AppColors.purple,
+          keyboardType: TextInputType.number,
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () => node.nextFocus(),
+          maxLength: 11,
+          decoration: InputDecoration(
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.purple)),
+              labelText: 'Phone No.',
+              icon: Icon(Icons.phone, color: AppColors.purple)),
+        ),
+        TextFormField(
+          readOnly: true,
+          initialValue: address,
+          cursorColor: AppColors.purple,
+          textCapitalization: TextCapitalization.words,
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () => node.nextFocus(),
+          decoration: InputDecoration(
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.purple)),
+              labelText: 'Address',
+              icon: Icon(Icons.gps_fixed, color: AppColors.purple)),
+        ),
+        customerType == 'freelancer'
+            ? Column(crossAxisAlignment: CrossAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                    TextFormField(
+                      readOnly: true,
+                      cursorColor: AppColors.purple,
+                      initialValue: aboutme,
+                      maxLines: 5,
+                      maxLength: 400,
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.purple)),
+                          labelText: 'About me',
+                          icon:
+                              Icon(Icons.text_fields, color: AppColors.purple)),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      height: 150,
+                      decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.only(topLeft: Radius.circular(70)),
+                            image: DecorationImage(image: NetworkImage(
+                            'https://res.cloudinary.com/mediacontrol/image/upload/v1607425064/esr5yzvqa_ud1ibc.png'),
+                        fit: BoxFit.cover,)
+                      ),
+                      // child: Image(
+                      //   image: NetworkImage(
+                      //       'https://res.cloudinary.com/mediacontrol/image/upload/v1607425064/esr5yzvqa_ud1ibc.png'),
+                      //   fit: BoxFit.cover,
+                        //   height: 250,
+                        // width: 250,
+                      ),
+                    
+                  ])
+            : Container()
+      ]),
     );
   }
 
@@ -102,6 +172,7 @@ class _ProfileState extends State<Profile> {
     double fontSize15 = size.height * 0.01870;
     double padding40 = size.height * 0.05;
     return Form(
+      key: _formKey,
       child: Container(
         width: double.infinity,
         height: double.infinity,
