@@ -41,11 +41,10 @@ class _GalleriesState extends State<Galleries> {
     double sizedBox9 = size.height * 0.01126;
     double sizedBox10 = size.height * 0.01252;
     double imageHeight20 = size.height * 0.025;
-    double containerHeight = size.height * .30;
+    double containerHeight = size.height * .20;
     double padding20 = size.height * 0.025;
     double padding50 = size.height * 0.06257;
-    double padding5 = size.height * 0.006257;
-    double padding40 = size.height * 0.05;
+    double padding25 = size.height * 0.031289;
     collecteddata.shuffle();
     return SafeArea(
       child: Scaffold(
@@ -60,77 +59,80 @@ class _GalleriesState extends State<Galleries> {
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: EdgeInsets.only(
-                          left: padding20, right: padding20, bottom: padding5),
+                        left: padding20,
+                        right: padding20,
+                      ),
                       child: InkWell(
                         onTap: () => galleryart(),
-                        child: Container(
-                          height: containerHeight,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                      'assets/appimages/gallerylistback.png'),
-                                  fit: BoxFit.cover)),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: padding50, top: padding40),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("${filtereddata[index].name}",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white,
-                                        fontSize: fontSize)),
-                                SizedBox(
-                                  height: sizedBox9,
-                                ),
-                                Row(
-                                  children: [
-                                    Image.asset(
-                                      'assets/appimages/addressicon.png',
-                                      height: imageHeight20,
-                                    ),
-                                    SizedBox(
-                                      width: sizedBox10,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text('${filtereddata[index].address}',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            )),
-                                        Text(
-                                            '${filtereddata[index].location} State',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            )),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: sizedBox9,
-                                ),
-                                Row(
-                                  children: [
-                                    Image.asset(
-                                      'assets/appimages/callicon.png',
-                                      height: imageHeight20,
-                                    ),
-                                    SizedBox(
-                                      width: sizedBox10,
-                                    ),
-                                    Text('0${filtereddata[index].contact}',
-                                        style: TextStyle(
+                        child: Material(
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          child: Container(
+                            height: containerHeight,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/appimages/gallerylistback.png'),
+                                    fit: BoxFit.fill)),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: padding50, top: padding25),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("${filtereddata[index].name}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
                                           color: Colors.white,
-                                        ))
-                                  ],
-                                )
-                              ],
+                                          fontSize: fontSize)),
+                                  SizedBox(
+                                    height: sizedBox9,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/appimages/addressicon.png',
+                                        height: imageHeight20,
+                                      ),
+                                      SizedBox(
+                                        width: sizedBox10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text('${filtereddata[index].address}',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              )),
+                                          Text(
+                                              '${filtereddata[index].location} State',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              )),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: sizedBox9,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/appimages/callicon.png',
+                                        height: imageHeight20,
+                                      ),
+                                      SizedBox(
+                                        width: sizedBox10,
+                                      ),
+                                      Text('0${filtereddata[index].contact}',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                          ))
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),

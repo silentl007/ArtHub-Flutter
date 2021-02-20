@@ -11,6 +11,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   Widgets classWidget = Widgets();
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final List<String> states = ['Select State', 'Lagos', 'Bayelsa'];
   String selectedState = 'Select State';
   String displayName = '';
@@ -27,6 +28,7 @@ class _ProfileState extends State<Profile> {
     // TODO: implement initState
     super.initState();
     getData();
+
     print('fetch, and read user data in pref');
   }
 
@@ -41,15 +43,22 @@ class _ProfileState extends State<Profile> {
     });
   }
 
+  _warning() {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+        backgroundColor: AppColors.purple,
+        content: Text('Please only edit fields you wish to change')));
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(
+      key: _scaffoldKey,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (edit == 'profile') {
-            _instruction();
+            _warning();
             setState(() {
               edit = 'edit';
               appbarTitle = 'Edit Profile';
@@ -143,23 +152,33 @@ class _ProfileState extends State<Profile> {
                               Icon(Icons.text_fields, color: AppColors.purple)),
                     ),
                     Container(
-                      alignment: Alignment.center,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.only(topLeft: Radius.circular(70)),
-                            image: DecorationImage(image: NetworkImage(
-                            'https://res.cloudinary.com/mediacontrol/image/upload/v1607425064/esr5yzvqa_ud1ibc.png'),
-                        fit: BoxFit.cover,)
+                        alignment: Alignment.center,
+                        height: 200,
+                        width: 150,
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.only(topLeft: Radius.circular(70)),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                'https://res.cloudinary.com/mediacontrol/image/upload/v1607425064/esr5yzvqa_ud1ibc.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        )),
+                    Container(
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ListTile(
+                          tileColor: Colors.transparent,
+                          title: Text(
+                            'Avatar',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
                       ),
-                      // child: Image(
-                      //   image: NetworkImage(
-                      //       'https://res.cloudinary.com/mediacontrol/image/upload/v1607425064/esr5yzvqa_ud1ibc.png'),
-                      //   fit: BoxFit.cover,
-                        //   height: 250,
-                        // width: 250,
-                      ),
-                    
+                    )
                   ])
             : Container()
       ]),
@@ -351,14 +370,5 @@ class _ProfileState extends State<Profile> {
         ),
       ),
     );
-  }
-
-  _instruction() {
-    return showDialog(
-        context: context,
-        child: AlertDialog(
-          title: Text('Warning!'),
-          content: Text('Please only edit fields you wish to change'),
-        ));
   }
 }
