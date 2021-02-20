@@ -1,4 +1,4 @@
-import 'package:ArtHub/screen/user/editprofile.dart';
+import 'package:ArtHub/screen/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,10 +14,13 @@ class _ProfileState extends State<Profile> {
   String selectedState = 'Select State';
   String displayName = '';
   String address = '41 Road B Close Block 1 Flat 14 Festac Town';
+  String aboutme = 'Lorem ipsum dolor';
   String number = '08038474317';
+  String customerType = '';
   String edit = 'profile';
   String appbarTitle = 'Profile';
   Color _stateColor = Colors.black;
+  Icon editIcon = Icon(Icons.edit);
   @override
   void initState() {
     // TODO: implement initState
@@ -28,8 +31,11 @@ class _ProfileState extends State<Profile> {
 
   getData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('inapp', true);
     setState(() {
+      customerType = 'freelancer';
       displayName = prefs.getString('displayName');
+      // customerType = prefs.getString('customerType');
     });
   }
 
@@ -40,13 +46,20 @@ class _ProfileState extends State<Profile> {
         child: Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(() {
-            edit = 'edit';
-            appbarTitle = 'Edit Profile';
-          });
+          if (edit == 'profile') {
+            _instruction();
+            setState(() {
+              edit = 'edit';
+              appbarTitle = 'Edit Profile';
+              editIcon = Icon(Icons.home);
+            });
+          } else {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          }
         },
         backgroundColor: AppColors.purple,
-        child: Icon(Icons.edit),
+        child: editIcon,
       ),
       appBar: classWidget.apptitleBar(context, appbarTitle),
       body: edit == 'profile' ? _profile() : _profileEdit(),
@@ -63,6 +76,8 @@ class _ProfileState extends State<Profile> {
 
   _profile() {
     return Container(
+      width: double.infinity,
+      height: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(
             image: AssetImage('assets/appimages/welcomeback.png'),
@@ -169,6 +184,66 @@ class _ProfileState extends State<Profile> {
                   }
                 },
               ),
+              customerType == 'freelancer'
+                  ? Column(
+                      children: [
+                        TextFormField(
+                          cursorColor: AppColors.purple,
+                          initialValue: aboutme,
+                          maxLines: 5,
+                          maxLength: 400,
+                          textInputAction: TextInputAction.next,
+                          decoration: InputDecoration(
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: AppColors.purple)),
+                              labelText: 'About me',
+                              icon: Icon(Icons.text_fields,
+                                  color: AppColors.purple)),
+                          onSaved: (text) {
+                            setState(() {
+                              // return registerClass.aboutme = text;
+                            });
+                          },
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'This field is empty';
+                            }
+                          },
+                        ),
+                        Container(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Update your avatar',
+                              style: TextStyle(
+                                  fontSize: fontSize15, color: Colors.black),
+                            )),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        RaisedButton(
+                          onPressed: () {},
+                          color: AppColors.purple,
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(150))),
+                          child: Row(
+                            children: [
+                              Icon(Icons.upload_file, color: Colors.white),
+                              SizedBox(
+                                width: 3,
+                              ),
+                              Text(
+                                'Upload',
+                                style: TextStyle(
+                                    fontSize: fontSize15, color: Colors.white),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  : Container(),
               Container(
                 alignment: Alignment.centerLeft,
                 child: DropdownButton<String>(
@@ -190,10 +265,29 @@ class _ProfileState extends State<Profile> {
                   }).toList(),
                 ),
               ),
+              RaisedButton(
+                color: AppColors.purple,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50))),
+                child: Text(
+                  'Update',
+                  style: TextStyle(fontSize: fontSize15, color: Colors.white),
+                ),
+                onPressed: () {},
+              )
             ],
           ),
         ),
       ),
     );
+  }
+
+  _instruction() {
+    return showDialog(
+        context: context,
+        child: AlertDialog(
+          title: Text('Warning!'),
+          content: Text('Please only edit fields you wish to change'),
+        ));
   }
 }

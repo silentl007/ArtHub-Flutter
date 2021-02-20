@@ -158,7 +158,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               children: [
                                 TextFormField(
                                   cursorColor: AppColors.purple,
+                                  maxLines: 5,
                                   maxLength: 400,
+                                  textInputAction: TextInputAction.next,
                                   decoration: InputDecoration(
                                       focusedBorder: UnderlineInputBorder(
                                           borderSide: BorderSide(
