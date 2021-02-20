@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _welcome() {
     _scaffoldKey.currentState.showSnackBar(SnackBar(
-      backgroundColor: AppColors.purple,
+        backgroundColor: AppColors.purple,
         content: Text('Welcome back, $displayName')));
   }
 
@@ -166,6 +166,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return showDialog(
         context: context,
         child: AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20))),
           title: Text('Are you sure?'),
           content: Text('You are going to exit the application!'),
           actions: [
@@ -237,6 +239,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return showDialog(
         context: context,
         child: AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20))),
           title: Text(
             'Log Out',
             textAlign: TextAlign.center,
@@ -302,23 +306,5 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => AboutUs()));
     }
-  }
-
-  _comingSoon() {
-    return showDialog(
-        context: context,
-        child: AlertDialog(
-            title: Text(
-              'Under Construction',
-              textAlign: TextAlign.center,
-            ),
-            scrollable: true,
-            content: Text('Coming soon!'),
-            actions: [
-              FlatButton(
-                onPressed: null,
-                child: Text('Ok'),
-              ),
-            ]));
   }
 }

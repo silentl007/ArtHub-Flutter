@@ -16,6 +16,7 @@ class _ProfileState extends State<Profile> {
   String selectedState = 'Select State';
   String displayName = '';
   String address = '41 Road B Close Block 1 Flat 14 Festac Town';
+  String state = 'Lagos';
   String aboutme = 'Lorem ipsum dolor';
   String number = '08038474317';
   String customerType = '';
@@ -80,7 +81,8 @@ class _ProfileState extends State<Profile> {
   _profile() {
     Size size = MediaQuery.of(context).size;
     final node = FocusScope.of(context);
-    double fontSize15 = size.height * 0.01870;
+    double containerHeight = size.height * 0.25;
+    double containerwidth = size.width * 0.355;
     double padding40 = size.height * 0.05;
     return Container(
       width: double.infinity,
@@ -92,6 +94,20 @@ class _ProfileState extends State<Profile> {
             fit: BoxFit.cover),
       ),
       child: Column(children: [
+        customerType == 'freelancer'
+            ? Container(
+                // alignment: Alignment.topLeft,
+                height: containerHeight,
+                width: containerwidth,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(70)),
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        'https://res.cloudinary.com/mediacontrol/image/upload/v1607425064/esr5yzvqa_ud1ibc.png'),
+                    fit: BoxFit.cover,
+                  ),
+                ))
+            : Container(),
         TextFormField(
           readOnly: true,
           initialValue: displayName,
@@ -133,53 +149,33 @@ class _ProfileState extends State<Profile> {
               labelText: 'Address',
               icon: Icon(Icons.gps_fixed, color: AppColors.purple)),
         ),
+        TextFormField(
+          readOnly: true,
+          initialValue: state,
+          cursorColor: AppColors.purple,
+          textCapitalization: TextCapitalization.words,
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () => node.nextFocus(),
+          decoration: InputDecoration(
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.purple)),
+              labelText: 'State',
+              icon: Icon(Icons.location_city, color: AppColors.purple)),
+        ),
         customerType == 'freelancer'
-            ? Column(crossAxisAlignment: CrossAxisAlignment.center,
-                // mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                    TextFormField(
-                      readOnly: true,
-                      cursorColor: AppColors.purple,
-                      initialValue: aboutme,
-                      maxLines: 5,
-                      maxLength: 400,
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: AppColors.purple)),
-                          labelText: 'About me',
-                          icon:
-                              Icon(Icons.text_fields, color: AppColors.purple)),
-                    ),
-                    Container(
-                        alignment: Alignment.center,
-                        height: 200,
-                        width: 150,
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.only(topLeft: Radius.circular(70)),
-                          image: DecorationImage(
-                            image: NetworkImage(
-                                'https://res.cloudinary.com/mediacontrol/image/upload/v1607425064/esr5yzvqa_ud1ibc.png'),
-                            fit: BoxFit.cover,
-                          ),
-                        )),
-                    Container(
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: ListTile(
-                          tileColor: Colors.transparent,
-                          title: Text(
-                            'Avatar',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ])
+            ? TextFormField(
+                readOnly: true,
+                cursorColor: AppColors.purple,
+                initialValue: aboutme,
+                maxLines: 3,
+                maxLength: 400,
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.purple)),
+                    labelText: 'About me',
+                    icon: Icon(Icons.text_fields, color: AppColors.purple)),
+              )
             : Container()
       ]),
     );
