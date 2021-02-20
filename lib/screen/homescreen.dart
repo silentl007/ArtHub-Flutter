@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
   _welcome() {
     _scaffoldKey.currentState.showSnackBar(SnackBar(
         backgroundColor: AppColors.purple,
-        content: Text('Welcome back, $displayName')));
+        content: Text('Welcome, $displayName')));
   }
 
   @override

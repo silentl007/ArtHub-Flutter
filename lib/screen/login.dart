@@ -167,20 +167,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             );
-          }
-          if (snapshot.data == 500) {
-            return AlertDialog(
-              title: Text('Wrong email or password'),
-            );
-          }
-          if (snapshot.data == 200) {
+          } else if (snapshot.data == 500) {
+            _wrongdetails();
+            return Container();
+          } else if (snapshot.data == 200) {
             _loginSuccess();
             return Container();
+          } else {
+            _internet();
+            return Container();
           }
-          return AlertDialog(
-            title: Text(
-                'Unable to connect, please check your internet connection'),
-          );
         },
       ),
     );
@@ -191,6 +187,25 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.pop(context);
       return Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    });
+  }
+
+  _wrongdetails() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.pop(context);
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+          backgroundColor: AppColors.purple,
+          content: Text('Wrong email or password')));
+    });
+  }
+
+  _internet() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.pop(context);
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+          backgroundColor: AppColors.purple,
+          content: Text(
+              'Unable to connect, please check your internet connection')));
     });
   }
 }
