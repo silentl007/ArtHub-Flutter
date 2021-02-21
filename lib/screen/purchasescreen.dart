@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:ArtHub/screen/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
 import 'package:ArtHub/common/sqliteoperations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_paystack/flutter_paystack.dart';
 
 class PurchaseScreen extends StatefulWidget {
   @override
@@ -12,11 +14,15 @@ class PurchaseScreen extends StatefulWidget {
 class _PurchaseScreenState extends State<PurchaseScreen> {
   Widgets classWidget = Widgets();
   DataBaseFunctions _dataBaseFunctions;
+  String useremail = '';
+  String publicKey = 'pk_test_317423d856fb6d9a2201e6b5540a0ad74904da87';
   List data;
   List interfacedatalist;
   int itemnumber = 0;
   int summation = 0;
-  initState() {
+  @override
+  void initState() {
+    PaystackPlugin.initialize(publicKey: publicKey);
     super.initState();
     setState(() {
       _dataBaseFunctions = DataBaseFunctions.databaseinstance;
@@ -26,6 +32,13 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     getprefs();
   }
 
+  getprefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    useremail = prefs.getString('email');
+    prefs.setBool('inapp', true);
+  }
+
+// SQLite logic
   getdata() async {
     List<ParsedDataProduct> databaseList = await _dataBaseFunctions.fetchdata();
     setState(() {
@@ -54,9 +67,34 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     return interfacedatalist;
   }
 
-  getprefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('inapp', true);
+// functions for paystack payment
+  String _getReference() {
+    String platform;
+    if (Platform.isIOS) {
+      platform = 'iOS';
+    } else {
+      platform = 'Android';
+    }
+    return 'ChargedFrom${platform}_${DateTime.now().millisecondsSinceEpoch}';
+  }
+
+  chargeCard() async {
+    print(summation);
+    Charge charge = Charge()
+      ..amount = 415001
+      ..reference = _getReference()
+      // or ..accessCode = _getAccessCodeFrmInitialization()
+      ..email = useremail;
+    CheckoutResponse response = await PaystackPlugin.checkout(
+      context,
+      method: CheckoutMethod.card, // Defaults to CheckoutMethod.selectable
+      charge: charge,
+    );
+    if (response.status == true) {
+      _showDialog();
+    } else {
+      _showErrorDialog();
+    }
   }
 
   @override
@@ -311,8 +349,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                                   color: Colors.white),
                                             ),
                                             color: AppColors.red,
-                                            onPressed: () =>
-                                                purchase(context, summation),
+                                            onPressed: () => chargeCard(),
                                             shape: RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(50))),
@@ -359,5 +396,111 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
             )
           ],
         ));
+  }
+
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return successDialog(context);
+      },
+    );
+  }
+
+  void _showErrorDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return errorDialog(context);
+      },
+    );
+  }
+
+  Dialog successDialog(context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.0)), //this right here
+      child: Container(
+        height: 350.0,
+        width: MediaQuery.of(context).size.width,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                Icons.check_box,
+                color: Colors.purple,
+                size: 90,
+              ),
+              SizedBox(height: 15),
+              Text(
+                'Payment has successfully',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'been made',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 15),
+              Text(
+                "Your payment has been successfully",
+                style: TextStyle(fontSize: 13),
+              ),
+              Text("processed.", style: TextStyle(fontSize: 13)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Dialog errorDialog(context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.0)), //this right here
+      child: Container(
+        height: 350.0,
+        width: MediaQuery.of(context).size.width,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                Icons.cancel,
+                color: Colors.red,
+                size: 90,
+              ),
+              SizedBox(height: 15),
+              Text(
+                'Failed to process payment',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 17.0,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 15),
+              Text(
+                "Error in processing payment, please try again",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 13),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
