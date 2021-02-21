@@ -20,6 +20,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   List interfacedatalist;
   int itemnumber = 0;
   int summation = 0;
+  int payment;
   @override
   void initState() {
     PaystackPlugin.initialize(publicKey: publicKey);
@@ -79,19 +80,21 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   }
 
   chargeCard() async {
-    print(summation);
+    payment = summation * 100;
     Charge charge = Charge()
-      ..amount = 415001
+      ..amount = payment
       ..reference = _getReference()
       // or ..accessCode = _getAccessCodeFrmInitialization()
       ..email = useremail;
-    CheckoutResponse response = await PaystackPlugin.checkout(
-      context,
-      method: CheckoutMethod.card, // Defaults to CheckoutMethod.selectable
-      charge: charge,
-    );
+    CheckoutResponse response = await PaystackPlugin.checkout(context,
+        method: CheckoutMethod.card, // Defaults to CheckoutMethod.selectable
+        charge: charge,
+        logo: Image.asset('assets/appimages/stacklogo.png'));
     if (response.status == true) {
-      _showDialog();
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+          (Route<dynamic> route) => false);
     } else {
       _showErrorDialog();
     }
@@ -398,16 +401,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         ));
   }
 
-  void _showDialog() {
-    // flutter defined function
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return successDialog(context);
-      },
-    );
-  }
-
   void _showErrorDialog() {
     // flutter defined function
     showDialog(
@@ -418,59 +411,19 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     );
   }
 
-  Dialog successDialog(context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0)), //this right here
-      child: Container(
-        height: 350.0,
-        width: MediaQuery.of(context).size.width,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Icon(
-                Icons.check_box,
-                color: Colors.purple,
-                size: 90,
-              ),
-              SizedBox(height: 15),
-              Text(
-                'Payment has successfully',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 17.0,
-                    fontWeight: FontWeight.bold),
-              ),
-              Text(
-                'been made',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 17.0,
-                    fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 15),
-              Text(
-                "Your payment has been successfully",
-                style: TextStyle(fontSize: 13),
-              ),
-              Text("processed.", style: TextStyle(fontSize: 13)),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   Dialog errorDialog(context) {
+    Size size = MediaQuery.of(context).size;
+    double width = size.width;
+    double height = size.height * 0.438;
+    double sizedBox15 = size.height * 0.01877;
+    double fontSize13 = size.height * 0.01627;
+    double fontSize17 = size.height * 0.02128;
     return Dialog(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5.0)), //this right here
       child: Container(
-        height: 350.0,
-        width: MediaQuery.of(context).size.width,
+        height: height,
+        width: width,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -482,20 +435,20 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                 color: Colors.red,
                 size: 90,
               ),
-              SizedBox(height: 15),
+              SizedBox(height: sizedBox15),
               Text(
                 'Failed to process payment',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.black,
-                    fontSize: 17.0,
+                    fontSize: fontSize17,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 15),
+              SizedBox(height: sizedBox15),
               Text(
                 "Error in processing payment, please try again",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 13),
+                style: TextStyle(fontSize: fontSize13),
               ),
             ],
           ),

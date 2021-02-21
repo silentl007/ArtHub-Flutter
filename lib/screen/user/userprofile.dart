@@ -14,6 +14,7 @@ class _ProfileState extends State<Profile> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final List<String> states = ['Select State', 'Lagos', 'Bayelsa'];
   String selectedState = 'Select State';
+  String email = '';
   String displayName = '';
   String address = '41 Road B Close Block 1 Flat 14 Festac Town';
   String state = 'Lagos';
@@ -40,6 +41,7 @@ class _ProfileState extends State<Profile> {
       edit = 'profile';
       customerType = 'freelancer';
       displayName = prefs.getString('displayName');
+      email = prefs.getString('email');
       // customerType = prefs.getString('customerType');
     });
   }
@@ -108,6 +110,20 @@ class _ProfileState extends State<Profile> {
                   ),
                 ))
             : Container(),
+        TextFormField(
+          readOnly: true,
+          initialValue: email,
+          cursorColor: AppColors.purple,
+          textCapitalization: TextCapitalization.words,
+          keyboardType: TextInputType.name,
+          textInputAction: TextInputAction.next,
+          onEditingComplete: () => node.nextFocus(),
+          decoration: InputDecoration(
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.purple)),
+              labelText: 'Email',
+              icon: Icon(Icons.email, color: AppColors.purple)),
+        ),
         TextFormField(
           readOnly: true,
           initialValue: displayName,
