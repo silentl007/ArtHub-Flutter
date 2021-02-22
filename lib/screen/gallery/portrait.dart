@@ -1,6 +1,7 @@
 import 'package:ArtHub/common/model.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/screen/productdetails.dart';
+import 'package:number_display/number_display.dart';
 
 class PortraitDisplay extends StatefulWidget {
   final List works;
@@ -12,6 +13,7 @@ class PortraitDisplay extends StatefulWidget {
 
 class _PortraitDisplayState extends State<PortraitDisplay> {
   final List works;
+  final displayNumber = createDisplay(length: 8, decimal: 0);
 
   _PortraitDisplayState({this.works});
   @override
@@ -44,7 +46,7 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
                           borderRadius: BorderRadius.all(Radius.circular(30)),
                         ),
                         child: Padding(
-                          padding:  EdgeInsets.all(padding20),
+                          padding: EdgeInsets.all(padding20),
                           child: Row(
                             children: [
                               Container(
@@ -76,7 +78,7 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
                                             fontSize: fontSize20),
                                       ),
                                       Text(
-                                        '₦ ${data.cost}',
+                                        '₦ ${displayNumber(data.cost)}',
                                         style: TextStyle(
                                             color: AppColors.red,
                                             fontWeight: FontWeight.bold,

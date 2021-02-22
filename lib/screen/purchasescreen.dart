@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:ArtHub/screen/homescreen.dart';
+import 'package:ArtHub/screen/user/userorders.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
 import 'package:ArtHub/common/sqliteoperations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
+import 'package:number_display/number_display.dart';
 
 class PurchaseScreen extends StatefulWidget {
   @override
@@ -12,6 +14,7 @@ class PurchaseScreen extends StatefulWidget {
 }
 
 class _PurchaseScreenState extends State<PurchaseScreen> {
+  final displayNumber = createDisplay(length: 8, decimal: 0);
   Widgets classWidget = Widgets();
   DataBaseFunctions _dataBaseFunctions;
   String useremail = '';
@@ -25,9 +28,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   void initState() {
     PaystackPlugin.initialize(publicKey: publicKey);
     super.initState();
-    setState(() {
-      _dataBaseFunctions = DataBaseFunctions.databaseinstance;
-    });
+
+    _dataBaseFunctions = DataBaseFunctions.databaseinstance;
     getdata();
     interfacedata();
     getprefs();
@@ -62,9 +64,9 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   Future<List> interfacedata() async {
     List<ParsedDataProduct> databaseList = await _dataBaseFunctions.fetchdata();
-    setState(() {
+    
       interfacedatalist = databaseList;
-    });
+    
     return interfacedatalist;
   }
 
@@ -93,7 +95,10 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     if (response.status == true) {
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(
+              builder: (context) => Orders(
+                    page: 1,
+                  )),
           (Route<dynamic> route) => false);
     } else {
       _showErrorDialog();
@@ -209,7 +214,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                                                     fontSize20),
                                                           ),
                                                           Text(
-                                                            '₦ ${snapshot.data[index].cost}',
+                                                            '₦ ${displayNumber(snapshot.data[index].cost)}',
                                                             style: TextStyle(
                                                                 color: AppColors
                                                                     .red,
@@ -283,7 +288,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                           ),
                                           Align(
                                               alignment: Alignment.topRight,
-                                              child: Text('₦ $summation',
+                                              child: Text(
+                                                  '₦ ${displayNumber(summation)}',
                                                   textAlign: TextAlign.right,
                                                   style: TextStyle(
                                                       color: AppColors.red,
@@ -303,7 +309,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                                   fontSize: fontSize15)),
                                           Align(
                                               alignment: Alignment.topRight,
-                                              child: Text('₦ 500',
+                                              child: Text(
+                                                  '₦ ${displayNumber(500)}',
                                                   textAlign: TextAlign.right,
                                                   style: TextStyle(
                                                       color: AppColors.red,
@@ -329,7 +336,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                           Align(
                                               alignment: Alignment.topRight,
                                               child: Text(
-                                                  '₦ ${summation + 500}',
+                                                  '₦ ${displayNumber(summation + 500)}',
                                                   textAlign: TextAlign.right,
                                                   style: TextStyle(
                                                       color: AppColors.red,

@@ -291,6 +291,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               },
                             ),
                             labelText: 'Password',
+                            helperText: 'must at least be six (6) characters and has at least a digit',
                             icon:
                                 Icon(Icons.security, color: AppColors.purple)),
                         onSaved: (text) {
@@ -301,6 +302,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         validator: (value) {
                           if (value.length < 6) {
                             return 'Password is less than six (6) characters';
+                          } else if (value.contains(RegExp(r'[0-9]')) ==
+                              false) {
+                            return 'Password does not contain a digit';
                           }
                         },
                       ),

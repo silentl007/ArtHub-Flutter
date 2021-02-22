@@ -3,6 +3,7 @@ import 'package:ArtHub/common/sqliteoperations.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ArtHub/screen/purchasescreen.dart';
+import 'package:number_display/number_display.dart';
 
 class ProductDetails extends StatefulWidget {
   final ParsedDataProduct data;
@@ -15,6 +16,7 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails> {
   final ParsedDataProduct data;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final displayNumber = createDisplay(length: 8, decimal: 0);
   DataBaseFunctions _dataBaseFunctions;
   List<String> itemcheck = [];
   int itemnumber = 0;
@@ -206,7 +208,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                         color: AppColors.red),
                                     child: Center(
                                         child: Text(
-                                      '₦ ${data.cost}',
+                                      '₦ ${displayNumber(data.cost)}',
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: fontSize20),
