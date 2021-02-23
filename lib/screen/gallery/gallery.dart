@@ -75,7 +75,7 @@ class _GalleriesState extends State<Galleries> {
                                     fit: BoxFit.fill)),
                             child: Padding(
                               padding: EdgeInsets.only(
-                                  left: padding50, top: padding25),
+                                  left: padding50, top: padding25/2, bottom: padding25/2),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
