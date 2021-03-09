@@ -638,9 +638,10 @@ class Login {
         print('this is the data received when logged in - $json');
         SharedPreferences prefs = await SharedPreferences.getInstance();
         if (prefs.getBool('logged') == null) {
+          // other details will be included
           prefs.setString('displayName', json['user']['name']);
-          prefs.setString('id', json['user']['_id']);
-          prefs.setString('customerType', json['user']['role']);
+          prefs.setString('id', json['user']['_id']); // changes to userID
+          prefs.setString('customerType', json['user']['role']); // changes to accountType
           prefs.setString('email', userName);
           prefs.setString('password', password);
           prefs.setBool('logged', true);
@@ -704,9 +705,11 @@ class UploadWorks {
   Future upload() async {
     String uploadLink = '';
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    // get userID, accountType gallery or freelance for easier tracking when item is purchased
     Map<String, dynamic> uploadData = {
-      'id': prefs.getString('id'),
+      'userID': prefs.getString('id'),
       'name': prefs.getString('displayName'),
+      'accountType': prefs.getString('accountType'),
       'product': productName,
       'cost': cost,
       'type': type,
