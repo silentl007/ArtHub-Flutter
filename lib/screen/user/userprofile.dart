@@ -16,11 +16,11 @@ class _ProfileState extends State<Profile> {
   String selectedState = 'Select State';
   String email = '';
   String displayName = '';
-  String address = '41 Road B Close Block 1 Flat 14 Festac Town';
-  String state = 'Lagos';
-  String aboutme = 'Lorem ipsum dolor';
-  String number = '08038474317';
-  String customerType = '';
+  String address = '';
+  String state = '';
+  String aboutme = '';
+  String number = '';
+  String accountType = '';
   String edit = '';
   String appbarTitle = 'Profile';
   Color _stateColor = Colors.black;
@@ -39,10 +39,13 @@ class _ProfileState extends State<Profile> {
     prefs.setBool('inapp', true);
     setState(() {
       edit = 'profile';
-      customerType = 'freelancer';
-      displayName = prefs.getString('displayName');
       email = prefs.getString('email');
-      // customerType = prefs.getString('customerType');
+      displayName = prefs.getString('displayName');
+      accountType = prefs.getString('accountType');
+      address = prefs.getString('address');
+      state = prefs.getString('location');
+      aboutme = prefs.getString('aboutme');
+      number = prefs.getInt('number').toString();
     });
   }
 
@@ -96,7 +99,7 @@ class _ProfileState extends State<Profile> {
             fit: BoxFit.cover),
       ),
       child: Column(children: [
-        customerType == 'freelancer'
+        accountType == 'Freelancer'
             ? Container(
                 // alignment: Alignment.topLeft,
                 height: containerHeight,
@@ -178,7 +181,7 @@ class _ProfileState extends State<Profile> {
               labelText: 'State',
               icon: Icon(Icons.location_city, color: AppColors.purple)),
         ),
-        customerType == 'freelancer'
+        accountType == 'Freelancer'
             ? TextFormField(
                 readOnly: true,
                 cursorColor: AppColors.purple,
@@ -286,7 +289,7 @@ class _ProfileState extends State<Profile> {
                   }
                 },
               ),
-              customerType == 'freelancer'
+              accountType == 'Freelancer'
                   ? Column(
                       children: [
                         TextFormField(

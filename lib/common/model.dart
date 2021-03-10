@@ -439,7 +439,9 @@ class ParsedDataGallery {
   String address;
   String location;
   int contact;
-  ParsedDataGallery(this.name, this.address, this.location, this.contact);
+  List works;
+  ParsedDataGallery(
+      this.name, this.address, this.location, this.contact, this.works);
 }
 
 class ParsedDataProduct {
@@ -531,7 +533,7 @@ class Widgets {
     double padding30 = size.height * 0.03755;
     return AppBar(
       title: Padding(
-        padding:  EdgeInsets.only(right: padding30),
+        padding: EdgeInsets.only(right: padding30),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
@@ -610,21 +612,20 @@ class Registeration {
 }
 
 class Login {
-  int failed = 400;
-  int wrong = 500;
-  String userName;
+  int internetNetwork = 500;
+  String email;
   String password;
   Future login() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getBool('logged') == true) {
-      userName = prefs.getString('email');
+      email = prefs.getString('email');
       password = prefs.getString('password');
     }
-    print('from login beginning function username - $userName');
+    print('from login beginning function username - $email');
     print('from login beginning function password - $password');
-    String loginLink = 'https://galleryapp-backend.herokuapp.com/api/signin';
+    String loginLink = 'https://arthubserver.herokuapp.com/apiS/login';
     Map<String, String> loginData = {
-      'email': userName,
+      'email': email,
       'password': password,
     };
 
@@ -639,29 +640,36 @@ class Login {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         if (prefs.getBool('logged') == null) {
           prefs.setString('displayName', json['user']['name']);
-          prefs.setString('id', json['user']['_id']);
-          prefs.setString('customerType', json['user']['role']);
-          prefs.setString('email', userName);
-          prefs.setString('password', password);
+          prefs.setString('id', json['user']['userID']);
+          prefs.setString('accountType', json['user']['accountType']);
+          prefs.setString('email', json['user']['email']);
+          prefs.setString('password', json['user']['password']);
+          prefs.setString('address', json['user']['address']);
+          prefs.setString('location', json['user']['location']);
+          prefs.setString('avatar', json['user']['avatar']);
+          prefs.setString('aboutme', json['user']['aboutme']);
+          prefs.setInt('number', json['user']['number']);
           prefs.setBool('logged', true);
-          
         }
         prefs.setBool('inapp', false);
-        print('login success');
+        // print('login success');
         return datasend.statusCode;
       }
       // else if to return a status code for wrong email or password, will determine to show
       // pseudo statuscode is 500
-      else {
-        print('Wrong else in login');
-        print(' username - $userName');
+      else if (datasend.statusCode == 401) {
+        print('Wrong password in login');
+        print(' username - $email');
         print(' password - $password');
         print('this is the status code - ${datasend.statusCode}');
-        return wrong;
+        return datasend.statusCode;
+      } else {
+        print(datasend.body);
+        return internetNetwork;
       }
     } catch (exception) {
       print('Error from login - $exception');
-      return failed;
+      return internetNetwork;
     }
   }
 }
@@ -728,4 +736,8 @@ class UploadWorks {
       return failed;
     }
   }
+}
+
+class Gallery {
+  getData() async {}
 }

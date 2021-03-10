@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: usernameControl,
                   onSaved: (value) {
                     setState(() {
-                      loginClass.userName = value.toLowerCase();
+                      loginClass.email = value.toLowerCase();
                     });
                   },
                 ),
@@ -167,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             );
-          } else if (snapshot.data == 500) {
+          } else if (snapshot.data == 401) {
             _wrongdetails();
             return Container();
           } else if (snapshot.data == 200) {

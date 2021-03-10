@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final Widgets classWidget = Widgets();
   String displayName = '';
-  String customerType = '';
+  String accountType = '';
   final List<DrawerOptions> options = [
     DrawerOptions(option: 'Profile', optionIcon: Icon(Icons.person)),
     DrawerOptions(option: 'Orders', optionIcon: Icon(Icons.menu)),
@@ -49,10 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       displayName = prefs.getString('displayName');
-      customerType = prefs.getString('customerType');
+      accountType = prefs.getString('accountType');
     });
-    print(customerType);
-    print('${prefs.getBool('inapp')}');
     if (prefs.getBool('inapp') == true) {
     } else {
       _welcome();
@@ -76,12 +74,12 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: AppColors.purple,
             showUnselectedLabels: true,
             onTap: (index) {
-              if (customerType == 'customer') {
+              if (accountType == 'Customer') {
                 _bottomNavCustomer(index);
               } else
                 _bottomNavOthers(index);
             },
-            items: customerType == 'customer'
+            items: accountType == 'Customer'
                 ? options
                     .map((element) => BottomNavigationBarItem(
                         backgroundColor: AppColors.purple,
