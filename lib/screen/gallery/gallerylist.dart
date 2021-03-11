@@ -27,7 +27,7 @@ class _GalleryListState extends State<GalleryList> {
     print('Build filtereddata $filtereddata');
     Size size = MediaQuery.of(context).size;
     double fontSize = size.height * 0.03875;
-    double sizedBox9 = size.height * 0.01126;
+    double sizedBox9 = size.height * 0.01127;
     double sizedBox10 = size.height * 0.01252;
     double imageHeight20 = size.height * 0.025;
     double containerHeight = size.height * .20;
@@ -169,6 +169,6 @@ class _GalleryListState extends State<GalleryList> {
 
   void galleryart(List works) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => GalleryArt()));
+        context, MaterialPageRoute(builder: (context) => GalleryArt(works)));
   }
 }

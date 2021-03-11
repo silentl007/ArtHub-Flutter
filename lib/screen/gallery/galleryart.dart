@@ -3,55 +3,67 @@ import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
 
 class GalleryArt extends StatefulWidget {
+  final worksdata;
+  GalleryArt(this.worksdata);
   @override
   _GalleryArtState createState() => _GalleryArtState();
 }
 
 class _GalleryArtState extends State<GalleryArt> {
+  List<ParsedDataProduct> portraitworks = [];
+  List<ParsedDataProduct> sculpworks = [];
+
+@override
+initState(){
+  super.initState();
+  _separatorWorks();
+}
+  _separatorWorks() {
+    print(widget.worksdata);
+    List items = widget.worksdata;
+    for (var data in items) {
+      
+        if (data['type'] == 'Painting' || data['type'] == 'painting') {
+          ParsedDataProduct parsed = ParsedDataProduct(
+              artistname: data['name'],
+              productname: data['product'],
+              cost: data['cost'],
+              type: data['type'],
+              avatar: data['avatar'],
+              desc: data['desc'],
+              description: data['description'],
+              avail: data['available'],
+              weight: data['weight'],
+              dimension: data['dimension'],
+              materials: data['materials'],
+              images: data['images']);
+          portraitworks.add(parsed);
+        } else if (data['type'] == 'Sculptor' || data['type'] == 'sculptor') {
+          ParsedDataProduct parsed = ParsedDataProduct(
+              artistname: data['name'],
+              productname: data['product'],
+              cost: data['cost'],
+              type: data['type'],
+              avatar: data['avatar'],
+              desc: data['desc'],
+              description: data['description'],
+              avail: data['available'],
+              weight: data['weight'],
+              dimension: data['dimension'],
+              materials: data['materials'],
+              images: data['images']);
+          sculpworks.add(parsed);
+        }
+      ;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double fontSize20 = size.height * 0.025;
     double padding30 = size.height * 0.03755;
-    Data datacollect = Data();
-    List<ParsedDataProduct> portraitworks = [];
-    List<ParsedDataProduct> sculpworks = [];
-    List items = datacollect.items;
-    for (var data in items) {
-      data['works'].forEach((element) {
-        if (element['type'] == 'painting') {
-          ParsedDataProduct parsed = ParsedDataProduct(
-              artistname: element['name'],
-              productname: element['product'],
-              cost: element['cost'],
-              type: element['type'],
-              avatar: element['avatar'],
-              desc: element['desc'],
-              description: element['description'],
-              avail: element['available'],
-              weight: element['weight'],
-              dimension: element['dimension'],
-              materials: element['material used'],
-              images: element['images']);
-          portraitworks.add(parsed);
-        } else if (element['type'] == 'sculptor') {
-          ParsedDataProduct parsed = ParsedDataProduct(
-              artistname: element['name'],
-              productname: element['product'],
-              cost: element['cost'],
-              type: element['type'],
-              avatar: element['avatar'],
-              desc: element['desc'],
-              description: element['description'],
-              avail: element['available'],
-              weight: element['weight'],
-              dimension: element['dimension'],
-              materials: element['material used'],
-              images: element['images']);
-          sculpworks.add(parsed);
-        }
-      });
-    }
+
     portraitworks.shuffle();
     return DefaultTabController(
       initialIndex: 0,
@@ -61,7 +73,7 @@ class _GalleryArtState extends State<GalleryArt> {
           backgroundColor: Colors.white,
           appBar: AppBar(
               title: Padding(
-                padding:  EdgeInsets.only(right: padding30),
+                padding: EdgeInsets.only(right: padding30),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [

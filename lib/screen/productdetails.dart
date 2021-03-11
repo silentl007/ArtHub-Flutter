@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ArtHub/screen/purchasescreen.dart';
 import 'package:number_display/number_display.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ProductDetails extends StatefulWidget {
   final ParsedDataProduct data;
@@ -20,6 +21,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   DataBaseFunctions _dataBaseFunctions;
   List<String> itemcheck = [];
   int itemnumber = 0;
+  List pseudodata = [1,1,1,1,1,1,1,1];
   _ProductDetailsState(this.data);
   @override
   initState() {
@@ -117,7 +119,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           _current = index;
                         });
                       },
-                      items: data.images.map((images) {
+                      items: pseudodata.map((images) { // replace with data.image
                         return Material(
                           color: Colors.transparent,
                           elevation: 10,
@@ -126,12 +128,25 @@ class _ProductDetailsState extends State<ProductDetails> {
                           child: Container(
                             height: size.height * 0.35,
                             width: size.width * .75,
-                            margin: EdgeInsets.all(2),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(
-                                    image: AssetImage(images),
-                                    fit: BoxFit.cover)),
+                            child: CachedNetworkImage(
+                              imageUrl: "http://via.placeholder.com/350x150", // replace with images
+                              placeholder: (context, url) => new Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    CircularProgressIndicator(
+                                      valueColor:
+                                          new AlwaysStoppedAnimation<Color>(
+                                              AppColors.purple),
+                                      strokeWidth: 9.0,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  new Icon(Icons.error),
+                            ),
                           ),
                         );
                       }).toList(),
@@ -166,9 +181,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                     // color: AppColors.grey,
                     // border: Border.all(color: AppColors.purple),
                     borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(100),
-                      topRight: Radius.circular(100),
-                    )),
+                  topLeft: Radius.circular(100),
+                  topRight: Radius.circular(100),
+                )),
                 child: Column(
                   children: [
                     Expanded(
@@ -225,8 +240,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         children: [
                           Container(
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: padding70, top: 0),
+                              padding: EdgeInsets.only(left: padding70, top: 0),
                               child: SingleChildScrollView(
                                 child: Column(
                                   crossAxisAlignment:
