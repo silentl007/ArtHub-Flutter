@@ -461,6 +461,7 @@ class ParsedDataProduct {
   static const colImages = 'images';
 
   int id;
+  String productID;
   String artistname;
   String productname;
   int cost;
@@ -475,6 +476,7 @@ class ParsedDataProduct {
   List images;
   ParsedDataProduct(
       {this.id,
+      this.productID,
       this.artistname,
       this.productname,
       this.cost,
@@ -741,3 +743,5 @@ class UploadWorks {
 class Gallery {
   getData() async {}
 }
+
+class GetCart{}

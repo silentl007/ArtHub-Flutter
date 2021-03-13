@@ -1,11 +1,33 @@
 import 'package:ArtHub/common/model.dart';
+import 'package:ArtHub/screen/middleman.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/screen/productdetails.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class FreeLanceProfile extends StatelessWidget {
-  final Widgets classWidget = Widgets();
+class FreeLanceProfile extends StatefulWidget {
   final ParsedDataFreeLanceArts artistdata;
   FreeLanceProfile(this.artistdata);
+
+  @override
+  _FreeLanceProfileState createState() => _FreeLanceProfileState();
+}
+
+class _FreeLanceProfileState extends State<FreeLanceProfile> {
+  final Widgets classWidget = Widgets();
+  String link = '';
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // getPrefs();
+  }
+
+  // getPrefs() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   link =
+  //       'https://arthubserver.herokuapp.com/apiR/cartget/${prefs.getString('id')}/${prefs.getString('accountType')}';
+  // }
+
   @override
   Widget build(BuildContext context) {
     ScrollController scrollController;
@@ -19,9 +41,9 @@ class FreeLanceProfile extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: classWidget.apptitleBar(context, '${artistdata.name}'),
+        appBar: classWidget.apptitleBar(context, '${widget.artistdata.name}'),
         body: Padding(
-          padding:  EdgeInsets.all(padding22),
+          padding: EdgeInsets.all(padding22),
           child: Column(
             children: [
               Expanded(
@@ -36,7 +58,7 @@ class FreeLanceProfile extends StatelessWidget {
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(100)),
                                 image: DecorationImage(
-                                    image: AssetImage(artistdata.avatar),
+                                    image: AssetImage(widget.artistdata.avatar),
                                     fit: BoxFit.cover)),
                           )),
                       Expanded(
@@ -45,9 +67,9 @@ class FreeLanceProfile extends StatelessWidget {
                             alignment: Alignment.bottomCenter,
                             child: Container(
                               child: Padding(
-                                padding:  EdgeInsets.only(left: padding18),
+                                padding: EdgeInsets.only(left: padding18),
                                 child: Text(
-                                  '${artistdata.name}',
+                                  '${widget.artistdata.name}',
                                   style: TextStyle(
                                       fontSize: fontSize40,
                                       color: AppColors.purple,
@@ -64,11 +86,11 @@ class FreeLanceProfile extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: Padding(
-                  padding:  EdgeInsets.only(top: padding15, bottom: padding10),
+                  padding: EdgeInsets.only(top: padding15, bottom: padding10),
                   child: Container(
                     child: SingleChildScrollView(
                       child: Text(
-                        '${artistdata.aboutme}',
+                        '${widget.artistdata.aboutme}',
                         textAlign: TextAlign.justify,
                         textScaleFactor: 1,
                         style: TextStyle(color: AppColors.purple),
@@ -82,21 +104,22 @@ class FreeLanceProfile extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(top: padding8),
                   child: GridView.builder(
-                    itemCount: artistdata.works.length,
+                    itemCount: widget.artistdata.works.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                         crossAxisSpacing: 20,
                         mainAxisSpacing: 20),
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
-                        onTap: () => details(context, artistdata.works[index]),
+                        onTap: () =>
+                            details(context, widget.artistdata.works[index]),
                         child: Container(
                             decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20)),
                                 image: DecorationImage(
-                                    image: AssetImage(
-                                        artistdata.works[index]['avatar']),
+                                    image: AssetImage(widget
+                                        .artistdata.works[index]['avatar']),
                                     fit: BoxFit.cover))),
                       );
                     },
@@ -114,6 +137,7 @@ class FreeLanceProfile extends StatelessWidget {
     ParsedDataProduct details = ParsedDataProduct(
         artistname: element['name'],
         productname: element['product'],
+        productID: element['productID'],
         cost: element['cost'],
         type: element['type'],
         avatar: element['avatar'],
@@ -125,6 +149,6 @@ class FreeLanceProfile extends StatelessWidget {
         materials: element['material used'],
         images: element['images']);
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ProductDetails(details)));
+        MaterialPageRoute(builder: (context) => Middle(details)));
   }
 }

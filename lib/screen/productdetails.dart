@@ -1,14 +1,17 @@
+import 'dart:convert';
 import 'package:ArtHub/common/model.dart';
-import 'package:ArtHub/common/sqliteoperations.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ArtHub/screen/purchasescreen.dart';
 import 'package:number_display/number_display.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class ProductDetails extends StatefulWidget {
   final ParsedDataProduct data;
-  ProductDetails(this.data);
+  final List userDetails;
+  ProductDetails(this.data, this.userDetails);
 
   @override
   _ProductDetailsState createState() => _ProductDetailsState(data);
@@ -18,18 +21,16 @@ class _ProductDetailsState extends State<ProductDetails> {
   final ParsedDataProduct data;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final displayNumber = createDisplay(length: 8, decimal: 0);
-  DataBaseFunctions _dataBaseFunctions;
-  List<String> itemcheck = [];
+  String userID = '';
+  String accountType = '';
+  List cart = [];
   int itemnumber = 0;
-  List pseudodata = [1,1,1,1,1,1,1,1];
+  List pseudodata = [1, 1, 1, 1, 1, 1, 1, 1];
   _ProductDetailsState(this.data);
   @override
   initState() {
     super.initState();
-    setState(() {
-      _dataBaseFunctions = DataBaseFunctions.databaseinstance;
-    });
-    getdata();
+    cartItems();
   }
 
   int _current = 0;
@@ -41,15 +42,34 @@ class _ProductDetailsState extends State<ProductDetails> {
     return result;
   }
 
-  getdata() async {
-    List<ParsedDataProduct> databaseList = await _dataBaseFunctions.fetchdata();
-    setState(() {
-      itemnumber = databaseList.length;
-    });
-    if (databaseList.isNotEmpty) {
-      databaseList.forEach((element) {
-        itemcheck.add(element.productname);
+  // getPrefs() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     userID = prefs.getString('userID');
+  //     accountType = prefs.getString('accountType');
+  //   });
+  // }
+
+  cartItems() async {
+    var link =
+        'https://arthubserver.herokuapp.com/apiR/cartget/${widget.userDetails[0]}/${widget.userDetails[1]}';
+    try {
+      print(link);
+      var query = await http.get(link,
+          headers: {'Content-Type': 'application/json; charset=UTF-8'});
+      var decode = jsonDecode(query.body);
+      print('cart items - $decode');
+      decode = cart;
+      setState(() {
+        itemnumber = cart.length;
       });
+    } catch (error) {
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        duration: Duration(seconds: 4),
+        content: Text('Connection failed! Please check internet connection!'),
+        backgroundColor: AppColors.red,
+      ));
+      print(error);
     }
   }
 
@@ -119,7 +139,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                           _current = index;
                         });
                       },
-                      items: pseudodata.map((images) { // replace with data.image
+                      items: pseudodata.map((images) {
+                        // replace with data.image
                         return Material(
                           color: Colors.transparent,
                           elevation: 10,
@@ -129,7 +150,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                             height: size.height * 0.35,
                             width: size.width * .75,
                             child: CachedNetworkImage(
-                              imageUrl: "http://via.placeholder.com/350x150", // replace with images
+                              imageUrl:
+                                  "http://via.placeholder.com/350x150", // replace with images
                               placeholder: (context, url) => new Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -321,20 +343,35 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   addcart(ParsedDataProduct cartitem) async {
-    if (itemcheck.contains(cartitem.productname)) {
-      return _scaffoldKey.currentState.showSnackBar(SnackBar(
-        duration: Duration(seconds: 1),
-        content: Text('Already in cart!'),
-        backgroundColor: AppColors.red,
-      ));
+    print('cartitem - ${cartitem.productID}');
+    print(cart.isEmpty);
+    if (cart.isNotEmpty) {
+      for (var items in cart) {
+        if (items.productID == cartitem.productID) {
+          print('already in cart!');
+        } else {
+          cart.add(cartitem);
+          print('add to cart');
+        }
+      }
     } else {
-      await _dataBaseFunctions.insertitem(cartitem);
-      getdata();
-      return _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text('Added to cart!'),
-        duration: Duration(seconds: 1),
-        backgroundColor: AppColors.purple,
-      ));
+      print('empty cart');
     }
+
+    //   if (itemcheck.contains(cartitem.productname)) {
+    //     return _scaffoldKey.currentState.showSnackBar(SnackBar(
+    //       duration: Duration(seconds: 1),
+    //       content: Text('Already in cart!'),
+    //       backgroundColor: AppColors.red,
+    //     ));
+    //   } else {
+    //     await _dataBaseFunctions.insertitem(cartitem);
+    //     // getdata();
+    //     return _scaffoldKey.currentState.showSnackBar(SnackBar(
+    //       content: Text('Added to cart!'),
+    //       duration: Duration(seconds: 1),
+    //       backgroundColor: AppColors.purple,
+    //     ));
+    //   }
   }
 }

@@ -13,47 +13,49 @@ class _GalleryArtState extends State<GalleryArt> {
   List<ParsedDataProduct> portraitworks = [];
   List<ParsedDataProduct> sculpworks = [];
 
-@override
-initState(){
-  super.initState();
-  _separatorWorks();
-}
+  @override
+  initState() {
+    super.initState();
+    _separatorWorks();
+  }
+
   _separatorWorks() {
     print(widget.worksdata);
     List items = widget.worksdata;
     for (var data in items) {
-      
-        if (data['type'] == 'Painting' || data['type'] == 'painting') {
-          ParsedDataProduct parsed = ParsedDataProduct(
-              artistname: data['name'],
-              productname: data['product'],
-              cost: data['cost'],
-              type: data['type'],
-              avatar: data['avatar'],
-              desc: data['desc'],
-              description: data['description'],
-              avail: data['available'],
-              weight: data['weight'],
-              dimension: data['dimension'],
-              materials: data['materials'],
-              images: data['images']);
-          portraitworks.add(parsed);
-        } else if (data['type'] == 'Sculptor' || data['type'] == 'sculptor') {
-          ParsedDataProduct parsed = ParsedDataProduct(
-              artistname: data['name'],
-              productname: data['product'],
-              cost: data['cost'],
-              type: data['type'],
-              avatar: data['avatar'],
-              desc: data['desc'],
-              description: data['description'],
-              avail: data['available'],
-              weight: data['weight'],
-              dimension: data['dimension'],
-              materials: data['materials'],
-              images: data['images']);
-          sculpworks.add(parsed);
-        }
+      if (data['type'] == 'Painting' || data['type'] == 'painting') {
+        ParsedDataProduct parsed = ParsedDataProduct(
+            artistname: data['name'],
+            productname: data['product'],
+            productID: data['productID'],
+            cost: data['cost'],
+            type: data['type'],
+            avatar: data['avatar'],
+            desc: data['desc'],
+            description: data['description'],
+            avail: data['available'],
+            weight: data['weight'],
+            dimension: data['dimension'],
+            materials: data['materials'],
+            images: data['images']);
+        portraitworks.add(parsed);
+      } else if (data['type'] == 'Sculptor' || data['type'] == 'sculptor') {
+        ParsedDataProduct parsed = ParsedDataProduct(
+            artistname: data['name'],
+            productname: data['product'],
+            productID: data['productID'],
+            cost: data['cost'],
+            type: data['type'],
+            avatar: data['avatar'],
+            desc: data['desc'],
+            description: data['description'],
+            avail: data['available'],
+            weight: data['weight'],
+            dimension: data['dimension'],
+            materials: data['materials'],
+            images: data['images']);
+        sculpworks.add(parsed);
+      }
       ;
     }
   }

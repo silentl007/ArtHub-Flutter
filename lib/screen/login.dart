@@ -33,15 +33,20 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  _sneakerAlert() {
-    _scaffoldKey.currentState.showSnackBar(
-        SnackBar(content: Text('Something went wrong, please try again')));
+  _sneakerAlert() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text('Something went wrong, please try again'),
+      backgroundColor: AppColors.purple,
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double fontSize = size.height * 0.025;
+    double padding40 = size.height * 0.05;
 
     return SafeArea(
       child: Scaffold(
@@ -50,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
         body: Form(
           key: _key,
           child: Container(
-            padding: EdgeInsets.only(left: 40, right: 40),
+            padding: EdgeInsets.only(left: padding40, right: padding40),
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage('assets/appimages/welcomeback.png'),

@@ -1,8 +1,10 @@
 import 'package:ArtHub/common/model.dart';
+import 'package:ArtHub/screen/middleman.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/screen/productdetails.dart';
 import 'package:number_display/number_display.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PortraitDisplay extends StatefulWidget {
   final List works;
@@ -14,9 +16,23 @@ class PortraitDisplay extends StatefulWidget {
 
 class _PortraitDisplayState extends State<PortraitDisplay> {
   final List works;
-  final displayNumber = createDisplay(length: 8, decimal: 0);
-
   _PortraitDisplayState({this.works});
+  final displayNumber = createDisplay(length: 8, decimal: 0);
+  String link = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getPrefs();
+  }
+
+  getPrefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    link =
+        'https://arthubserver.herokuapp.com/apiR/cartget/${prefs.getString('id')}/${prefs.getString('accountType')}';
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -60,8 +76,8 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
                                       height: innerheight,
                                       width: size.height * .15,
                                       child: CachedNetworkImage(
-                                        imageUrl:
-                                            "http://via.placeholder.com/350x150", // replace with data.avatar
+                                        imageUrl: data
+                                            .avatar, // replace with data.avatar
                                         placeholder: (context, url) =>
                                             new Center(
                                           child: Column(
@@ -150,9 +166,12 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
           );
   }
 
-  void purchase(BuildContext context, ParsedDataProduct itemdetails) {
+  void purchase(
+      BuildContext context, ParsedDataProduct itemdetails) {
     print(itemdetails.images);
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ProductDetails(itemdetails)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Middle(itemdetails,)));
   }
 }
