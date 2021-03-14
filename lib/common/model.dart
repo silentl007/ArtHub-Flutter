@@ -465,6 +465,7 @@ class ParsedDataProduct {
   String artistname;
   String productname;
   int cost;
+  String accountType;
   String type;
   String avatar;
   String desc;
@@ -479,6 +480,7 @@ class ParsedDataProduct {
       this.productID,
       this.artistname,
       this.productname,
+      this.accountType,
       this.cost,
       this.type,
       this.avatar,
@@ -744,4 +746,4 @@ class Gallery {
   getData() async {}
 }
 
-class GetCart{}
+class GetCart {}

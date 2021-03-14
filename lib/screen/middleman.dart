@@ -40,7 +40,10 @@ class _MiddleState extends State<Middle> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('Loading'),
+        child: CircularProgressIndicator(
+          valueColor: new AlwaysStoppedAnimation<Color>(AppColors.purple),
+          strokeWidth: 9.0,
+        ),
       ),
     );
   }

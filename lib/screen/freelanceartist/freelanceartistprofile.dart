@@ -1,8 +1,6 @@
 import 'package:ArtHub/common/model.dart';
 import 'package:ArtHub/screen/middleman.dart';
 import 'package:flutter/material.dart';
-import 'package:ArtHub/screen/productdetails.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class FreeLanceProfile extends StatefulWidget {
   final ParsedDataFreeLanceArts artistdata;
@@ -14,19 +12,6 @@ class FreeLanceProfile extends StatefulWidget {
 
 class _FreeLanceProfileState extends State<FreeLanceProfile> {
   final Widgets classWidget = Widgets();
-  String link = '';
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // getPrefs();
-  }
-
-  // getPrefs() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   link =
-  //       'https://arthubserver.herokuapp.com/apiR/cartget/${prefs.getString('id')}/${prefs.getString('accountType')}';
-  // }
 
   @override
   Widget build(BuildContext context) {

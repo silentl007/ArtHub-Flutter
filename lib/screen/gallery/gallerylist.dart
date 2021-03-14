@@ -18,16 +18,12 @@ class _GalleryListState extends State<GalleryList> {
     // TODO: implement initState
     super.initState();
     filtereddata = data;
-    print('initState GL');
-    print('init filtereddata $filtereddata');
   }
 
  
 
   @override
   Widget build(BuildContext context) {
-    print('Build GL');
-    print('Build filtereddata $filtereddata');
     Size size = MediaQuery.of(context).size;
     double fontSize = size.height * 0.03875;
     double sizedBox9 = size.height * 0.01127;
@@ -155,8 +151,6 @@ class _GalleryListState extends State<GalleryList> {
             border: InputBorder.none,
           ),
           onChanged: (text) {
-            print('setState search bar');
-            print('setState search bar filtereddata $filtereddata');
             text = text.toLowerCase();
             setState(() {
               filtereddata = data

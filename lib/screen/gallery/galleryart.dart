@@ -20,13 +20,13 @@ class _GalleryArtState extends State<GalleryArt> {
   }
 
   _separatorWorks() {
-    print(widget.worksdata);
     List items = widget.worksdata;
     for (var data in items) {
       if (data['type'] == 'Painting' || data['type'] == 'painting') {
         ParsedDataProduct parsed = ParsedDataProduct(
             artistname: data['name'],
             productname: data['product'],
+            accountType: data['accountType'],
             productID: data['productID'],
             cost: data['cost'],
             type: data['type'],
@@ -44,6 +44,7 @@ class _GalleryArtState extends State<GalleryArt> {
             artistname: data['name'],
             productname: data['product'],
             productID: data['productID'],
+            accountType: data['accountType'],
             cost: data['cost'],
             type: data['type'],
             avatar: data['avatar'],

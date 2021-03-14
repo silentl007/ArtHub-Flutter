@@ -20,25 +20,20 @@ class _GalleriesState extends State<Galleries> {
     super.initState();
     getprefs();
     _future = _getGallery();
-    print('initState is called');
   }
 
   getprefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('inapp', true);
-    print('get prefs is called');
   }
 
   Future<List> _getGallery() async {
-    print('_getGallery() is called');
-    print('initial collecteddata $collecteddata');
     try {
       var data =
           await http.get('https://arthubserver.herokuapp.com/apiR/gallery');
       var jsonData = jsonDecode(data.body);
       if (jsonData != null) {
         for (var data in jsonData) {
-          print(data['works']);
           ParsedDataGallery parsed = ParsedDataGallery(data['name'],
               data['address'], data['location'], data['number'], data['works']);
           collecteddata.add(parsed);
@@ -46,7 +41,6 @@ class _GalleriesState extends State<Galleries> {
       } else {
         return collecteddata;
       }
-      print('returned collecteddata $collecteddata');
       return collecteddata;
     } catch (error) {
       List collecteddata = ['failed'];
@@ -57,7 +51,6 @@ class _GalleriesState extends State<Galleries> {
   @override
   Widget build(BuildContext context) {
     collecteddata.shuffle();
-    print('Build is called');
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
