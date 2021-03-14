@@ -21,6 +21,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final displayNumber = createDisplay(length: 8, decimal: 0);
   List cart = [];
+  List productIDs = [];
   int itemnumber = 0;
   List pseudodata = [1, 1, 1, 1, 1, 1, 1, 1];
   _ProductDetailsState(this.data);
@@ -38,37 +39,31 @@ class _ProductDetailsState extends State<ProductDetails> {
     }
     return result;
   }
-
-// get what is happening here
   cartItems() async {
-    print(widget.userDetails);
     var link =
         'https://arthubserver.herokuapp.com/apiR/cartget/${widget.userDetails[0]}/${widget.userDetails[1]}';
-    print('the link - $link');
+    
     try {
       var query = await http.get(link,
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
       var decode = jsonDecode(query.body);
-      // print('cart items before - $cart');
-      // print('cart length before - ${cart.length}');
       cart = decode;
-      // print('cart items after - $cart');
-      // print('cart length after - ${cart.length}');
-      // print('decode items after - ${decode.runtimeType}');
-      // print('query runtimetype after - ${query.body.runtimeType}');
       if (query.statusCode == 200) {
-        print('setstate');
         setState(() {
           itemnumber = cart.length;
         });
+        if (cart.isNotEmpty) {
+          for (var items in cart) {
+            productIDs.add(items['productID']);
+          }
+        }
       }
     } catch (error) {
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
+      return _scaffoldKey.currentState.showSnackBar(SnackBar(
         duration: Duration(seconds: 4),
         content: Text('Connection failed! Please check internet connection!'),
         backgroundColor: AppColors.red,
       ));
-      print('this is the error: $error');
     }
   }
 
@@ -342,93 +337,56 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   addcart(ParsedDataProduct cartitem) async {
-    if (cart.isNotEmpty) {
-      for (var items in cart) {
-        if (items['productID'] == cartitem.productID) {
-          _scaffoldKey.currentState.showSnackBar(SnackBar(
-            duration: Duration(seconds: 4),
-            content:
-                Text('Already in cart!'),
-            backgroundColor: AppColors.red,
-          ));
-
-          break;
-        } else {
-          var link =
-              'https://arthubserver.herokuapp.com/apiS/cartadd/${widget.userDetails[0]}/${widget.userDetails[1]}';
-          Map<String, dynamic> dataBody = {
-            "productID": cartitem.productID,
-            "accountType": cartitem.accountType,
-            "name": cartitem.artistname,
-            "product": cartitem.productname,
-            "cost": cartitem.cost,
-            "type": cartitem.type,
-            "avatar": cartitem.avatar,
-            "description": cartitem.description,
-            "dimension": cartitem.dimension,
-            "weight": cartitem.weight,
-            "materials": cartitem.materials,
-          };
-          var encodedData = jsonEncode(dataBody);
-          try {
-            var add = await http.post(link,
-                body: encodedData,
-                headers: {'Content-Type': 'application/json; charset=UTF-8'});
-            if (add.statusCode == 200) {
-              cartItems();
-              return _scaffoldKey.currentState.showSnackBar(SnackBar(
-                content: Text('Added to cart!'),
-                duration: Duration(seconds: 1),
-                backgroundColor: AppColors.purple,
-              ));
-            }
-          } catch (error) {
-            return _scaffoldKey.currentState.showSnackBar(SnackBar(
-              duration: Duration(seconds: 4),
-              content:
-                  Text('Connection failed! Please check internet connection!'),
-              backgroundColor: AppColors.red,
-            ));
-          }
-        }
-      }
-    } else {
-      print('else running');
-      var link =
-          'https://arthubserver.herokuapp.com/apiS/cartadd/${widget.userDetails[0]}/${widget.userDetails[1]}';
-      Map<String, dynamic> dataBody = {
-        "productID": cartitem.productID,
-        "accountType": cartitem.accountType,
-        "name": cartitem.artistname,
-        "product": cartitem.productname,
-        "cost": cartitem.cost,
-        "type": cartitem.type,
-        "avatar": cartitem.avatar,
-        "description": cartitem.description,
-        "dimension": cartitem.dimension,
-        "weight": cartitem.weight,
-        "materials": cartitem.materials,
-      };
-      var encodedData = jsonEncode(dataBody);
-      try {
-        var add = await http.post(link,
-            body: encodedData,
-            headers: {'Content-Type': 'application/json; charset=UTF-8'});
-        if (add.statusCode == 200) {
-          cartItems();
-          return _scaffoldKey.currentState.showSnackBar(SnackBar(
-            content: Text('Added to cart!'),
-            duration: Duration(seconds: 1),
-            backgroundColor: AppColors.purple,
-          ));
-        }
-      } catch (error) {
+    if (productIDs.isNotEmpty) {
+      if (productIDs.contains(cartitem.productID)) {
         return _scaffoldKey.currentState.showSnackBar(SnackBar(
           duration: Duration(seconds: 4),
-          content: Text('Connection failed! Please check internet connection!'),
+          content: Text('Already in cart!'),
           backgroundColor: AppColors.red,
         ));
+      } else {
+        added(cartitem);
       }
+    } else {
+      added(cartitem);
+    }
+  }
+
+  added(ParsedDataProduct cartitem) async {
+    var link =
+        'https://arthubserver.herokuapp.com/apiS/cartadd/${widget.userDetails[0]}/${widget.userDetails[1]}';
+    Map<String, dynamic> dataBody = {
+      "productID": cartitem.productID,
+      "accountType": cartitem.accountType,
+      "name": cartitem.artistname,
+      "product": cartitem.productname,
+      "cost": cartitem.cost,
+      "type": cartitem.type,
+      "avatar": cartitem.avatar,
+      "description": cartitem.description,
+      "dimension": cartitem.dimension,
+      "weight": cartitem.weight,
+      "materials": cartitem.materials,
+    };
+    var encodedData = jsonEncode(dataBody);
+    try {
+      var add = await http.post(link,
+          body: encodedData,
+          headers: {'Content-Type': 'application/json; charset=UTF-8'});
+      if (add.statusCode == 200) {
+        cartItems();
+        return _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('Added to cart!'),
+          duration: Duration(seconds: 1),
+          backgroundColor: AppColors.purple,
+        ));
+      }
+    } catch (error) {
+      return _scaffoldKey.currentState.showSnackBar(SnackBar(
+        duration: Duration(seconds: 4),
+        content: Text('Connection failed! Please check internet connection!'),
+        backgroundColor: AppColors.red,
+      ));
     }
   }
 }

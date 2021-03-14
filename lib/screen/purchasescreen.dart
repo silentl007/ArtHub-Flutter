@@ -62,6 +62,12 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     });
   }
 
+   remove(int productInt, int cost) async {
+    await _dataBaseFunctions.deleteitem(productInt);
+    interfacedata();
+    getdataremove(cost);
+  }
+
   Future<List> interfacedata() async {
     List<ParsedDataProduct> databaseList = await _dataBaseFunctions.fetchdata();
     
@@ -383,30 +389,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     );
   }
 
-  remove(int productInt, int cost) async {
-    await _dataBaseFunctions.deleteitem(productInt);
-    interfacedata();
-    getdataremove(cost);
-  }
-
-  purchase(BuildContext context, int cost) {
-    return showDialog(
-        context: context,
-        child: AlertDialog(
-          title: Text(
-            'Under Construction',
-            textAlign: TextAlign.center,
-          ),
-          scrollable: true,
-          content: Text('Coming soon!'),
-          actions: [
-            FlatButton(
-              onPressed: null,
-              child: Text('OK'),
-            )
-          ],
-        ));
-  }
+ 
 
   void _showErrorDialog() {
     // flutter defined function
