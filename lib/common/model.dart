@@ -582,8 +582,7 @@ class Registeration {
       []; // for freelancers and gallery, this is where sold artworks will enter
 
   Future register() async {
-    String registerdbLink =
-        'https://galleryapp-backend.herokuapp.com/api/signup';
+    String registerdbLink = 'https://arthubserver.herokuapp.com/apiS/register';
     Map<String, dynamic> dataBody = {
       'name': fullName,
       'email': email,
@@ -603,13 +602,14 @@ class Registeration {
       var datasend = await http.post(registerdbLink,
           body: encodedData,
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
-      print('this is registration status code - ${datasend.statusCode}');
+      // print('this is registration status code - ${datasend.statusCode}');
       if (datasend.statusCode == 200) {
         return datasend.statusCode;
-      } else
+      } else if (datasend.statusCode == 400) {
         return sameemail;
+      }
     } catch (exception) {
-      print('this error occured - $exception');
+      // print('this error occured - $exception');
       return failed;
     }
   }
@@ -625,8 +625,8 @@ class Login {
       email = prefs.getString('email');
       password = prefs.getString('password');
     }
-    print('from login beginning function username - $email');
-    print('from login beginning function password - $password');
+    // print('from login beginning function username - $email');
+    // print('from login beginning function password - $password');
     String loginLink = 'https://arthubserver.herokuapp.com/apiS/login';
     Map<String, String> loginData = {
       'email': email,
@@ -640,7 +640,7 @@ class Login {
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
       if (datasend.statusCode == 200) {
         var json = jsonDecode(datasend.body);
-        print('this is the data received when logged in - $json');
+        // print('this is the data received when logged in - $json');
         SharedPreferences prefs = await SharedPreferences.getInstance();
         if (prefs.getBool('logged') == null) {
           prefs.setString('displayName', json['user']['name']);
@@ -662,17 +662,17 @@ class Login {
       // else if to return a status code for wrong email or password, will determine to show
       // pseudo statuscode is 500
       else if (datasend.statusCode == 401) {
-        print('Wrong password in login');
-        print(' username - $email');
-        print(' password - $password');
-        print('this is the status code - ${datasend.statusCode}');
+        // print('Wrong password in login');
+        // print(' username - $email');
+        // print(' password - $password');
+        // print('this is the status code - ${datasend.statusCode}');
         return datasend.statusCode;
       } else {
-        print(datasend.body);
+        // print(datasend.body);
         return internetNetwork;
       }
     } catch (exception) {
-      print('Error from login - $exception');
+      // print('Error from login - $exception');
       return internetNetwork;
     }
   }
@@ -694,7 +694,7 @@ class ResetPassword {
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
       return datasend.statusCode;
     } catch (exception) {
-      print(exception);
+      // print(exception);
       return datafailed;
     }
   }
@@ -736,7 +736,7 @@ class UploadWorks {
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
       return datasend.statusCode;
     } catch (exception) {
-      print(exception);
+      // print(exception);
       return failed;
     }
   }

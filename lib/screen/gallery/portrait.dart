@@ -1,10 +1,8 @@
 import 'package:ArtHub/common/model.dart';
-import 'package:ArtHub/screen/middleman.dart';
+import 'package:ArtHub/common/middlemen/middlemanproductdetails.dart';
 import 'package:flutter/material.dart';
-import 'package:ArtHub/screen/productdetails.dart';
 import 'package:number_display/number_display.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PortraitDisplay extends StatefulWidget {
   final List works;
@@ -18,20 +16,6 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
   final List works;
   _PortraitDisplayState({this.works});
   final displayNumber = createDisplay(length: 8, decimal: 0);
-  String link = '';
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getPrefs();
-  }
-
-  getPrefs() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    link =
-        'https://arthubserver.herokuapp.com/apiR/cartget/${prefs.getString('id')}/${prefs.getString('accountType')}';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,29 +59,33 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
                                     Container(
                                       height: innerheight,
                                       width: size.height * .15,
-                                      child: CachedNetworkImage(
-                                        imageUrl: data
-                                            .avatar, // replace with data.avatar
-                                        placeholder: (context, url) =>
-                                            new Center(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              CircularProgressIndicator(
-                                                valueColor:
-                                                    new AlwaysStoppedAnimation<
-                                                            Color>(
-                                                        AppColors.purple),
-                                                strokeWidth: 9.0,
-                                              ),
-                                            ],
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0),
+                                        child: CachedNetworkImage(
+                                          fit: BoxFit.cover,
+                                          imageUrl: data.avatar,
+                                          placeholder: (context, url) =>
+                                              new Center(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                CircularProgressIndicator(
+                                                  valueColor:
+                                                      new AlwaysStoppedAnimation<
+                                                              Color>(
+                                                          AppColors.purple),
+                                                  strokeWidth: 5.0,
+                                                ),
+                                              ],
+                                            ),
                                           ),
+                                          errorWidget: (context, url, error) =>
+                                              new Icon(Icons.error),
                                         ),
-                                        errorWidget: (context, url, error) =>
-                                            new Icon(Icons.error),
                                       ),
                                     ),
                                     SingleChildScrollView(
@@ -166,12 +154,12 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
           );
   }
 
-  void purchase(
-      BuildContext context, ParsedDataProduct itemdetails) {
-    print(itemdetails.images);
+  void purchase(BuildContext context, ParsedDataProduct itemdetails) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => Middle(itemdetails,)));
+            builder: (context) => Middle(
+                  itemdetails,
+                )));
   }
 }

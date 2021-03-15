@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ArtHub/common/middlemen/middlemancart.dart';
 import 'package:ArtHub/common/model.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -76,7 +77,6 @@ class _ProductDetailsState extends State<ProductDetails> {
     double costWidth90 = size.width * 0.2;
     double padding30 = size.height * 0.0375;
     double padding70 = size.height * 0.0876;
-    double padding10 = size.height * 0.01252;
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
@@ -333,7 +333,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   void purchasecreen() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => PurchaseScreen()));
+        context, MaterialPageRoute(builder: (context) => MiddleCart()));
   }
 
   addcart(ParsedDataProduct cartitem) async {

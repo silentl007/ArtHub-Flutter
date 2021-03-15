@@ -1,5 +1,5 @@
 import 'package:ArtHub/common/model.dart';
-import 'package:ArtHub/screen/middleman.dart';
+import 'package:ArtHub/common/middlemen/middlemanproductdetails.dart';
 import 'package:flutter/material.dart';
 
 class FreeLanceProfile extends StatefulWidget {
@@ -15,7 +15,6 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
 
   @override
   Widget build(BuildContext context) {
-    ScrollController scrollController;
     Size size = MediaQuery.of(context).size;
     double fontSize40 = size.height * 0.05;
     double padding22 = size.height * 0.0275;
