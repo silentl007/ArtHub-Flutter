@@ -586,7 +586,7 @@ class Registeration {
       []; // for freelancers and gallery, this is where sold artworks will enter
 
   Future register() async {
-    String registerdbLink = 'https://arthubserver.herokuapp.com/apiS/register';
+    String registerdbLink = '${Server.link}/apiS/register';
     Map<String, dynamic> dataBody = {
       'name': fullName,
       'email': email,
@@ -631,7 +631,7 @@ class Login {
     }
     // print('from login beginning function username - $email');
     // print('from login beginning function password - $password');
-    String loginLink = 'https://arthubserver.herokuapp.com/apiS/login';
+    String loginLink = '${Server.link}/apiS/login';
     Map<String, String> loginData = {
       'email': email,
       'password': password,
@@ -718,7 +718,7 @@ class UploadWorks {
   String materials = '';
   List<String> images = [];
   Future upload() async {
-    String uploadLink = '';
+    String uploadLink = '${Server.link}/apiS/uploadworks';
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, dynamic> uploadData = {
       'id': prefs.getString('id'),

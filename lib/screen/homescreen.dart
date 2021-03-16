@@ -1,4 +1,5 @@
 import 'package:ArtHub/common/middlemen/middlemancart.dart';
+import 'package:ArtHub/common/middlemen/middlemanuserartworks.dart';
 import 'package:ArtHub/screen/aboutus.dart';
 import 'package:ArtHub/screen/freelanceartist/freelanceartistlist.dart';
 import 'package:ArtHub/screen/login.dart';
@@ -297,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
           context, MaterialPageRoute(builder: (context) => MiddleCart()));
     } else if (index == 3) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Artworks()));
+          context, MaterialPageRoute(builder: (context) => MiddleUserArtWorks()));
     } else if (index == 4) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Uploads()));

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
 
 class Artworks extends StatefulWidget {
+  final List userDetails;
+  Artworks(this.userDetails);
   @override
   _ArtworksState createState() => _ArtworksState();
 }
@@ -58,8 +60,8 @@ class _ArtworksState extends State<Artworks> {
             ])),
         body: TabBarView(
           children: [
+            Available(userDetails: widget.userDetails),
             Sold(),
-            Available()
           ],
         ),
       )),

@@ -135,7 +135,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     } else {
       platform = 'Android';
     }
-    return 'ChargedFrom${platform}_${DateTime.now().millisecondsSinceEpoch}';
+    return 'ChargedFrom user - ${widget.userDetails[0]} at time - _${DateTime.now().millisecondsSinceEpoch}';
   }
 
   chargeCard() async {
