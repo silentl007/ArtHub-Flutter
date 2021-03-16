@@ -5,7 +5,6 @@ import 'package:ArtHub/screen/user/userorders.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
-import 'package:ArtHub/common/sqliteoperations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:number_display/number_display.dart';
@@ -21,21 +20,17 @@ class PurchaseScreen extends StatefulWidget {
 class _PurchaseScreenState extends State<PurchaseScreen> {
   final displayNumber = createDisplay(length: 8, decimal: 0);
   Widgets classWidget = Widgets();
-  DataBaseFunctions _dataBaseFunctions;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   String useremail = '';
   String publicKey = 'pk_test_317423d856fb6d9a2201e6b5540a0ad74904da87';
   List data;
-  List interfacedatalist;
   int summation = 0;
+  int servicecharge = 500;
   int payment;
   @override
   void initState() {
     PaystackPlugin.initialize(publicKey: publicKey);
     super.initState();
-
-    // _dataBaseFunctions = DataBaseFunctions.databaseinstance;
-    // getdata();
-    // interfacedata();
     getprefs();
     cartItems();
   }
@@ -48,8 +43,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   // Server Logic
   cartItems() async {
-    var link =
-        'https://arthubserver.herokuapp.com/apiR/cartget/${widget.userDetails[0]}/${widget.userDetails[1]}';
+    String link =
+        '${Server.link}/apiR/cartget/${widget.userDetails[0]}/${widget.userDetails[1]}';
 
     try {
       var query = await http.get(link,
@@ -69,39 +64,67 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     }
   }
 
-// SQLite logic
-  // getdata() async {
-  //   List<ParsedDataProduct> databaseList = await _dataBaseFunctions.fetchdata();
-  //   setState(() {
-  //     itemnumber = databaseList.length;
-  //     data = databaseList;
-  //     data.forEach((element) {
-  //       summation += element.cost;
-  //     });
-  //   });
-  // }
-
-  // getdataremove(int cost) async {
-  //   List<ParsedDataProduct> databaseList = await _dataBaseFunctions.fetchdata();
-  //   setState(() {
-  //     itemnumber = databaseList.length;
-  //     data = databaseList;
-  //     summation -= cost;
-  //   });
-  // }
-
-  remove(int productInt, int cost) async {
-    await _dataBaseFunctions.deleteitem(productInt);
-    interfacedata();
-    // getdataremove(cost);
+  remove(String productID) async {
+    snackbar('Please wait!', 1, AppColors.purple);
+    String link =
+        '${Server.link}/apiD/cartremove/${widget.userDetails[0]}/$productID/${widget.userDetails[1]}';
+    try {
+      var query = await http.delete(link);
+      if (query.statusCode == 200) {
+        summation = 0;
+        cartItems();
+        setState(() {});
+      }
+    } catch (error) {
+      print('error from delete - $error');
+      return snackbar('Connection failed! Please check internet connection!', 4,
+          AppColors.red);
+    }
   }
 
-  Future<List> interfacedata() async {
-    List<ParsedDataProduct> databaseList = await _dataBaseFunctions.fetchdata();
+  purchaseOrder() async {
+    String link = '${Server.link}/purchaseorders';
+    Map body = {
+      "userID": widget.userDetails[0].toString(),
+      "accountType": widget.userDetails[1].toString(),
+      "email":useremail,
+      "itemnumber": data.length,
+      "totalcost": payment,
+      "itemscost": summation,
+      "purchaseditems": data,
+    };
+    var encodedData = jsonEncode(body);
+    try {
+      var datasend = await http.post(link,
+          body: encodedData,
+          headers: {'Content-Type': 'application/json; charset=UTF-8'});
+      if (datasend.statusCode == 200) {
+        clearcart();
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Orders(
+                      page: 1,
+                    )),
+            (Route<dynamic> route) => false);
+      } else {
+        return snackbar(
+            'Something went wrong! Please try again!', 4, AppColors.red);
+      }
+    } catch (error) {
+      return snackbar('Connection failed! Please check internet connection!', 4,
+          AppColors.red);
+    }
+  }
 
-    interfacedatalist = databaseList;
+  clearcart() async {}
 
-    return interfacedatalist;
+  snackbar(String text, int duration, Color background) {
+    return _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(text),
+      duration: Duration(seconds: duration),
+      backgroundColor: background,
+    ));
   }
 
 // functions for paystack payment
@@ -116,24 +139,21 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   }
 
   chargeCard() async {
-    payment = summation * 100;
+    payment = (summation + servicecharge) * 100;
     Charge charge = Charge()
       ..amount = payment
       ..reference = _getReference()
       // or ..accessCode = _getAccessCodeFrmInitialization()
       ..email = useremail;
-    CheckoutResponse response = await PaystackPlugin.checkout(context,
-        method: CheckoutMethod.card, // Defaults to CheckoutMethod.selectable
-        charge: charge,
-        logo: Image.asset('assets/appimages/stacklogo.png'));
+    CheckoutResponse response = await PaystackPlugin.checkout(
+      context,
+      method: CheckoutMethod.card, // Defaults to CheckoutMethod.selectable
+      charge: charge,
+    );
+    // logo: Image.asset('assets/appimages/stacklogo.png'));
     if (response.status == true) {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-              builder: (context) => Orders(
-                    page: 1,
-                  )),
-          (Route<dynamic> route) => false);
+      snackbar('Please wait!', 1, AppColors.purple);
+      purchaseOrder();
     } else {
       _showErrorDialog();
     }
@@ -201,6 +221,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     double padding40 = size.height * 0.05;
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.pushAndRemoveUntil(
@@ -239,7 +260,15 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                         ),
                 );
               } else {
-                return Container(child: Center(child: Text('Internet')));
+                return Container(
+                    child: Center(
+                        child: RaisedButton(
+                  child: Text('Retry'),
+                  onPressed: () {
+                    cartItems();
+                    setState(() {});
+                  },
+                )));
               }
             },
           ),
@@ -331,8 +360,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                               alignment: Alignment.bottomRight,
                               child: RaisedButton(
                                 color: AppColors.blue,
-                                onPressed: () => remove(snapshot[index]['id'],
-                                    snapshot[index]['cost']),
+                                onPressed: () =>
+                                    remove(snapshot[index]['productID']),
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(50))),
@@ -402,7 +431,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               Align(
                 alignment: Alignment.topRight,
                 child: Text(
-                  '₦ ${displayNumber(500)}',
+                  '₦ ${displayNumber(servicecharge)}',
                   textAlign: TextAlign.right,
                   style: TextStyle(
                       color: AppColors.red,
@@ -430,7 +459,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               Align(
                 alignment: Alignment.topRight,
                 child: Text(
-                  '₦ ${displayNumber(summation + 500)}',
+                  '₦ ${displayNumber(summation + servicecharge)}',
                   textAlign: TextAlign.right,
                   style: TextStyle(
                       color: AppColors.red,

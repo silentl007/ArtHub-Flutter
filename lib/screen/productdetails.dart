@@ -3,7 +3,6 @@ import 'package:ArtHub/common/middlemen/middlemancart.dart';
 import 'package:ArtHub/common/model.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:ArtHub/screen/purchasescreen.dart';
 import 'package:number_display/number_display.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:http/http.dart' as http;
@@ -40,10 +39,11 @@ class _ProductDetailsState extends State<ProductDetails> {
     }
     return result;
   }
+
   cartItems() async {
     var link =
         'https://arthubserver.herokuapp.com/apiR/cartget/${widget.userDetails[0]}/${widget.userDetails[1]}';
-    
+
     try {
       var query = await http.get(link,
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
@@ -60,11 +60,8 @@ class _ProductDetailsState extends State<ProductDetails> {
         }
       }
     } catch (error) {
-      return _scaffoldKey.currentState.showSnackBar(SnackBar(
-        duration: Duration(seconds: 4),
-        content: Text('Connection failed! Please check internet connection!'),
-        backgroundColor: AppColors.red,
-      ));
+      return snackbar('Connection failed! Please check internet connection!', 4,
+          AppColors.red);
     }
   }
 
@@ -339,15 +336,13 @@ class _ProductDetailsState extends State<ProductDetails> {
   addcart(ParsedDataProduct cartitem) async {
     if (productIDs.isNotEmpty) {
       if (productIDs.contains(cartitem.productID)) {
-        return _scaffoldKey.currentState.showSnackBar(SnackBar(
-          duration: Duration(seconds: 4),
-          content: Text('Already in cart!'),
-          backgroundColor: AppColors.red,
-        ));
+        return snackbar('Already in cart!', 4, AppColors.red);
       } else {
+        snackbar('Please wait!', 1, AppColors.purple);
         added(cartitem);
       }
     } else {
+      snackbar('Please wait!', 1, AppColors.purple);
       added(cartitem);
     }
   }
@@ -375,18 +370,19 @@ class _ProductDetailsState extends State<ProductDetails> {
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
       if (add.statusCode == 200) {
         cartItems();
-        return _scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text('Added to cart!'),
-          duration: Duration(seconds: 1),
-          backgroundColor: AppColors.purple,
-        ));
+        return snackbar('Added to cart!', 1, AppColors.purple);
       }
     } catch (error) {
-      return _scaffoldKey.currentState.showSnackBar(SnackBar(
-        duration: Duration(seconds: 4),
-        content: Text('Connection failed! Please check internet connection!'),
-        backgroundColor: AppColors.red,
-      ));
+      return snackbar('Connection failed! Please check internet connection!', 4,
+          AppColors.red);
     }
+  }
+
+  snackbar(String text, int duration, Color background) {
+    return _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text(text),
+      duration: Duration(seconds: duration),
+      backgroundColor: background,
+    ));
   }
 }

@@ -3,6 +3,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class Server {
+  static const link = 'https://arthubserver.herokuapp.com';
+}
+
 class Data {
   static List<String> states = ['Lagos', 'Abuja', 'Bayelsa', 'Benin'];
   List<Map> galleries = [
@@ -719,6 +723,7 @@ class UploadWorks {
     Map<String, dynamic> uploadData = {
       'id': prefs.getString('id'),
       'name': prefs.getString('displayName'),
+      'email':prefs.getString('email'),
       'product': productName,
       'cost': cost,
       'type': type,

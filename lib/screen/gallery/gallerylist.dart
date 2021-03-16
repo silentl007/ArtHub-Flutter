@@ -20,12 +20,11 @@ class _GalleryListState extends State<GalleryList> {
     filtereddata = data;
   }
 
- 
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    double fontSize = size.height * 0.03875;
+    double fontSize30 = size.height * 0.03875;
+    double fontSize13 = size.height * 0.01627;
     double sizedBox9 = size.height * 0.01127;
     double sizedBox10 = size.height * 0.01252;
     double imageHeight20 = size.height * 0.025;
@@ -69,7 +68,7 @@ class _GalleryListState extends State<GalleryList> {
                                     style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         color: Colors.white,
-                                        fontSize: fontSize)),
+                                        fontSize: fontSize30)),
                                 SizedBox(
                                   height: sizedBox9,
                                 ),
@@ -88,13 +87,13 @@ class _GalleryListState extends State<GalleryList> {
                                       children: [
                                         Text('${filtereddata[index].address}',
                                             style: TextStyle(
-                                              color: Colors.white,
-                                            )),
+                                                color: Colors.white,
+                                                fontSize: fontSize13)),
                                         Text(
                                             '${filtereddata[index].location} State',
                                             style: TextStyle(
-                                              color: Colors.white,
-                                            )),
+                                                color: Colors.white,
+                                                fontSize: fontSize13)),
                                       ],
                                     ),
                                   ],
@@ -113,8 +112,8 @@ class _GalleryListState extends State<GalleryList> {
                                     ),
                                     Text('0${filtereddata[index].contact}',
                                         style: TextStyle(
-                                          color: Colors.white,
-                                        ))
+                                            color: Colors.white,
+                                            fontSize: fontSize13))
                                   ],
                                 )
                               ],
