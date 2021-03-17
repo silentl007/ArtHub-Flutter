@@ -27,12 +27,12 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   int summation = 0;
   int servicecharge = 500;
   int payment;
+  List costlist = [];
   @override
   void initState() {
     PaystackPlugin.initialize(publicKey: publicKey);
     super.initState();
     getprefs();
-    cartItems();
   }
 
   getprefs() async {
@@ -51,12 +51,11 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
       var decode = jsonDecode(query.body);
       data = decode;
-      if (query.statusCode == 200) {
-        data.forEach((element) {
-          summation += element['cost'];
-          print('costs - ${element['cost']}');
-        });
-        print('summation number is - $summation');
+      if (data.isNotEmpty) {
+        for (var items in data) {
+          costlist.add(items['cost']);
+        }
+        summation = costlist.fold(0, (a, b) => a + b);
       }
       return data;
     } catch (error) {
@@ -72,7 +71,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       var query = await http.delete(link);
       if (query.statusCode == 200) {
         summation = 0;
-        cartItems();
+        costlist = [];
         setState(() {});
       }
     } catch (error) {
@@ -87,7 +86,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     Map body = {
       "userID": widget.userDetails[0].toString(),
       "accountType": widget.userDetails[1].toString(),
-      "email":useremail,
+      "email": useremail,
       "itemnumber": data.length,
       "totalcost": payment,
       "itemscost": summation,
@@ -265,7 +264,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                         child: RaisedButton(
                   child: Text('Retry'),
                   onPressed: () {
-                    cartItems();
                     setState(() {});
                   },
                 )));

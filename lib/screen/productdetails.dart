@@ -131,7 +131,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                         });
                       },
                       items: data.images.map((imageURL) {
-                       
                         return Material(
                           color: Colors.transparent,
                           elevation: 5,
@@ -141,8 +140,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             height: size.height * 0.35,
                             width: size.width * .75,
                             child: CachedNetworkImage(
-                              imageUrl:
-                                  imageURL,
+                              imageUrl: imageURL,
                               placeholder: (context, url) => new Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,

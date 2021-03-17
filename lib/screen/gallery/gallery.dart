@@ -13,13 +13,11 @@ class Galleries extends StatefulWidget {
 class _GalleriesState extends State<Galleries> {
   Widgets classWidget = Widgets();
   List<ParsedDataGallery> collecteddata = List();
-  Future _future;
   String failed = 'failed';
   @override
   void initState() {
     super.initState();
     getprefs();
-    _future = _getGallery();
   }
 
   getprefs() async {
@@ -27,10 +25,9 @@ class _GalleriesState extends State<Galleries> {
     prefs.setBool('inapp', true);
   }
 
-  Future<List> _getGallery() async {
+   _getGallery() async {
     try {
-      var data =
-          await http.get('https://arthubserver.herokuapp.com/apiR/gallery');
+      var data = await http.get('${Server.link}/apiR/gallery');
       var jsonData = jsonDecode(data.body);
       if (jsonData != null) {
         for (var data in jsonData) {
@@ -43,8 +40,7 @@ class _GalleriesState extends State<Galleries> {
       }
       return collecteddata;
     } catch (error) {
-      List collecteddata = ['failed'];
-      return collecteddata;
+      return null;
     }
   }
 
@@ -56,9 +52,9 @@ class _GalleriesState extends State<Galleries> {
         backgroundColor: Colors.white,
         appBar: classWidget.apptitleBar(context, 'Galleries'),
         body: FutureBuilder(
-            future: _future,
+            future: _getGallery(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData == false) {
+              if (snapshot.connectionState != ConnectionState.done) {
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -72,13 +68,19 @@ class _GalleriesState extends State<Galleries> {
                     ],
                   ),
                 );
-              } else if (snapshot.data[0] == 'failed') {
-                return Center(
-                  child: Text('Internet Connection'),
-                );
-              } else {
+              } else if (snapshot.hasData) {
                 return GalleryList(
                   data: snapshot.data,
+                )
+                ;
+              } else {
+                return Center(
+                  child: RaisedButton(
+                    child: Text('Retry'),
+                    onPressed: () {
+                      setState(() {});
+                    },
+                  ),
                 );
               }
             }),
