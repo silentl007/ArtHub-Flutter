@@ -23,6 +23,8 @@ class _GalleryArtState extends State<GalleryArt> {
     List items = widget.worksdata;
     for (var data in items) {
       if (data['type'] == 'Painting' || data['type'] == 'painting') {
+        String wString = data['weight'].toString();
+        double weight = double.tryParse(wString);
         ParsedDataProduct parsed = ParsedDataProduct(
             artistname: data['name'],
             productname: data['product'],
@@ -34,12 +36,14 @@ class _GalleryArtState extends State<GalleryArt> {
             desc: data['desc'],
             description: data['description'],
             avail: data['available'],
-            weight: data['weight'],
+            weight: weight,
             dimension: data['dimension'],
             materials: data['materials'],
             images: data['images']);
         portraitworks.add(parsed);
       } else if (data['type'] == 'Sculptor' || data['type'] == 'sculptor') {
+        String wString = data['weight'].toString();
+        double weight = double.tryParse(wString);
         ParsedDataProduct parsed = ParsedDataProduct(
             artistname: data['name'],
             productname: data['product'],
@@ -51,13 +55,12 @@ class _GalleryArtState extends State<GalleryArt> {
             desc: data['desc'],
             description: data['description'],
             avail: data['available'],
-            weight: data['weight'],
+            weight: weight,
             dimension: data['dimension'],
             materials: data['materials'],
             images: data['images']);
         sculpworks.add(parsed);
       }
-      ;
     }
   }
 
