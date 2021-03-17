@@ -42,7 +42,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   cartItems() async {
     var link =
-        'https://arthubserver.herokuapp.com/apiR/cartget/${widget.userDetails[0]}/${widget.userDetails[1]}';
+        '${Server.link}/apiR/cartget/${widget.userDetails[0]}/${widget.userDetails[1]}';
 
     try {
       var query = await http.get(link,
@@ -130,11 +130,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                           _current = index;
                         });
                       },
-                      items: pseudodata.map((images) {
-                        // replace with data.image
+                      items: data.images.map((imageURL) {
+                       
                         return Material(
                           color: Colors.transparent,
-                          elevation: 10,
+                          elevation: 5,
                           borderRadius: BorderRadius.circular(10),
                           borderOnForeground: false,
                           child: Container(
@@ -142,7 +142,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             width: size.width * .75,
                             child: CachedNetworkImage(
                               imageUrl:
-                                  "http://via.placeholder.com/350x150", // replace with images
+                                  imageURL,
                               placeholder: (context, url) => new Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -274,7 +274,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                             color: AppColors.purple,
                                             fontWeight: FontWeight.w700)),
                                     Text(
-                                      '${data.description}:',
+                                      '${data.description}',
                                       style: TextStyle(
                                           fontSize: fontSize20,
                                           color: AppColors.purple),

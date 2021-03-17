@@ -350,6 +350,13 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                   fontSize: fontSize20),
                             ),
                             Text(
+                              '${snapshot[index]['type']}',
+                              style: TextStyle(
+                                  color: AppColors.purple,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: fontSize20),
+                            ),
+                            Text(
                               '₦ ${displayNumber(snapshot[index]['cost'])}',
                               style: TextStyle(
                                   color: AppColors.red,

@@ -35,8 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
     DrawerOptions(option: 'Profile', optionIcon: Icon(Icons.person)),
     DrawerOptions(option: 'Orders', optionIcon: Icon(Icons.menu)),
     DrawerOptions(option: 'Cart', optionIcon: Icon(Icons.shopping_cart)),
-    DrawerOptions(option: 'Artworks', optionIcon: Icon(Icons.file_upload)),
-    DrawerOptions(option: 'Upload', optionIcon: Icon(Icons.upload_file)),
+    DrawerOptions(option: 'Artworks', optionIcon: Icon(Icons.upload_file)),
+    DrawerOptions(option: 'Upload', optionIcon: Icon(Icons.file_upload)),
     DrawerOptions(option: 'Support', optionIcon: Icon(Icons.contact_support)),
   ];
 

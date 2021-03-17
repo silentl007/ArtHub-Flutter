@@ -29,6 +29,7 @@ class _UploadsState extends State<Uploads> {
     Size size = MediaQuery.of(context).size;
     double fontSize15 = size.height * 0.01870;
     double padding40 = size.height * 0.05;
+    final node = FocusScope.of(context);
     return SafeArea(
       child: Scaffold(
         appBar: classWidget.apptitleBar(context, 'Uploads'),
@@ -50,8 +51,10 @@ class _UploadsState extends State<Uploads> {
                     children: [
                       TextFormField(
                         textCapitalization: TextCapitalization.words,
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () => node.nextFocus(),
                         decoration: InputDecoration(
-                          labelText: 'Name of artwork',
+                          labelText: 'Name of Artwork',
                           icon: Icon(Icons.art_track),
                         ),
                         validator: (value) {
@@ -65,6 +68,8 @@ class _UploadsState extends State<Uploads> {
                       ),
                       TextFormField(
                         maxLength: 160,
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () => node.nextFocus(),
                         decoration: InputDecoration(
                           labelText: 'Description',
                           icon: Icon(Icons.book),
@@ -100,7 +105,7 @@ class _UploadsState extends State<Uploads> {
                                   onChanged: (value) {
                                     setState(() {
                                       defaultarttype = data.index;
-                                      uploadworksClass.type = arttypechoice;
+                                      uploadworksClass.type = data.artype;
                                     });
                                   },
                                 ))
@@ -171,6 +176,8 @@ class _UploadsState extends State<Uploads> {
                       ),
                       TextFormField(
                         keyboardType: TextInputType.number,
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () => node.nextFocus(),
                         decoration: InputDecoration(
                           labelText: 'Cost (₦)',
                           icon: Icon(Icons.money),
@@ -185,6 +192,8 @@ class _UploadsState extends State<Uploads> {
                         },
                       ),
                       TextFormField(
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () => node.nextFocus(),
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             labelText: 'Weight (KG)',
@@ -195,10 +204,12 @@ class _UploadsState extends State<Uploads> {
                           }
                         },
                         onSaved: (value) {
-                          uploadworksClass.weight = num.tryParse(value);
+                          uploadworksClass.weight = double.tryParse(value);
                         },
                       ),
                       TextFormField(
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () => node.nextFocus(),
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           labelText: 'Height (Inchs)',
@@ -210,10 +221,12 @@ class _UploadsState extends State<Uploads> {
                           }
                         },
                         onSaved: (value) {
-                          uploadworksClass.height = num.tryParse(value);
+                          uploadworksClass.height = double.tryParse(value);
                         },
                       ),
                       TextFormField(
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () => node.nextFocus(),
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           labelText: 'Width (Inchs)',
@@ -225,7 +238,7 @@ class _UploadsState extends State<Uploads> {
                           }
                         },
                         onSaved: (value) {
-                          uploadworksClass.width = num.tryParse(value);
+                          uploadworksClass.width = double.tryParse(value);
                         },
                       ),
                       TextFormField(
@@ -268,8 +281,6 @@ class _UploadsState extends State<Uploads> {
                                 _radiocolor = Colors.red;
                               });
                             } else {
-                              print('good');
-                              print(uploadworksClass.images);
                               keyForm.save();
                               _registerProcess();
                             }
@@ -293,9 +304,8 @@ class _UploadsState extends State<Uploads> {
     } else {
       var image = await picker.getImage(source: ImageSource.gallery);
       try {
-        var response = await client.uploadImage(
-          image.path, folder: 'arthub_folder'
-        );
+        var response =
+            await client.uploadImage(image.path, folder: 'arthub_folder');
         return response.secure_url;
       } catch (exception) {
         print(exception);
@@ -415,6 +425,7 @@ class _UploadsState extends State<Uploads> {
   }
 
   _uploadSuccess() {
+    clearData();
     return AlertDialog(
       content: Text('Upload Successful!'),
     );
@@ -424,6 +435,18 @@ class _UploadsState extends State<Uploads> {
     return AlertDialog(
       content: Text('Upload Unsuccessful, please check your connection'),
     );
+  }
+
+  clearData() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final keyForm = _key.currentState;
+      keyForm.reset();
+      setState(() {
+        defaultarttype = 0;
+        uploadworksClass.images = [];
+        uploadworksClass.avatar = '';
+      });
+    });
   }
 }
 

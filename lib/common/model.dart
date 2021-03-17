@@ -475,7 +475,7 @@ class ParsedDataProduct {
   String desc;
   String description;
   bool avail;
-  int weight;
+  double weight;
   String dimension;
   String materials;
   List images;
@@ -712,18 +712,19 @@ class UploadWorks {
   String type = '';
   String avatar = '';
   String description = '';
-  int height = 0;
-  int width = 0;
-  int weight = 0;
+  double height = 0;
+  double width = 0;
+  double weight = 0;
   String materials = '';
   List<String> images = [];
   Future upload() async {
     String uploadLink = '${Server.link}/apiS/uploadworks';
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, dynamic> uploadData = {
-      'id': prefs.getString('id'),
+      'userID': prefs.getString('id'),
       'name': prefs.getString('displayName'),
-      'email':prefs.getString('email'),
+      'email': prefs.getString('email'),
+      'accountType': prefs.getString('accountType'),
       'product': productName,
       'cost': cost,
       'type': type,
@@ -731,14 +732,17 @@ class UploadWorks {
       'description': description,
       'dimension': '$height x $width',
       'weight': weight,
-      'material used': materials,
+      'materials': materials,
       'images': images,
     };
+    print('upload data - $uploadData');
+    print('link - $uploadLink');
     try {
       var encodedData = jsonEncode(uploadData);
       var datasend = await http.post(uploadLink,
           body: encodedData,
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
+      print('status code - ${datasend.statusCode}');
       return datasend.statusCode;
     } catch (exception) {
       // print(exception);
