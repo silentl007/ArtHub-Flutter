@@ -751,8 +751,47 @@ class UploadWorks {
   }
 }
 
-class Gallery {
-  getData() async {}
-}
+class UpdateProfile {
+  int failed = 500;
+  String name;
+  String address;
+  int number;
+  String location;
+  String avatar = '';
+  String aboutme = '';
 
-class GetCart {}
+  Future updateUser() async {
+    String link = '${Server.link}/apiS/edit';
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Map<dynamic, dynamic> body = {
+      'userID': prefs.getString('id'),
+      'accountType': prefs.getString('accountType'),
+      'name': name,
+      'address': address,
+      'number': number,
+      'location': location,
+      'avatar': avatar,
+      'aboutme': aboutme,
+    };
+    print(body);
+    try {
+      var encoded = jsonEncode(body);
+      var update = await http.post(link,
+          body: encoded,
+          headers: {'Content-Type': 'application/json; charset=UTF-8'});
+      if (update.statusCode == 200) {
+        prefs.setString('displayName', name);
+        prefs.setString('address', address);
+        prefs.setString('location', location);
+        prefs.setString('avatar', avatar);
+        prefs.setString('aboutme', aboutme);
+        prefs.setInt('number', number);
+        return update.statusCode;
+      }
+      return update.statusCode;
+    } catch (error) {
+      print(error);
+      return failed;
+    }
+  }
+}

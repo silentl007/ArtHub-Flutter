@@ -2,6 +2,8 @@ import 'package:ArtHub/screen/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:cloudinary_client/cloudinary_client.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -10,10 +12,12 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   Widgets classWidget = Widgets();
+  UpdateProfile update = UpdateProfile();
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final List<String> states = ['Select State', 'Lagos', 'Bayelsa'];
   String selectedState = 'Select State';
+  String avatar = '';
   String email = '';
   String displayName = '';
   String address = '';
@@ -25,13 +29,14 @@ class _ProfileState extends State<Profile> {
   String appbarTitle = 'Profile';
   Color _stateColor = Colors.black;
   Icon editIcon = Icon(Icons.edit);
+  final client = CloudinaryClient(
+      '915364875791742', 'xXs8EIDnGzWGCFVZpr4buRyDOQk', 'mediacontrol');
+  final picker = ImagePicker();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getData();
-
-    print('fetch, and read user data in pref');
   }
 
   getData() async {
@@ -40,6 +45,7 @@ class _ProfileState extends State<Profile> {
     setState(() {
       edit = 'profile';
       email = prefs.getString('email');
+      avatar = prefs.getString('avatar');
       displayName = prefs.getString('displayName');
       accountType = prefs.getString('accountType');
       address = prefs.getString('address');
@@ -71,8 +77,10 @@ class _ProfileState extends State<Profile> {
               editIcon = Icon(Icons.home);
             });
           } else {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomeScreen()));
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+                (Route<dynamic> route) => false);
           }
         },
         backgroundColor: AppColors.purple,
@@ -107,8 +115,7 @@ class _ProfileState extends State<Profile> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(70)),
                   image: DecorationImage(
-                    image: NetworkImage(
-                        'https://res.cloudinary.com/mediacontrol/image/upload/v1607425064/esr5yzvqa_ud1ibc.png'),
+                    image: NetworkImage(avatar),
                     fit: BoxFit.cover,
                   ),
                 ))
@@ -233,7 +240,7 @@ class _ProfileState extends State<Profile> {
                     icon: Icon(Icons.title, color: AppColors.purple)),
                 onSaved: (text) {
                   setState(() {
-                    // return registerClass.fullName = text;
+                    return update.name = text;
                   });
                 },
                 validator: (value) {
@@ -256,7 +263,7 @@ class _ProfileState extends State<Profile> {
                     icon: Icon(Icons.phone, color: AppColors.purple)),
                 onSaved: (text) {
                   setState(() {
-                    // return registerClass.number = text;
+                    return update.number = num.tryParse(text);
                   });
                 },
                 validator: (value) {
@@ -280,7 +287,7 @@ class _ProfileState extends State<Profile> {
                     icon: Icon(Icons.gps_fixed, color: AppColors.purple)),
                 onSaved: (text) {
                   setState(() {
-                    // return registerClass.address = text;
+                    return update.address = text;
                   });
                 },
                 validator: (value) {
@@ -307,7 +314,7 @@ class _ProfileState extends State<Profile> {
                                   color: AppColors.purple)),
                           onSaved: (text) {
                             setState(() {
-                              // return registerClass.aboutme = text;
+                              return update.aboutme = text;
                             });
                           },
                           validator: (value) {
@@ -327,7 +334,9 @@ class _ProfileState extends State<Profile> {
                           height: 5,
                         ),
                         RaisedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            _avatarFuture();
+                          },
                           color: AppColors.purple,
                           shape: RoundedRectangleBorder(
                               borderRadius:
@@ -356,14 +365,15 @@ class _ProfileState extends State<Profile> {
                   onChanged: (text) {
                     setState(() {
                       selectedState = text;
-                      // registerClass.location = selectedState;
+                      update.location = selectedState;
                     });
                   },
                   items: states.map<DropdownMenuItem<String>>((text) {
                     return DropdownMenuItem(
                       child: Text(
                         text,
-                        style: TextStyle(color: _stateColor, fontSize: 18),
+                        style:
+                            TextStyle(color: _stateColor, fontSize: fontSize15),
                       ),
                       value: text,
                     );
@@ -378,12 +388,107 @@ class _ProfileState extends State<Profile> {
                   'Update',
                   style: TextStyle(fontSize: fontSize15, color: Colors.white),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  final key = _formKey.currentState;
+                  if (key.validate()) {
+                    if (selectedState == 'Select State') {
+                      setState(() {
+                        _stateColor = Colors.red;
+                      });
+                    } else {
+                      avatar = update.avatar;
+                      key.save();
+                      updateProfile();
+                    }
+                  }
+                },
               )
             ],
           ),
         ),
       ),
     );
+  }
+
+  updateProfile() {
+    return showDialog(
+        context: context,
+        child: FutureBuilder(
+            future: update.updateUser(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData == false) {
+                return Container(
+                  color: Colors.transparent,
+                  child: AlertDialog(
+                    content: LinearProgressIndicator(
+                      backgroundColor: Colors.white,
+                      valueColor:
+                          new AlwaysStoppedAnimation<Color>(AppColors.purple),
+                    ),
+                  ),
+                );
+              }
+              return Container(
+                  child:
+                      snapshot.data == 200 ? updateSuccess() : updateFailed());
+            }));
+  }
+
+  updateSuccess() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => HomeScreen()));
+    });
+  }
+
+  updateFailed() {
+    return AlertDialog(
+      content: Text('Please check your internet connection'),
+    );
+  }
+
+  _avatarFuture() {
+    return showDialog(
+        context: context,
+        child: FutureBuilder(
+          future: _avatarimagePicker(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return Container(
+                color: Colors.transparent,
+                child: AlertDialog(
+                  content: LinearProgressIndicator(
+                    backgroundColor: Colors.white,
+                    valueColor:
+                        new AlwaysStoppedAnimation<Color>(AppColors.purple),
+                  ),
+                ),
+              );
+            } else if (snapshot.hasData) {
+              avatar = snapshot.data;
+              return AlertDialog(
+                content: Text('Avatar upload complete'),
+              );
+            } else
+              return AlertDialog(
+                content: Text(
+                    'Unable to upload connect, please check your connetion'),
+              );
+          },
+        ));
+  }
+
+  _avatarimagePicker() async {
+    var image = await picker.getImage(source: ImageSource.gallery);
+    try {
+      var response =
+          await client.uploadImage(image.path, folder: 'arthub_folder');
+      return response.secure_url;
+    } catch (exception) {
+      print(exception);
+      return _scaffoldKey.currentState.showSnackBar(SnackBar(
+        backgroundColor: Colors.red,
+        content: Text('Something went wrong! Please try again!')));
+    }
   }
 }

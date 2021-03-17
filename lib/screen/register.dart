@@ -22,6 +22,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Registeration registerClass = Registeration();
   final _key = GlobalKey<FormState>();
   final passwordCtrl = TextEditingController();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _check = false;
   bool showpassword = true;
   bool showpassword1 = true;
@@ -40,6 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     double padding40 = size.height * 0.05;
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Colors.white,
         appBar: classWidget.apptitleBar(context, 'Register'),
         body: Stack(
@@ -398,17 +400,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   registerClass.account = accountchoice;
                                   keyForm.save();
                                   futureDiag(context);
-                                  setState(() {
-                                    keyForm.reset();
-                                    passwordCtrl.text = '';
-                                    defaultaccount = 0;
-                                    selectedState = states[0];
-                                    _check = false;
-                                    _terms = AppColors.purple;
-                                    _stateColor = Colors.black;
-                                    _radiocolor = AppColors.purple;
-                                    _avatarcolor = Colors.black;
-                                  });
                                 }
                               } else {
                                 registerClass.location = selectedState;
@@ -526,6 +517,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         return response.secure_url;
       } catch (exception) {
         print(exception);
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+        backgroundColor: Colors.red,
+        content: Text('Something went wrong! Please try again!')));
       }
     }
   }
