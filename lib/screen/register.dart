@@ -291,7 +291,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               },
                             ),
                             labelText: 'Password',
-                            helperText: 'must at least be six (6) characters and has at least a digit',
+                            helperText:
+                                'must at least be six (6) characters and has at least a digit',
                             icon:
                                 Icon(Icons.security, color: AppColors.purple)),
                         onSaved: (text) {
@@ -414,17 +415,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 registerClass.account = accountchoice;
                                 keyForm.save();
                                 futureDiag(context);
-                                setState(() {
-                                  keyForm.reset();
-                                  passwordCtrl.text = '';
-                                  defaultaccount = 0;
-                                  selectedState = states[0];
-                                  _check = false;
-                                  _terms = AppColors.purple;
-                                  _stateColor = Colors.black;
-                                  _radiocolor = AppColors.purple;
-                                  _avatarcolor = Colors.black;
-                                });
                               }
                             }
                           }
@@ -469,7 +459,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
             }));
   }
 
+  clearData() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final keyForm = _key.currentState;
+      keyForm.reset();
+      setState(() {
+        passwordCtrl.text = '';
+        defaultaccount = 0;
+        selectedState = states[0];
+        _check = false;
+        _terms = AppColors.purple;
+        _stateColor = Colors.black;
+        _radiocolor = AppColors.purple;
+        _avatarcolor = Colors.black;
+      });
+    });
+  }
+
   _registerationSuccess() {
+    clearData();
     return AlertDialog(
       content: Text(
           'A verification email is sent. Please verify your email to complete registration'),
