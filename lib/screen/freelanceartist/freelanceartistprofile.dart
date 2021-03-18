@@ -85,22 +85,22 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
                   ),
                 ),
               ),
-              Expanded(
-                flex: 1,
-                child: Padding(
-                  padding: EdgeInsets.only(top: padding15, bottom: padding10),
-                  child: Container(
-                    child: SingleChildScrollView(
-                      child: Text(
-                        '${widget.artistdata.aboutme}',
-                        textAlign: TextAlign.justify,
-                        textScaleFactor: 1,
-                        style: TextStyle(color: AppColors.purple),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // Expanded(
+              //   flex: 1,
+              //   child: Padding(
+              //     padding: EdgeInsets.only(top: padding15, bottom: padding10),
+              //     child: Container(
+              //       child: SingleChildScrollView(
+              //         child: Text(
+              //           '${widget.artistdata.aboutme}',
+              //           textAlign: TextAlign.justify,
+              //           textScaleFactor: 1,
+              //           style: TextStyle(color: AppColors.purple),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               Expanded(
                 flex: 2,
                 child: Padding(

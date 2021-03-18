@@ -60,26 +60,6 @@ flutter:
   assets:
     - assets/
     - assets/appimages/
-    - assets/portraits/1/
-    - assets/portraits/2/
-    - assets/portraits/3/
-    - assets/portraits/4/
-    - assets/portraits/5/
-    - assets/sculptors/1/
-    - assets/sculptors/2/
-    - assets/sculptors/3/
-    - assets/sculptors/4/
-    - assets/obeyi/
-    - assets/obeyi/1/
-    - assets/obeyi/2/
-    - assets/obeyi/3/
-    - assets/yerins/
-    - assets/yerins/1/
-    - assets/yerins/2/
-    - assets/zakum/
-    - assets/zakum/1/
-    - assets/zakum/2/
-    - assets/zakum/3/
     
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

@@ -13,11 +13,12 @@ class Galleries extends StatefulWidget {
 class _GalleriesState extends State<Galleries> {
   Widgets classWidget = Widgets();
   List<ParsedDataGallery> collecteddata = List();
-  String failed = 'failed';
+  Future gallery;
   @override
   void initState() {
     super.initState();
     getprefs();
+    gallery = _getGallery();
   }
 
   getprefs() async {
@@ -25,7 +26,7 @@ class _GalleriesState extends State<Galleries> {
     prefs.setBool('inapp', true);
   }
 
-   _getGallery() async {
+  Future _getGallery() async {
     try {
       var data = await http.get('${Server.link}/apiR/gallery');
       var jsonData = jsonDecode(data.body);
@@ -40,6 +41,7 @@ class _GalleriesState extends State<Galleries> {
       }
       return collecteddata;
     } catch (error) {
+      print('this is the error - $error');
       return null;
     }
   }
@@ -52,7 +54,7 @@ class _GalleriesState extends State<Galleries> {
         backgroundColor: Colors.white,
         appBar: classWidget.apptitleBar(context, 'Galleries'),
         body: FutureBuilder(
-            future: _getGallery(),
+            future: gallery,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
                 return Center(
@@ -71,14 +73,16 @@ class _GalleriesState extends State<Galleries> {
               } else if (snapshot.hasData) {
                 return GalleryList(
                   data: snapshot.data,
-                )
-                ;
+                );
               } else {
                 return Center(
                   child: RaisedButton(
                     child: Text('Retry'),
                     onPressed: () {
-                      setState(() {});
+                      gallery = _getGallery();
+                      setState(() {
+                        
+                      });
                     },
                   ),
                 );

@@ -5,22 +5,20 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class FreelanceSearch extends StatefulWidget {
   final List data;
-  FreelanceSearch(this.data);
+  FreelanceSearch({this.data});
   @override
-  _FreelanceSearchState createState() => _FreelanceSearchState();
+  _FreelanceSearchState createState() => _FreelanceSearchState(data);
 }
 
 class _FreelanceSearchState extends State<FreelanceSearch> {
-  List filteredartname = [];
+  final List data;
+  _FreelanceSearchState(this.data);
+  List filter = [];
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    filteredartname = widget.data;
-    filteredartname.forEach((item) {
-      print(item.avatar);
-      print(item.name);
-    });
+    filter = data;
   }
 
   @override
@@ -33,11 +31,11 @@ class _FreelanceSearchState extends State<FreelanceSearch> {
     return Container(
       padding: EdgeInsets.fromLTRB(padding20, padding15, padding10, 0),
       child: Column(
-        children: <Widget>[
+        children: [
           searchbar(),
           Expanded(
             child: GridView.builder(
-              itemCount: filteredartname.length,
+              itemCount: filter.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 20,
@@ -47,16 +45,17 @@ class _FreelanceSearchState extends State<FreelanceSearch> {
                 return Padding(
                   padding: EdgeInsets.only(top: padding8),
                   child: InkWell(
-                    onTap: () => profile(filteredartname[index]),
+                    onTap: () => profile(filter[index]),
                     child: Container(
                       child: Stack(
+                        fit: StackFit.expand,
                         children: [
                           ClipRRect(
                             borderRadius:
                                 BorderRadius.only(topLeft: Radius.circular(70)),
                             child: CachedNetworkImage(
-                              fit: BoxFit.cover,
-                              imageUrl: filteredartname[index].avatar,
+                              fit: BoxFit.fitWidth,
+                              imageUrl: filter[index].avatar,
                               placeholder: (context, url) => new Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -80,7 +79,7 @@ class _FreelanceSearchState extends State<FreelanceSearch> {
                             child: ListTile(
                               tileColor: AppColors.purple,
                               title: Text(
-                                '${filteredartname[index].name}',
+                                '${filter[index].name}',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     color: Colors.white,
@@ -120,7 +119,7 @@ class _FreelanceSearchState extends State<FreelanceSearch> {
         onChanged: (text) {
           text = text.toLowerCase();
           setState(() {
-            filteredartname = widget.data
+            filter = data
                 .where((items) => (items.name.toLowerCase().contains(text)))
                 .toList();
           });

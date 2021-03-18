@@ -14,7 +14,6 @@ class _GalleryListState extends State<GalleryList> {
   List filtereddata = List();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     filtereddata = data;
   }
@@ -36,7 +35,7 @@ class _GalleryListState extends State<GalleryList> {
         children: [
           searchbar(),
           Expanded(
-            child: ListView.builder(
+            child:  ListView.builder(
                 itemCount: filtereddata.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
