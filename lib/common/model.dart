@@ -595,7 +595,7 @@ class Registeration {
       'avatar': avatar,
       'number': number,
       'location': location,
-      'account': account,
+      'accountType': account,
       'aboutme': aboutme,
       'works': works,
       'orders': orders,
@@ -685,11 +685,13 @@ class Login {
 class ResetPassword {
   int datafailed = 400;
   String email;
+  String password;
   Future reset() async {
     String resetLink =
-        'https://galleryapp-backend.herokuapp.com/api/forgot-password';
+        '${Server.link}/apiC/resetpassword';
     Map databody = {
       'email': email,
+      'password': password
     };
     try {
       var encodedData = jsonEncode(databody);

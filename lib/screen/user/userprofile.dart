@@ -4,6 +4,7 @@ import 'package:ArtHub/common/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloudinary_client/cloudinary_client.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -118,7 +119,29 @@ class _ProfileState extends State<Profile> {
                     image: NetworkImage(avatar),
                     fit: BoxFit.cover,
                   ),
-                ))
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(70)),
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    imageUrl: avatar,
+                    placeholder: (context, url) => new Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          CircularProgressIndicator(
+                            valueColor: new AlwaysStoppedAnimation<Color>(
+                                AppColors.purple),
+                            strokeWidth: 5.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => new Icon(Icons.error),
+                  ),
+                ),
+              )
             : Container(),
         TextFormField(
           readOnly: true,
@@ -487,8 +510,8 @@ class _ProfileState extends State<Profile> {
     } catch (exception) {
       print(exception);
       return _scaffoldKey.currentState.showSnackBar(SnackBar(
-        backgroundColor: Colors.red,
-        content: Text('Something went wrong! Please try again!')));
+          backgroundColor: Colors.red,
+          content: Text('Something went wrong! Please try again!')));
     }
   }
 }

@@ -10,7 +10,6 @@ class GalleryList extends StatefulWidget {
 
 class _GalleryListState extends State<GalleryList> {
   final data;
-  String link = '';
   _GalleryListState({this.data});
   List filtereddata = List();
   @override

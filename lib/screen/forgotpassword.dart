@@ -8,15 +8,15 @@ class ForgotPasswordScreen extends StatefulWidget {
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widgets classWidget = Widgets();
-
   ResetPassword resetClass = ResetPassword();
-
   var emailText = TextEditingController();
-
   final textKey = GlobalKey<FormState>();
-
+  bool showpassword = true;
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    final node = FocusScope.of(context);
+    double padding40 = size.height * 0.05;
     return SafeArea(
       child: Scaffold(
         appBar: classWidget.apptitleBar(context, 'Forgot Password'),
@@ -27,42 +27,96 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   fit: BoxFit.cover)),
           child: Form(
             key: textKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                  child: Container(
-                    width: 300,
-                    child: TextFormField(
-                      controller: emailText,
-                      decoration: InputDecoration(
-                          labelText: 'Email', icon: Icon(Icons.email)),
-                      validator: (text) {
-                        if (text.length == 0) {
-                          return 'This field is empty';
-                        }
-                      },
+            child: Container(
+              padding:EdgeInsets.only(left: padding40, right: padding40),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextFormField(
+                    cursorColor: AppColors.purple,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    onEditingComplete: () => node.nextFocus(),
+                    decoration: InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.purple)),
+                        labelText: 'E-mail',
+                        icon: Icon(Icons.email, color: AppColors.purple)),
+                    onSaved: (text) {
+                      setState(() {
+                        return resetClass.email = text.toLowerCase();
+                      });
+                    },
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'This field is empty';
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  TextFormField(
+                    cursorColor: AppColors.purple,
+                    obscureText: showpassword,
+                    textInputAction: TextInputAction.next,
+                    onEditingComplete: () => node.nextFocus(),
+                    decoration: InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.purple)),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.remove_red_eye),
+                          color: AppColors.purple,
+                          onPressed: () {
+                            if (showpassword == true) {
+                              setState(() {
+                                showpassword = false;
+                              });
+                            } else {
+                              setState(() {
+                                showpassword = true;
+                              });
+                            }
+                          },
+                        ),
+                        labelText: 'Password',
+                        helperText:
+                            'must at least be six (6) characters and has at least a digit',
+                        icon: Icon(Icons.security, color: AppColors.purple)),
+                    onSaved: (text) {
+                      setState(() {
+                        return resetClass.password = text;
+                      });
+                    },
+                    validator: (value) {
+                      if (value.length < 6) {
+                        return 'Password is less than six (6) characters';
+                      } else if (value.contains(RegExp(r'[0-9]')) == false) {
+                        return 'Password does not contain a digit';
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  RaisedButton(
+                    onPressed: () {
+                      var keyform = textKey.currentState;
+                      if (keyform.validate()) {
+                        keyform.save();
+                        futureDiag();
+                      }
+                    },
+                    child: Text(
+                      'Reset',
+                      style: TextStyle(fontSize: 15, color: Colors.white),
                     ),
-                  ),
-                ),
-                SizedBox(height: 5,),
-                RaisedButton(
-                  onPressed: () {
-                    var keyform = textKey.currentState;
-                    if (keyform.validate()) {
-                      resetClass.email = emailText.text;
-                      futureDiag(context);
-                    }
-                  },
-                  child: Text(
-                    'Reset',
-                    style: TextStyle(fontSize: 15, color: Colors.white),
-                  ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(50))),
-                  color: AppColors.purple,
-                )
-              ],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(50))),
+                    color: AppColors.purple,
+                  )
+                ],
+              ),
             ),
           ),
         ),
@@ -70,7 +124,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
-  futureDiag(BuildContext context) {
+  futureDiag() {
     return showDialog(
         context: context,
         child: FutureBuilder(
@@ -86,7 +140,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 );
               }
               return Container(
-                child: snapshot.data == 200 ? _resetPass() : _resetFailed(),
+                child: snapshot.data == 200
+                    ? _resetPass()
+                    : snapshot.data == 401
+                        ? _resetEmail()
+                        : _resetFailed(),
               );
             }));
   }
@@ -97,9 +155,24 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     );
   }
 
+  _resetEmail() {
+    return AlertDialog(
+      content: Text('Email not found!'),
+    );
+  }
+
   _resetFailed() {
     return AlertDialog(
       content: Text('Unable to reset password'),
     );
+  }
+
+  clearData() {
+    var keyform = textKey.currentState;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        keyform.reset();
+      });
+    });
   }
 }

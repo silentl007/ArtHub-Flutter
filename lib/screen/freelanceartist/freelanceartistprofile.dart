@@ -1,6 +1,7 @@
 import 'package:ArtHub/common/model.dart';
 import 'package:ArtHub/common/middlemen/middlemanproductdetails.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class FreeLanceProfile extends StatefulWidget {
   final ParsedDataFreeLanceArts artistdata;
@@ -36,15 +37,32 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
                   child: Row(
                     children: [
                       Expanded(
-                          flex: 1,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(100)),
-                                image: DecorationImage(
-                                    image: AssetImage(widget.artistdata.avatar),
-                                    fit: BoxFit.cover)),
-                          )),
+                        flex: 1,
+                        child: ClipRRect(
+                          borderRadius:
+                              BorderRadius.only(topLeft: Radius.circular(100)),
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: widget.artistdata.avatar,
+                            placeholder: (context, url) => new Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  CircularProgressIndicator(
+                                    valueColor:
+                                        new AlwaysStoppedAnimation<Color>(
+                                            AppColors.purple),
+                                    strokeWidth: 5.0,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                new Icon(Icons.error),
+                          ),
+                        ),
+                      ),
                       Expanded(
                           flex: 1,
                           child: Align(
@@ -87,27 +105,51 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
                 flex: 2,
                 child: Padding(
                   padding: EdgeInsets.only(top: padding8),
-                  child: GridView.builder(
-                    itemCount: widget.artistdata.works.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 20,
-                        mainAxisSpacing: 20),
-                    itemBuilder: (BuildContext context, int index) {
-                      return InkWell(
-                        onTap: () =>
-                            details(context, widget.artistdata.works[index]),
-                        child: Container(
-                            decoration: BoxDecoration(
+                  child: widget.artistdata.works.length == 0
+                      ? Center(
+                          child: Text('Sorry, no item available!'),
+                        )
+                      : GridView.builder(
+                          itemCount: widget.artistdata.works.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 20,
+                                  mainAxisSpacing: 20),
+                          itemBuilder: (BuildContext context, int index) {
+                            return InkWell(
+                              onTap: () => details(
+                                  context, widget.artistdata.works[index]),
+                              child: ClipRRect(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20)),
-                                image: DecorationImage(
-                                    image: AssetImage(widget
-                                        .artistdata.works[index]['avatar']),
-                                    fit: BoxFit.cover))),
-                      );
-                    },
-                  ),
+                                child: CachedNetworkImage(
+                                  fit: BoxFit.cover,
+                                  imageUrl: widget.artistdata.works[index]
+                                      ['avatar'],
+                                  placeholder: (context, url) => new Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: [
+                                        CircularProgressIndicator(
+                                          valueColor:
+                                              new AlwaysStoppedAnimation<Color>(
+                                                  AppColors.purple),
+                                          strokeWidth: 5.0,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      new Icon(Icons.error),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                 ),
               ),
             ],
@@ -118,6 +160,8 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
   }
 
   void details(BuildContext context, Map element) {
+    String wString = element['weight'].toString();
+    double weight = double.tryParse(wString);
     ParsedDataProduct details = ParsedDataProduct(
         artistname: element['name'],
         productname: element['product'],
@@ -128,11 +172,11 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
         desc: element['desc'],
         description: element['description'],
         avail: element['available'],
-        weight: element['weight'],
+        weight: weight,
         dimension: element['dimension'],
-        materials: element['material used'],
+        materials: element['materials'],
         images: element['images']);
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => Middle(details)));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Middle(details)));
   }
 }
