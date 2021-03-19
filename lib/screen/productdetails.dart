@@ -22,8 +22,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   final displayNumber = createDisplay(length: 8, decimal: 0);
   List cart = [];
   List productIDs = [];
-  int itemnumber = 0;
-  List pseudodata = [1, 1, 1, 1, 1, 1, 1, 1];
+  int itemnumber;
   _ProductDetailsState(this.data);
   @override
   initState() {
@@ -94,11 +93,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                 padding: EdgeInsets.only(right: padding30),
                 child: Row(
                   children: [
-                    Text(
-                      '$itemnumber',
-                      style: TextStyle(
-                          color: AppColors.purple, fontSize: fontSize20),
-                    ),
+                    itemnumber == null
+                        ? loading()
+                        : Text(
+                            '$itemnumber',
+                            style: TextStyle(
+                                color: AppColors.purple, fontSize: fontSize20),
+                          ),
                     Icon(
                       Icons.shopping_cart,
                       size: 30,
@@ -133,7 +134,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       items: data.images.map((imageURL) {
                         return Material(
                           color: Colors.transparent,
-                          elevation: 5,
+                          // elevation: 1,
                           borderRadius: BorderRadius.circular(10),
                           borderOnForeground: false,
                           child: Container(
@@ -336,44 +337,61 @@ class _ProductDetailsState extends State<ProductDetails> {
       if (productIDs.contains(cartitem.productID)) {
         return snackbar('Already in cart!', 4, AppColors.red);
       } else {
-        snackbar('Please wait!', 1, AppColors.purple);
+        snackbar('Please wait!', 1, AppColors.grey);
         added(cartitem);
       }
     } else {
-      snackbar('Please wait!', 1, AppColors.purple);
+      snackbar('Please wait!', 1, AppColors.grey);
       added(cartitem);
     }
   }
 
   added(ParsedDataProduct cartitem) async {
-    var link =
-        'https://arthubserver.herokuapp.com/apiS/cartadd/${widget.userDetails[0]}/${widget.userDetails[1]}';
-    Map<String, dynamic> dataBody = {
-      "productID": cartitem.productID,
-      "accountType": cartitem.accountType,
-      "name": cartitem.artistname,
-      "product": cartitem.productname,
-      "cost": cartitem.cost,
-      "type": cartitem.type,
-      "avatar": cartitem.avatar,
-      "description": cartitem.description,
-      "dimension": cartitem.dimension,
-      "weight": cartitem.weight,
-      "materials": cartitem.materials,
-    };
-    var encodedData = jsonEncode(dataBody);
-    try {
-      var add = await http.post(link,
-          body: encodedData,
-          headers: {'Content-Type': 'application/json; charset=UTF-8'});
-      if (add.statusCode == 200) {
-        cartItems();
-        return snackbar('Added to cart!', 1, AppColors.purple);
+    if (itemnumber == null) {
+      return snackbar('Please wait! Fetching data!', 1, AppColors.grey);
+    } else {
+      var link =
+          '${Server.link}/apiS/cartadd/${widget.userDetails[0]}/${widget.userDetails[1]}';
+      Map<String, dynamic> dataBody = {
+        "productID": cartitem.productID,
+        "accountType": cartitem.accountType,
+        "artistemail": cartitem.artistemail,
+        "name": cartitem.artistname,
+        "product": cartitem.productname,
+        "cost": cartitem.cost,
+        "type": cartitem.type,
+        "avatar": cartitem.avatar,
+        "description": cartitem.description,
+        "dimension": cartitem.dimension,
+        "weight": cartitem.weight,
+        "materials": cartitem.materials,
+      };
+      var encodedData = jsonEncode(dataBody);
+      try {
+        var add = await http.post(link,
+            body: encodedData,
+            headers: {'Content-Type': 'application/json; charset=UTF-8'});
+        if (add.statusCode == 200) {
+          cartItems();
+          return snackbar('Added to cart!', 1, AppColors.purple);
+        }
+      } catch (error) {
+        return snackbar('Connection failed! Please check internet connection!',
+            4, AppColors.red);
       }
-    } catch (error) {
-      return snackbar('Connection failed! Please check internet connection!', 4,
-          AppColors.red);
     }
+  }
+
+  loading() {
+    return SizedBox(
+      height: 15,
+      width: 15,
+      child: CircularProgressIndicator(
+        // value: 10,
+        valueColor: new AlwaysStoppedAnimation<Color>(AppColors.purple),
+        strokeWidth: 5.0,
+      ),
+    );
   }
 
   snackbar(String text, int duration, Color background) {

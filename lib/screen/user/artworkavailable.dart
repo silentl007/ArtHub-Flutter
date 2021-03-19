@@ -58,8 +58,11 @@ class _AvailableState extends State<Available> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    double padding40 = size.height * 0.05;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         key: _scaffoldKey,
         body: Container(
           child: FutureBuilder(
@@ -71,7 +74,7 @@ class _AvailableState extends State<Available> {
                 return Container(
                   child: snapshot.data.length != 0
                       ? Padding(
-                          padding: EdgeInsets.all(40),
+                          padding: EdgeInsets.all(padding40),
                           child: itembuilder(snapshot.data),
                         )
                       : Center(

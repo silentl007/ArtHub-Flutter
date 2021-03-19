@@ -23,6 +23,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String useremail = '';
   String publicKey = 'pk_test_317423d856fb6d9a2201e6b5540a0ad74904da87';
+  String address = '';
+  String location = '';
   List data;
   int summation = 0;
   int servicecharge = 500;
@@ -38,6 +40,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   getprefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     useremail = prefs.getString('email');
+    address = prefs.getString('address');
+    location = prefs.getString('location');
     prefs.setBool('inapp', true);
   }
 
@@ -81,13 +85,40 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     }
   }
 
+  checkitemsavailability() async {
+    snackbar('Please wait! Checking product availability', 4, AppColors.grey);
+    String link = '${Server.link}/apiS/checkcart';
+    Map<String, dynamic> body = {"purchaseditems": data, "test": "tested"};
+    var encodedData = jsonEncode(body);
+    try {
+      var datasend = await http.post(link,
+          body: encodedData,
+          headers: {'Content-Type': 'application/json; charset=UTF-8'});
+      var decoded = jsonDecode(datasend.body);
+      print(decoded);
+      if (datasend.statusCode == 200) {
+        snackbar('All items checked and are available', 4, AppColors.purple);
+      } else if (datasend.statusCode == 404) {
+        snackbar('this item is not available - ${decoded['itemname']}', 4,
+            AppColors.red);
+      } else {
+        snackbar('server error', 4, AppColors.red);
+      }
+    } catch (error) {
+      print('the error of checkitemsavailability is - $error');
+      return snackbar('Connection failed! Please check internet connection!', 4,
+          AppColors.red);
+    }
+  }
+
   purchaseOrder() async {
-    String link = '${Server.link}/purchaseorders';
+    String link = '${Server.link}/apiS/purchaseorders';
     Map body = {
       "userID": widget.userDetails[0].toString(),
       "accountType": widget.userDetails[1].toString(),
       "email": useremail,
       "itemnumber": data.length,
+      "deliveryAddress": '$address, $location State',
       "totalcost": payment,
       "itemscost": summation,
       "purchaseditems": data,
@@ -151,7 +182,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     );
     // logo: Image.asset('assets/appimages/stacklogo.png'));
     if (response.status == true) {
-      snackbar('Please wait!', 1, AppColors.purple);
+      snackbar('Please wait!', 1, AppColors.grey);
       purchaseOrder();
     } else {
       _showErrorDialog();
@@ -486,7 +517,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                   style: TextStyle(fontSize: fontSize20, color: Colors.white),
                 ),
                 color: AppColors.red,
-                onPressed: () => chargeCard(),
+                onPressed: () => checkitemsavailability(),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(50),
@@ -509,3 +540,5 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     );
   }
 }
+
+// chargecard() to pull up paystack

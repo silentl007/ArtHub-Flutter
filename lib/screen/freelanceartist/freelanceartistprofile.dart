@@ -166,6 +166,8 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
         artistname: element['name'],
         productname: element['product'],
         productID: element['productID'],
+        accountType: element['accountType'],
+        artistemail: element['email'],
         cost: element['cost'],
         type: element['type'],
         avatar: element['avatar'],

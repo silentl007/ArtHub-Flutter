@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 // ------------ Misc classes ----------------
 
 class Server {
@@ -82,6 +81,7 @@ class ParsedDataProduct {
   String productID;
   String artistname;
   String productname;
+  String artistemail;
   int cost;
   String accountType;
   String type;
@@ -98,6 +98,7 @@ class ParsedDataProduct {
       this.productID,
       this.artistname,
       this.productname,
+      this.artistemail,
       this.accountType,
       this.cost,
       this.type,
@@ -124,12 +125,10 @@ class Registeration {
   String number = '';
   String location = '';
   String account = '';
-  String aboutme = ''; 
-  List orders = []; 
-  List works =
-      []; 
-  List purchasedworks =
-      []; 
+  String aboutme = '';
+  List orders = [];
+  List works = [];
+  List purchasedworks = [];
 
   Future register() async {
     String registerdbLink = '${Server.link}/apiS/register';
@@ -203,8 +202,7 @@ class Login {
         }
         prefs.setBool('inapp', false);
         return datasend.statusCode;
-      }
-      else if (datasend.statusCode == 401) {
+      } else if (datasend.statusCode == 401) {
         return datasend.statusCode;
       } else {
         return internetNetwork;
@@ -221,12 +219,8 @@ class ResetPassword {
   String email;
   String password;
   Future reset() async {
-    String resetLink =
-        '${Server.link}/apiC/resetpassword';
-    Map databody = {
-      'email': email,
-      'password': password
-    };
+    String resetLink = '${Server.link}/apiC/resetpassword';
+    Map databody = {'email': email, 'password': password};
     try {
       var encodedData = jsonEncode(databody);
       var datasend = await http.put(resetLink,
