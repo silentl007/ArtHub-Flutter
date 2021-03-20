@@ -6,8 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'orderspending.dart';
 
 class Orders extends StatefulWidget {
-  int page;
-  List userdetails;
+  final int page;
+  final List userdetails;
   Orders({this.page, this.userdetails});
   @override
   _OrdersState createState() => _OrdersState();
@@ -40,6 +40,7 @@ class _OrdersState extends State<Orders> {
       length: 2,
       child: SafeArea(
           child: Scaffold(
+            backgroundColor: Colors.white,
         appBar: AppBar(
             title: Padding(
               padding: EdgeInsets.only(right: padding30),
@@ -80,8 +81,8 @@ class _OrdersState extends State<Orders> {
           onWillPop: () => _backtoHome(),
           child: TabBarView(
             children: [
-              Delivered(),
-              Pending(),
+              Delivered(widget.userdetails),
+              Pending(widget.userdetails),
             ],
           ),
         ),

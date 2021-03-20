@@ -120,8 +120,8 @@ class ParsedOrder {
   int totalcost;
   int itemscost;
   List purchaseditems;
-  ParsedOrder(this.orderID, this.status, this.itemnumber, this.dateOrdered,
-      this.totalcost, this.itemscost, this.purchaseditems);
+  ParsedOrder({this.orderID, this.status, this.itemnumber, this.dateOrdered,
+      this.totalcost, this.itemscost, this.purchaseditems});
 }
 
 // ------------ Endpoints ----------------

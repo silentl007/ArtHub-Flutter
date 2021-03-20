@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:ArtHub/common/middlemen/middleorders.dart';
 import 'package:ArtHub/screen/homescreen.dart';
-import 'package:ArtHub/screen/user/userorders.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
@@ -138,7 +138,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-                builder: (context) => Orders(
+                builder: (context) => MiddleOrders(
                       page: 1,
                     )),
             (Route<dynamic> route) => false);

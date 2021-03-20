@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MiddleOrders extends StatefulWidget {
-  int page;
+  final int page;
   MiddleOrders({this.page});
   @override
   _MiddleOrdersState createState() => _MiddleOrdersState();

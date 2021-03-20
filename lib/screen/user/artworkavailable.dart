@@ -71,36 +71,34 @@ class _AvailableState extends State<Available> {
       child: Scaffold(
         backgroundColor: Colors.white,
         key: _scaffoldKey,
-        body: Container(
-          child: FutureBuilder(
-            future: upload,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState != ConnectionState.done) {
-                return loading();
-              } else if (snapshot.hasData == true) {
-                return Container(
-                  child: snapshot.data.length != 0
-                      ? Padding(
-                          padding: EdgeInsets.all(padding40),
-                          child: itembuilder(snapshot.data),
-                        )
-                      : Center(
-                          child: Text('No item uploaded yet!'),
-                        ),
-                );
-              } else {
-                return Container(
-                    child: Center(
-                        child: RaisedButton(
-                  child: Text('Retry'),
-                  onPressed: () {
-                    upload = uploads();
-                    setState(() {});
-                  },
-                )));
-              }
-            },
-          ),
+        body: FutureBuilder(
+          future: upload,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return loading();
+            } else if (snapshot.hasData == true) {
+              return Container(
+                child: snapshot.data.length != 0
+                    ? Padding(
+                        padding: EdgeInsets.all(padding40),
+                        child: itembuilder(snapshot.data),
+                      )
+                    : Center(
+                        child: Text('No item uploaded yet!'),
+                      ),
+              );
+            } else {
+              return Container(
+                  child: Center(
+                      child: RaisedButton(
+                child: Text('Retry'),
+                onPressed: () {
+                  upload = uploads();
+                  setState(() {});
+                },
+              )));
+            }
+          },
         ),
       ),
     );
