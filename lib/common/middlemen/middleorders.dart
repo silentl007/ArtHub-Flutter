@@ -1,22 +1,32 @@
 import 'package:ArtHub/common/model.dart';
 import 'package:ArtHub/screen/freelanceartist/freelanceartistlist.dart';
+import 'package:ArtHub/screen/user/userorders.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MiddleArt extends StatefulWidget {
+class MiddleOrders extends StatefulWidget {
+  int page;
+  MiddleOrders({this.page});
   @override
-  _MiddleArtState createState() => _MiddleArtState();
+  _MiddleOrdersState createState() => _MiddleOrdersState();
 }
 
-class _MiddleArtState extends State<MiddleArt> {
+class _MiddleOrdersState extends State<MiddleOrders> {
   List user = [];
-
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   if (widget.page == null) {
+  //     widget.page = 0;
+  //   }
+  // }
   getPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     user.insert(0, prefs.getString('id'));
     user.insert(1, prefs.getString('accountType'));
     return user;
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -27,7 +37,7 @@ class _MiddleArtState extends State<MiddleArt> {
           if (snapshot.connectionState != ConnectionState.done) {
             return loading();
           } else if (snapshot.data.length == 2) {
-            productscreen(snapshot.data);
+            orderscreen(snapshot.data);
             return Container();
           } else {
             return Container();
@@ -46,12 +56,10 @@ class _MiddleArtState extends State<MiddleArt> {
     );
   }
 
-  productscreen(List data) {
+  orderscreen(List data) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      return Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => FreeLanceArtist()));
+      return Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => Orders(userdetails: data, page: widget.page,)));
     });
   }
 }

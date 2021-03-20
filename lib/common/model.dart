@@ -112,6 +112,18 @@ class ParsedDataProduct {
       this.images});
 }
 
+class ParsedOrder {
+  String orderID;
+  String status;
+  int itemnumber;
+  String dateOrdered;
+  int totalcost;
+  int itemscost;
+  List purchaseditems;
+  ParsedOrder(this.orderID, this.status, this.itemnumber, this.dateOrdered,
+      this.totalcost, this.itemscost, this.purchaseditems);
+}
+
 // ------------ Endpoints ----------------
 
 class Registeration {

@@ -22,6 +22,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   Widgets classWidget = Widgets();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String useremail = '';
+  String username = '';
   String publicKey = 'pk_test_317423d856fb6d9a2201e6b5540a0ad74904da87';
   String address = '';
   String location = '';
@@ -40,6 +41,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   getprefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     useremail = prefs.getString('email');
+    username = prefs.getString('displayName');
     address = prefs.getString('address');
     location = prefs.getString('location');
     prefs.setBool('inapp', true);
@@ -97,10 +99,11 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       var decoded = jsonDecode(datasend.body);
       print(decoded);
       if (datasend.statusCode == 200) {
-        snackbar('All items checked and are available', 4, AppColors.purple);
+        chargeCard();
+        // snackbar('All items checked and are available', 4, AppColors.purple);
       } else if (datasend.statusCode == 404) {
-        snackbar('this item is not available - ${decoded['itemname']}', 4,
-            AppColors.red);
+        snackbar('Please remove the unavailable item - ${decoded['itemname']}',
+            4, AppColors.red);
       } else {
         snackbar('server error', 4, AppColors.red);
       }
@@ -116,6 +119,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     Map body = {
       "userID": widget.userDetails[0].toString(),
       "accountType": widget.userDetails[1].toString(),
+      "name": username,
       "email": useremail,
       "itemnumber": data.length,
       "deliveryAddress": '$address, $location State',
@@ -129,7 +133,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           body: encodedData,
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
       if (datasend.statusCode == 200) {
-        clearcart();
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -146,8 +149,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           AppColors.red);
     }
   }
-
-  clearcart() async {}
 
   snackbar(String text, int duration, Color background) {
     return _scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -540,5 +541,3 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     );
   }
 }
-
-// chargecard() to pull up paystack

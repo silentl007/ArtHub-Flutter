@@ -1,12 +1,11 @@
-import 'package:ArtHub/common/middlemen/middlefreelance.dart';
+// import 'package:ArtHub/common/middlemen/middlefreelance.dart';
 import 'package:ArtHub/common/middlemen/middlemancart.dart';
 import 'package:ArtHub/common/middlemen/middlemanuserartworks.dart';
+import 'package:ArtHub/common/middlemen/middleorders.dart';
 import 'package:ArtHub/screen/aboutus.dart';
 import 'package:ArtHub/screen/freelanceartist/freelanceartistlist.dart';
 import 'package:ArtHub/screen/login.dart';
-import 'package:ArtHub/screen/purchasescreen.dart';
 import 'package:ArtHub/screen/uploads.dart';
-import 'package:ArtHub/screen/user/userartworks.dart';
 import 'package:ArtHub/screen/user/userorders.dart';
 import 'package:ArtHub/screen/user/userprofile.dart';
 import 'package:flutter/material.dart';
@@ -154,12 +153,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void galleries() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => Galleries()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => Galleries()));
   }
 
   void freelancers() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MiddleArt()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => FreeLanceArtist()));
   }
 
   Future<bool> _backFunction() {
@@ -276,7 +276,7 @@ class _HomeScreenState extends State<HomeScreen> {
           context, MaterialPageRoute(builder: (context) => Profile()));
     } else if (index == 1) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Orders()));
+          context, MaterialPageRoute(builder: (context) => MiddleOrders()));
     } else if (index == 2) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => MiddleCart()));
@@ -292,13 +292,13 @@ class _HomeScreenState extends State<HomeScreen> {
           context, MaterialPageRoute(builder: (context) => Profile()));
     } else if (index == 1) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Orders()));
+          context, MaterialPageRoute(builder: (context) => MiddleOrders()));
     } else if (index == 2) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => MiddleCart()));
     } else if (index == 3) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MiddleUserArtWorks()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => MiddleUserArtWorks()));
     } else if (index == 4) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Uploads()));

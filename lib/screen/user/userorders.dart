@@ -7,7 +7,8 @@ import 'orderspending.dart';
 
 class Orders extends StatefulWidget {
   int page;
-  Orders({this.page});
+  List userdetails;
+  Orders({this.page, this.userdetails});
   @override
   _OrdersState createState() => _OrdersState();
 }
