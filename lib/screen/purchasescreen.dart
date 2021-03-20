@@ -298,6 +298,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                         child: RaisedButton(
                   child: Text('Retry'),
                   onPressed: () {
+                    cartItemsVar = cartItems();
                     setState(() {});
                   },
                 )));

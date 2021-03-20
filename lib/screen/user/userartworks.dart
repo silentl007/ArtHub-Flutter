@@ -22,6 +22,7 @@ class _ArtworksState extends State<Artworks> {
       length: 2,
       child: SafeArea(
           child: Scaffold(
+            backgroundColor: Colors.white,
         appBar: AppBar(
             title: Padding(
               padding: EdgeInsets.only(right: padding30),
@@ -61,7 +62,7 @@ class _ArtworksState extends State<Artworks> {
         body: TabBarView(
           children: [
             Available(userDetails: widget.userDetails),
-            Sold(),
+            Sold(widget.userDetails),
           ],
         ),
       )),

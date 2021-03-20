@@ -16,6 +16,14 @@ class _AvailableState extends State<Available> {
   final displayNumber = createDisplay(length: 8, decimal: 0);
   List data = [];
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  var upload;
+
+  @override
+  void initState() {
+    super.initState();
+    upload = uploads();
+  }
+
   uploads() async {
     String link =
         '${Server.link}/apiR/uploaded/${widget.userDetails[0]}/${widget.userDetails[1]}';
@@ -27,8 +35,7 @@ class _AvailableState extends State<Available> {
       data = decode;
       return data;
     } catch (error) {
-      snackbar('Connection failed! Please check internet connection!', 4,
-          AppColors.red);
+      return null;
     }
   }
 
@@ -66,7 +73,7 @@ class _AvailableState extends State<Available> {
         key: _scaffoldKey,
         body: Container(
           child: FutureBuilder(
-            future: uploads(),
+            future: upload,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
                 return loading();
@@ -87,7 +94,7 @@ class _AvailableState extends State<Available> {
                         child: RaisedButton(
                   child: Text('Retry'),
                   onPressed: () {
-                    uploads();
+                    upload = uploads();
                     setState(() {});
                   },
                 )));
