@@ -28,7 +28,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           child: Form(
             key: textKey,
             child: Container(
-              padding:EdgeInsets.only(left: padding40, right: padding40),
+              padding: EdgeInsets.only(left: padding40, right: padding40),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -150,6 +150,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   }
 
   _resetPass() {
+    clearData();
     return AlertDialog(
       content: Text('Password reset has been sent to your email'),
     );
@@ -170,9 +171,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   clearData() {
     var keyform = textKey.currentState;
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        keyform.reset();
-      });
+      keyform.reset();
+      setState(() {});
     });
   }
 }

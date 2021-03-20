@@ -19,6 +19,7 @@ class PurchaseScreen extends StatefulWidget {
 
 class _PurchaseScreenState extends State<PurchaseScreen> {
   final displayNumber = createDisplay(length: 8, decimal: 0);
+  var cartItemsVar;
   Widgets classWidget = Widgets();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String useremail = '';
@@ -36,6 +37,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     PaystackPlugin.initialize(publicKey: publicKey);
     super.initState();
     getprefs();
+    cartItemsVar = cartItems();
   }
 
   getprefs() async {
@@ -88,7 +90,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   }
 
   checkitemsavailability() async {
-    snackbar('Please wait! Checking product availability', 4, AppColors.grey);
+    snackbar('Please wait! Checking product availability', 4, AppColors.purple);
     String link = '${Server.link}/apiS/checkcart';
     Map<String, dynamic> body = {"purchaseditems": data, "test": "tested"};
     var encodedData = jsonEncode(body);
@@ -183,7 +185,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     );
     // logo: Image.asset('assets/appimages/stacklogo.png'));
     if (response.status == true) {
-      snackbar('Please wait!', 1, AppColors.grey);
+      snackbar('Please wait!', 1, AppColors.purple);
       purchaseOrder();
     } else {
       _showErrorDialog();
@@ -267,7 +269,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         body: Container(
           color: Colors.white,
           child: FutureBuilder(
-            future: cartItems(),
+            future: cartItemsVar,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
                 return loading();
@@ -519,6 +521,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                 ),
                 color: AppColors.red,
                 onPressed: () => checkitemsavailability(),
+                // onPressed: ()=> purchaseOrder(),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(50),

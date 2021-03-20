@@ -328,7 +328,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   void purchasecreen() {
-    Navigator.push(
+    Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => MiddleCart()));
   }
 
@@ -337,18 +337,18 @@ class _ProductDetailsState extends State<ProductDetails> {
       if (productIDs.contains(cartitem.productID)) {
         return snackbar('Already in cart!', 4, AppColors.red);
       } else {
-        snackbar('Please wait!', 1, AppColors.grey);
+        snackbar('Please wait!', 1, AppColors.purple);
         added(cartitem);
       }
     } else {
-      snackbar('Please wait!', 1, AppColors.grey);
+      snackbar('Please wait!', 1, AppColors.purple);
       added(cartitem);
     }
   }
 
   added(ParsedDataProduct cartitem) async {
     if (itemnumber == null) {
-      return snackbar('Please wait! Fetching data!', 1, AppColors.grey);
+      return snackbar('Please wait! Fetching data!', 1, AppColors.purple);
     } else {
       var link =
           '${Server.link}/apiS/cartadd/${widget.userDetails[0]}/${widget.userDetails[1]}';
