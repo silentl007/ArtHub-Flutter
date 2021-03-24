@@ -80,6 +80,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       if (query.statusCode == 200) {
         summation = 0;
         costlist = [];
+        cartItemsVar = cartItems();
         setState(() {});
       }
     } catch (error) {

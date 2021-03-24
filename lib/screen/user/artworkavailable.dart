@@ -46,6 +46,7 @@ class _AvailableState extends State<Available> {
     try {
       var query = await http.delete(link);
       if (query.statusCode == 200) {
+        upload = uploads();
         setState(() {});
       }
     } catch (error) {
