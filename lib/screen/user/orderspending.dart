@@ -4,6 +4,7 @@ import 'package:ArtHub/common/model.dart';
 import 'dart:convert';
 import 'package:number_display/number_display.dart';
 import 'package:http/http.dart' as http;
+import 'package:qr_flutter/qr_flutter.dart';
 
 class Pending extends StatefulWidget {
   List userDetails;
@@ -87,6 +88,8 @@ class _PendingState extends State<Pending> {
   }
 
   itembuilder(List snapshot) {
+    Size size = MediaQuery.of(context).size;
+    double qrsize200 = size.height * 0.25;
     return ListView.builder(
       itemCount: snapshot.length,
       itemBuilder: (BuildContext context, int index) {
@@ -97,6 +100,11 @@ class _PendingState extends State<Pending> {
             ),
           ),
           child: ListTile(
+            onLongPress: () {
+              showQR(
+                snapshot[index].orderID, qrsize200
+              );
+            },
             onTap: () {
               orderDetails(snapshot[index].purchaseditems);
             },
@@ -114,9 +122,9 @@ class _PendingState extends State<Pending> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text('Date: ${snapshot[index].dateOrdered}'),
-                Text('Number of items: ${snapshot[index].itemnumber}'),
+                Text('No. of items: ${snapshot[index].itemnumber}'),
                 Text(
-                    'Total cost of items: ₦${displayNumber(snapshot[index].itemscost)}'),
+                    'Cost of items: ₦${displayNumber(snapshot[index].itemscost)}'),
               ],
             ),
           ),
@@ -137,5 +145,18 @@ class _PendingState extends State<Pending> {
         strokeWidth: 9.0,
       ),
     );
+  }
+
+  showQR(String orderID, double qrsize) {
+    return showDialog(
+        context: context,
+        child: Center(
+          child: QrImage(
+            backgroundColor: Colors.white,
+            size: qrsize,
+            data: orderID,
+            version: QrVersions.auto,
+          ),
+        ));
   }
 }
