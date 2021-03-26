@@ -419,7 +419,7 @@ class _ProfileState extends State<Profile> {
                         _stateColor = Colors.red;
                       });
                     } else {
-                      avatar = update.avatar;
+                      update.avatar = avatar;
                       key.save();
                       updateProfile();
                     }
