@@ -54,7 +54,7 @@ class _FreelanceSearchState extends State<FreelanceSearch> {
                             borderRadius:
                                 BorderRadius.only(topLeft: Radius.circular(70)),
                             child: CachedNetworkImage(
-                              fit: BoxFit.fitWidth,
+                              fit: BoxFit.fill,
                               imageUrl: filter[index].avatar,
                               placeholder: (context, url) => new Center(
                                 child: Column(
