@@ -121,58 +121,122 @@ class _UploadsState extends State<Uploads> {
                       SizedBox(
                         height: 5,
                       ),
-                      RaisedButton(
-                        onPressed: () => _avatarFuture(),
-                        color: AppColors.purple,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(150))),
-                        child: Row(
-                          children: [
-                            Icon(Icons.upload_file, color: Colors.white),
-                            SizedBox(
-                              width: 3,
+                      Row(
+                        children: [
+                          RaisedButton(
+                            onPressed: () => _avatarFuture(),
+                            color: AppColors.purple,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(150))),
+                            child: Row(
+                              children: [
+                                Icon(Icons.upload_file, color: Colors.white),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Text(
+                                  'Upload',
+                                  style: TextStyle(
+                                      fontSize: fontSize15,
+                                      color: Colors.white),
+                                )
+                              ],
                             ),
-                            Text(
-                              'Upload',
-                              style: TextStyle(
-                                  fontSize: fontSize15, color: Colors.white),
-                            )
-                          ],
-                        ),
+                          ),
+                          SizedBox(
+                            width: fontSize15,
+                          ),
+                          RaisedButton(
+                            color: AppColors.purple,
+                            onPressed: () => removeavatar(),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(150))),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.cancel,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Text(
+                                  'Remove',
+                                  style: TextStyle(
+                                      fontSize: fontSize15,
+                                      color: Colors.white),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                       Container(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Upload at least a picture of the artwork (max 4)',
+                            'Upload at least a picture of the artwork (${uploadworksClass.images.length}/4)',
                             style: TextStyle(
                                 fontSize: fontSize15, color: _multicolor),
                           )),
                       SizedBox(
                         height: 5,
                       ),
-                      RaisedButton(
-                        color: AppColors.purple,
-                        onPressed: () => _multiFuture(),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(150))),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.upload_file,
-                              color: Colors.white,
+                      Row(
+                        children: [
+                          RaisedButton(
+                            color: AppColors.purple,
+                            onPressed: () => _multiFuture(),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(150))),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.upload_file,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Text(
+                                  'Upload',
+                                  style: TextStyle(
+                                      fontSize: fontSize15,
+                                      color: Colors.white),
+                                )
+                              ],
                             ),
-                            SizedBox(
-                              width: 3,
+                          ),
+                          SizedBox(
+                            width: fontSize15,
+                          ),
+                          RaisedButton(
+                            color: AppColors.purple,
+                            onPressed: () => removeimage(),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(150))),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.cancel,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Text(
+                                  'Remove Previous',
+                                  style: TextStyle(
+                                      fontSize: fontSize15,
+                                      color: Colors.white),
+                                )
+                              ],
                             ),
-                            Text(
-                              'Upload',
-                              style: TextStyle(
-                                  fontSize: fontSize15, color: Colors.white),
-                            )
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                       TextFormField(
                         keyboardType: TextInputType.number,
@@ -185,6 +249,11 @@ class _UploadsState extends State<Uploads> {
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'This field is empty';
+                          } else if (value.contains(',')) {
+                            return 'Please remove the ,';
+                          }
+                          else if (value.contains('.')) {
+                            return 'Please remove the .';
                           }
                         },
                         onSaved: (value) {
@@ -282,7 +351,7 @@ class _UploadsState extends State<Uploads> {
                               });
                             } else {
                               keyForm.save();
-                              _registerProcess();
+                              _uploadProcess();
                             }
                           }
                         },
@@ -336,6 +405,7 @@ class _UploadsState extends State<Uploads> {
               );
             } else if (snapshot.hasData) {
               uploadworksClass.avatar = snapshot.data;
+              changeAvatarColor();
               return AlertDialog(
                 content: Text('Avatar upload complete'),
               );
@@ -346,6 +416,23 @@ class _UploadsState extends State<Uploads> {
               );
           },
         ));
+  }
+
+  changeAvatarColor() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _avatarcolor = Colors.green;
+      });
+    });
+  }
+
+  removeavatar() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        uploadworksClass.avatar = '';
+        _avatarcolor = Colors.black;
+      });
+    });
   }
 
   _multiimagePicker() async {
@@ -387,6 +474,7 @@ class _UploadsState extends State<Uploads> {
               );
             } else if (snapshot.hasData) {
               uploadworksClass.images.add(snapshot.data);
+              uploadsCounter();
               return AlertDialog(
                 content: Text('Image upload complete'),
               );
@@ -399,7 +487,7 @@ class _UploadsState extends State<Uploads> {
         ));
   }
 
-  _registerProcess() {
+  _uploadProcess() {
     return showDialog(
         context: context,
         child: FutureBuilder(
@@ -445,7 +533,43 @@ class _UploadsState extends State<Uploads> {
         defaultarttype = 0;
         uploadworksClass.images = [];
         uploadworksClass.avatar = '';
+        uploadworksClass.images.length;
       });
+    });
+  }
+
+  uploadsCounter() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        uploadworksClass.images.length;
+        _multicolor = Colors.green;
+      });
+    });
+  }
+
+  removeimage() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (uploadworksClass.images.isNotEmpty) {
+        if (uploadworksClass.images.length == 1) {
+          uploadworksClass.images.removeAt(uploadworksClass.images.length - 1);
+          setState(() {
+            uploadworksClass.images.length;
+            _multicolor = Colors.black;
+          });
+        } else {
+          uploadworksClass.images.removeAt(uploadworksClass.images.length - 1);
+          setState(() {
+            uploadworksClass.images.length;
+            _multicolor = Colors.green;
+          });
+        }
+      } else {
+        return showDialog(
+            context: context,
+            child: AlertDialog(
+              content: Text('There is no upload to remove!'),
+            ));
+      }
     });
   }
 }
