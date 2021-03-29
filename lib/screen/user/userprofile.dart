@@ -256,10 +256,10 @@ class _ProfileState extends State<Profile> {
                             children: [
                               CreditCardWidget(
                                 // null safety here
-                                cardNumber: cardNumber,
-                                expiryDate: expiryDate,
-                                cardHolderName: cardHolderName,
-                                cvvCode: cvvCode,
+                                cardNumber: cardNumber == null ? '': cardNumber,
+                                expiryDate: expiryDate == null ? '': expiryDate,
+                                cardHolderName: cardHolderName == null ? '': cardHolderName,
+                                cvvCode: cvvCode == null ? '': cvvCode,
                                 showBackView: isCvvFocused,
                               ),
                               CreditCardForm(
