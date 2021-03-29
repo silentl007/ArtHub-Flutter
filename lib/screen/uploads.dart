@@ -389,12 +389,16 @@ class _UploadsState extends State<Uploads> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (uploadworksClass.avatar != '') {
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
                 content: Text('Avatar already uploaded'),
               );
             } else if (snapshot.connectionState != ConnectionState.done) {
               return Container(
                 color: Colors.transparent,
                 child: AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
                   content: LinearProgressIndicator(
                     backgroundColor: Colors.white,
                     valueColor:
@@ -406,10 +410,14 @@ class _UploadsState extends State<Uploads> {
               uploadworksClass.avatar = snapshot.data;
               changeAvatarColor();
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
                 content: Text('Avatar upload complete'),
               );
             } else
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
                 content: Text(
                     'Unable to upload connect, please check your connetion'),
               );
@@ -458,12 +466,16 @@ class _UploadsState extends State<Uploads> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (uploadworksClass.images.length == 4) {
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
                 content: Text('Maximum number of images uploaded'),
               );
             } else if (snapshot.connectionState != ConnectionState.done) {
               return Container(
                 color: Colors.transparent,
                 child: AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
                   content: LinearProgressIndicator(
                     backgroundColor: Colors.white,
                     valueColor:
@@ -475,10 +487,14 @@ class _UploadsState extends State<Uploads> {
               uploadworksClass.images.add(snapshot.data);
               uploadsCounter();
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
                 content: Text('Image upload complete'),
               );
             } else
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
                 content: Text(
                     'Unable to upload connect, please check your connetion'),
               );
@@ -496,6 +512,8 @@ class _UploadsState extends State<Uploads> {
                 return Container(
                   color: Colors.transparent,
                   child: AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
                     content: LinearProgressIndicator(
                       backgroundColor: Colors.white,
                       valueColor:
@@ -514,12 +532,16 @@ class _UploadsState extends State<Uploads> {
   _uploadSuccess() {
     clearData();
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20))),
       content: Text('Upload Successful!'),
     );
   }
 
   _uploadFailed() {
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20))),
       content: Text('Upload Unsuccessful, please check your connection'),
     );
   }
@@ -568,6 +590,8 @@ class _UploadsState extends State<Uploads> {
         return showDialog(
             context: context,
             child: AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
               content: Text('There is no upload to remove!'),
             ));
       }

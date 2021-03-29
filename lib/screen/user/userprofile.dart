@@ -1,6 +1,7 @@
 import 'package:ArtHub/screen/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloudinary_client/cloudinary_client.dart';
@@ -76,28 +77,29 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(
       key: _scaffoldKey,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          if (edit == 'profile') {
-            _warning();
-            setState(() {
-              edit = 'edit';
-              appbarTitle = 'Edit Profile';
-              editIcon = Icon(Icons.home);
-            });
-          } else {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
-                (Route<dynamic> route) => false);
-          }
-        },
-        backgroundColor: AppColors.purple,
-        child: editIcon,
+      floatingActionButton: BounceInDown(
+        preferences: AnimationPreferences(offset: Duration(seconds: 2)),
+        child: FloatingActionButton(
+          onPressed: () {
+            if (edit == 'profile') {
+              setState(() {
+                edit = 'edit';
+                appbarTitle = 'Edit Profile';
+                editIcon = Icon(Icons.home);
+              });
+            } else {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (Route<dynamic> route) => false);
+            }
+          },
+          backgroundColor: AppColors.purple,
+          child: editIcon,
+        ),
       ),
       appBar: classWidget.apptitleBar(context, appbarTitle),
       body: edit == 'profile' ? _profile() : _profileEdit(),
@@ -165,153 +167,189 @@ class _ProfileState extends State<Profile> {
                   ),
                 )
               : Container(),
-          TextFormField(
-            readOnly: true,
-            initialValue: email,
-            cursorColor: AppColors.purple,
-            textCapitalization: TextCapitalization.words,
-            keyboardType: TextInputType.name,
-            textInputAction: TextInputAction.next,
-            onEditingComplete: () => node.nextFocus(),
-            decoration: InputDecoration(
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.purple)),
-                labelText: 'Email',
-                icon: Icon(Icons.email, color: AppColors.purple)),
+          SlideInLeft(
+            preferences: AnimationPreferences(duration: Duration(seconds: 1)),
+            child: TextFormField(
+              readOnly: true,
+              initialValue: email,
+              cursorColor: AppColors.purple,
+              textCapitalization: TextCapitalization.words,
+              keyboardType: TextInputType.name,
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(),
+              decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.purple)),
+                  labelText: 'Email',
+                  icon: Icon(Icons.email, color: AppColors.purple)),
+            ),
           ),
-          TextFormField(
-            readOnly: true,
-            initialValue: displayName,
-            cursorColor: AppColors.purple,
-            textCapitalization: TextCapitalization.words,
-            keyboardType: TextInputType.name,
-            textInputAction: TextInputAction.next,
-            onEditingComplete: () => node.nextFocus(),
-            decoration: InputDecoration(
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.purple)),
-                labelText: 'Full Name',
-                icon: Icon(Icons.title, color: AppColors.purple)),
+          SlideInRight(
+            preferences: AnimationPreferences(duration: Duration(seconds: 1)),
+            child: TextFormField(
+              readOnly: true,
+              initialValue: displayName,
+              cursorColor: AppColors.purple,
+              textCapitalization: TextCapitalization.words,
+              keyboardType: TextInputType.name,
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(),
+              decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.purple)),
+                  labelText: 'Full Name',
+                  icon: Icon(Icons.title, color: AppColors.purple)),
+            ),
           ),
-          TextFormField(
-            readOnly: true,
-            initialValue: number,
-            cursorColor: AppColors.purple,
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.next,
-            onEditingComplete: () => node.nextFocus(),
-            maxLength: 11,
-            decoration: InputDecoration(
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.purple)),
-                labelText: 'Phone No.',
-                icon: Icon(Icons.phone, color: AppColors.purple)),
+          SlideInLeft(
+            preferences: AnimationPreferences(duration: Duration(seconds: 1)),
+            child: TextFormField(
+              readOnly: true,
+              initialValue: number,
+              cursorColor: AppColors.purple,
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(),
+              maxLength: 11,
+              decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.purple)),
+                  labelText: 'Phone No.',
+                  icon: Icon(Icons.phone, color: AppColors.purple)),
+            ),
           ),
-          TextFormField(
-            readOnly: true,
-            initialValue: address,
-            cursorColor: AppColors.purple,
-            textCapitalization: TextCapitalization.words,
-            textInputAction: TextInputAction.next,
-            onEditingComplete: () => node.nextFocus(),
-            decoration: InputDecoration(
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.purple)),
-                labelText: 'Address',
-                icon: Icon(Icons.gps_fixed, color: AppColors.purple)),
+          SlideInRight(
+            preferences: AnimationPreferences(duration: Duration(seconds: 1)),
+            child: TextFormField(
+              readOnly: true,
+              initialValue: address,
+              cursorColor: AppColors.purple,
+              textCapitalization: TextCapitalization.words,
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(),
+              decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.purple)),
+                  labelText: 'Address',
+                  icon: Icon(Icons.gps_fixed, color: AppColors.purple)),
+            ),
           ),
-          TextFormField(
-            readOnly: true,
-            initialValue: state,
-            cursorColor: AppColors.purple,
-            textCapitalization: TextCapitalization.words,
-            textInputAction: TextInputAction.next,
-            onEditingComplete: () => node.nextFocus(),
-            decoration: InputDecoration(
-                focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.purple)),
-                labelText: 'State',
-                icon: Icon(Icons.location_city, color: AppColors.purple)),
+          SlideInLeft(
+            preferences: AnimationPreferences(duration: Duration(seconds: 1)),
+            child: TextFormField(
+              readOnly: true,
+              initialValue: state,
+              cursorColor: AppColors.purple,
+              textCapitalization: TextCapitalization.words,
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(),
+              decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.purple)),
+                  labelText: 'State',
+                  icon: Icon(Icons.location_city, color: AppColors.purple)),
+            ),
           ),
-          accountType == 'Freelancer'
-              ? TextFormField(
-                  readOnly: true,
-                  cursorColor: AppColors.purple,
-                  initialValue: aboutme,
-                  maxLines: 3,
-                  maxLength: 400,
-                  textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
-                      focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: AppColors.purple)),
-                      labelText: 'About me',
-                      icon: Icon(Icons.text_fields, color: AppColors.purple)),
-                )
-              : Container(),
-          RaisedButton(
-            color: AppColors.purple,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(50))),
-            child: Text('Save payment details',
-                style: TextStyle(color: Colors.white)),
-            onPressed: () {
-              return showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      content: StatefulBuilder(
-                        builder: (context, StateSetter setState) {
-                          return SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                CreditCardWidget(
-                                  // null safety here
-                                  cardNumber:
-                                      cardNumber == null ? '' : cardNumber,
-                                  expiryDate:
-                                      expiryDate == null ? '' : expiryDate,
-                                  cardHolderName: cardHolderName == null
-                                      ? ''
-                                      : cardHolderName,
-                                  cvvCode: cvvCode == null ? '' : cvvCode,
-                                  showBackView: isCvvFocused,
+          BounceInDown(
+            preferences: AnimationPreferences(offset: Duration(seconds: 2)),
+            child: RaisedButton(
+              color: AppColors.purple,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(50))),
+              child: Text('Save payment details',
+                  style: TextStyle(color: Colors.white)),
+              onPressed: () {
+                return showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        content: StatefulBuilder(
+                          builder: (context, StateSetter setState) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/appimages/welcomeback.png'),
+                                    fit: BoxFit.cover),
+                              ),
+                              child: Expanded(
+                                flex: 1,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      SlideInLeft(
+                                        preferences: AnimationPreferences(
+                                            offset: Duration(seconds: 1)),
+                                        child: CreditCardWidget(
+                                          cardNumber: cardNumber == null
+                                              ? ''
+                                              : cardNumber,
+                                          expiryDate: expiryDate == null
+                                              ? ''
+                                              : expiryDate,
+                                          cardHolderName: cardHolderName == null
+                                              ? ''
+                                              : cardHolderName,
+                                          cvvCode:
+                                              cvvCode == null ? '' : cvvCode,
+                                          showBackView: isCvvFocused,
+                                        ),
+                                      ),
+                                      SlideInRight(
+                                        preferences: AnimationPreferences(
+                                            offset: Duration(seconds: 1)),
+                                        child: CreditCardForm(
+                                          themeColor: Colors.red,
+                                          onCreditCardModelChange:
+                                              (CreditCardModel
+                                                  creditCardModel) {
+                                            setState(() {
+                                              cardNumber =
+                                                  creditCardModel.cardNumber;
+                                              expiryDate =
+                                                  creditCardModel.expiryDate;
+                                              cardHolderName = creditCardModel
+                                                  .cardHolderName;
+                                              cvvCode = creditCardModel.cvvCode;
+                                              isCvvFocused =
+                                                  creditCardModel.isCvvFocused;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: BounceInDown(
+                                          preferences: AnimationPreferences(
+                                              offset: Duration(seconds: 1)),
+                                          child: RaisedButton(
+                                            color: AppColors.purple,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(50))),
+                                            child: Text('Save',
+                                                style: TextStyle(
+                                                    color: Colors.white)),
+                                            onPressed: () {
+                                              saveCard();
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                                CreditCardForm(
-                                  themeColor: Colors.red,
-                                  onCreditCardModelChange:
-                                      (CreditCardModel creditCardModel) {
-                                    setState(() {
-                                      cardNumber = creditCardModel.cardNumber;
-                                      expiryDate = creditCardModel.expiryDate;
-                                      cardHolderName =
-                                          creditCardModel.cardHolderName;
-                                      cvvCode = creditCardModel.cvvCode;
-                                      isCvvFocused =
-                                          creditCardModel.isCvvFocused;
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                      actions: [
-                        RaisedButton(
-                          color: AppColors.purple,
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
-                          child: Text('Save',
-                              style: TextStyle(color: Colors.white)),
-                          onPressed: () {
-                            saveCard();
+                              ),
+                            );
                           },
-                        )
-                      ],
-                    );
-                  });
-            },
+                        ),
+                      );
+                    });
+              },
+            ),
           ),
         ]),
       ),
@@ -348,182 +386,210 @@ class _ProfileState extends State<Profile> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TextFormField(
-                initialValue: displayName,
-                cursorColor: AppColors.purple,
-                textCapitalization: TextCapitalization.words,
-                keyboardType: TextInputType.name,
-                textInputAction: TextInputAction.next,
-                onEditingComplete: () => node.nextFocus(),
-                decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.purple)),
-                    labelText: 'Full Name',
-                    icon: Icon(Icons.title, color: AppColors.purple)),
-                onSaved: (text) {
-                  setState(() {
-                    return update.name = text;
-                  });
-                },
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'This field is empty';
-                  }
-                },
+              SlideInLeft(
+                preferences:
+                    AnimationPreferences(duration: Duration(seconds: 1)),
+                child: TextFormField(
+                  initialValue: displayName,
+                  cursorColor: AppColors.purple,
+                  textCapitalization: TextCapitalization.words,
+                  keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
+                  onEditingComplete: () => node.nextFocus(),
+                  decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.purple)),
+                      labelText: 'Full Name',
+                      icon: Icon(Icons.title, color: AppColors.purple)),
+                  onSaved: (text) {
+                    setState(() {
+                      return update.name = text;
+                    });
+                  },
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'This field is empty';
+                    }
+                  },
+                ),
               ),
-              TextFormField(
-                initialValue: number,
-                cursorColor: AppColors.purple,
-                keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.next,
-                onEditingComplete: () => node.nextFocus(),
-                maxLength: 11,
-                decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.purple)),
-                    labelText: 'Phone No.',
-                    icon: Icon(Icons.phone, color: AppColors.purple)),
-                onSaved: (text) {
-                  setState(() {
-                    return update.number = num.tryParse(text);
-                  });
-                },
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'This field is empty';
-                  } else if (value.length != 11) {
-                    return 'The number is not complete';
-                  }
-                },
+              SlideInRight(
+                preferences:
+                    AnimationPreferences(duration: Duration(seconds: 1)),
+                child: TextFormField(
+                  initialValue: number,
+                  cursorColor: AppColors.purple,
+                  keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.next,
+                  onEditingComplete: () => node.nextFocus(),
+                  maxLength: 11,
+                  decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.purple)),
+                      labelText: 'Phone No.',
+                      icon: Icon(Icons.phone, color: AppColors.purple)),
+                  onSaved: (text) {
+                    setState(() {
+                      return update.number = num.tryParse(text);
+                    });
+                  },
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'This field is empty';
+                    } else if (value.length != 11) {
+                      return 'The number is not complete';
+                    }
+                  },
+                ),
               ),
-              TextFormField(
-                initialValue: address,
-                cursorColor: AppColors.purple,
-                textCapitalization: TextCapitalization.words,
-                textInputAction: TextInputAction.next,
-                onEditingComplete: () => node.nextFocus(),
-                decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.purple)),
-                    labelText: 'Address',
-                    icon: Icon(Icons.gps_fixed, color: AppColors.purple)),
-                onSaved: (text) {
-                  setState(() {
-                    return update.address = text;
-                  });
-                },
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'This field is empty';
-                  }
-                },
+              SlideInLeft(
+                preferences:
+                    AnimationPreferences(duration: Duration(seconds: 1)),
+                child: TextFormField(
+                  initialValue: address,
+                  cursorColor: AppColors.purple,
+                  textCapitalization: TextCapitalization.words,
+                  textInputAction: TextInputAction.next,
+                  onEditingComplete: () => node.nextFocus(),
+                  decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.purple)),
+                      labelText: 'Address',
+                      icon: Icon(Icons.gps_fixed, color: AppColors.purple)),
+                  onSaved: (text) {
+                    setState(() {
+                      return update.address = text;
+                    });
+                  },
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'This field is empty';
+                    }
+                  },
+                ),
               ),
               accountType == 'Freelancer'
                   ? Column(
                       children: [
-                        TextFormField(
-                          cursorColor: AppColors.purple,
-                          initialValue: aboutme,
-                          maxLines: 5,
-                          maxLength: 400,
-                          textInputAction: TextInputAction.next,
-                          decoration: InputDecoration(
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: AppColors.purple)),
-                              labelText: 'About me',
-                              icon: Icon(Icons.text_fields,
-                                  color: AppColors.purple)),
-                          onSaved: (text) {
-                            setState(() {
-                              return update.aboutme = text;
-                            });
-                          },
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'This field is empty';
-                            }
-                          },
+                        // TextFormField(
+                        //   cursorColor: AppColors.purple,
+                        //   initialValue: aboutme,
+                        //   maxLines: 5,
+                        //   maxLength: 400,
+                        //   textInputAction: TextInputAction.next,
+                        //   decoration: InputDecoration(
+                        //       focusedBorder: UnderlineInputBorder(
+                        //           borderSide:
+                        //               BorderSide(color: AppColors.purple)),
+                        //       labelText: 'About me',
+                        //       icon: Icon(Icons.text_fields,
+                        //           color: AppColors.purple)),
+                        //   onSaved: (text) {
+                        //     setState(() {
+                        //       return update.aboutme = text;
+                        //     });
+                        //   },
+                        //   validator: (value) {
+                        //     if (value.isEmpty) {
+                        //       return 'This field is empty';
+                        //     }
+                        //   },
+                        // ),
+                        SlideInRight(
+                          preferences: AnimationPreferences(
+                              duration: Duration(seconds: 1)),
+                          child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Update your avatar',
+                                style: TextStyle(
+                                    fontSize: fontSize15, color: Colors.black),
+                              )),
                         ),
-                        Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Update your avatar',
-                              style: TextStyle(
-                                  fontSize: fontSize15, color: Colors.black),
-                            )),
                         SizedBox(
                           height: 5,
                         ),
-                        RaisedButton(
-                          onPressed: () {
-                            _avatarFuture();
-                          },
-                          color: AppColors.purple,
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(150))),
-                          child: Row(
-                            children: [
-                              Icon(Icons.upload_file, color: Colors.white),
-                              SizedBox(
-                                width: 3,
-                              ),
-                              Text(
-                                'Upload',
-                                style: TextStyle(
-                                    fontSize: fontSize15, color: Colors.white),
-                              )
-                            ],
+                        SlideInLeft(
+                          preferences: AnimationPreferences(
+                              duration: Duration(seconds: 1)),
+                          child: RaisedButton(
+                            onPressed: () {
+                              _avatarFuture();
+                            },
+                            color: AppColors.purple,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(150))),
+                            child: Row(
+                              children: [
+                                Icon(Icons.upload_file, color: Colors.white),
+                                SizedBox(
+                                  width: 3,
+                                ),
+                                Text(
+                                  'Upload',
+                                  style: TextStyle(
+                                      fontSize: fontSize15,
+                                      color: Colors.white),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ],
                     )
                   : Container(),
-              Container(
-                alignment: Alignment.centerLeft,
-                child: DropdownButton<String>(
-                  value: selectedState,
-                  onChanged: (text) {
-                    setState(() {
-                      selectedState = text;
-                      update.location = selectedState;
-                    });
-                  },
-                  items: states.map<DropdownMenuItem<String>>((text) {
-                    return DropdownMenuItem(
-                      child: Text(
-                        text,
-                        style:
-                            TextStyle(color: _stateColor, fontSize: fontSize15),
-                      ),
-                      value: text,
-                    );
-                  }).toList(),
+              SlideInRight(
+                preferences:
+                    AnimationPreferences(duration: Duration(seconds: 1)),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  child: DropdownButton<String>(
+                    value: selectedState,
+                    onChanged: (text) {
+                      setState(() {
+                        selectedState = text;
+                        update.location = selectedState;
+                      });
+                    },
+                    items: states.map<DropdownMenuItem<String>>((text) {
+                      return DropdownMenuItem(
+                        child: Text(
+                          text,
+                          style: TextStyle(
+                              color: _stateColor, fontSize: fontSize15),
+                        ),
+                        value: text,
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
-              RaisedButton(
-                color: AppColors.purple,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(50))),
-                child: Text(
-                  'Update',
-                  style: TextStyle(fontSize: fontSize15, color: Colors.white),
-                ),
-                onPressed: () {
-                  final key = _formKey.currentState;
-                  if (key.validate()) {
-                    if (selectedState == 'Select State') {
-                      setState(() {
-                        _stateColor = Colors.red;
-                      });
-                    } else {
-                      update.avatar = avatar;
-                      key.save();
-                      updateProfile();
+              BounceInDown(
+                preferences: AnimationPreferences(offset: Duration(seconds: 2)),
+                child: RaisedButton(
+                  color: AppColors.purple,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(50))),
+                  child: Text(
+                    'Update',
+                    style: TextStyle(fontSize: fontSize15, color: Colors.white),
+                  ),
+                  onPressed: () {
+                    final key = _formKey.currentState;
+                    if (key.validate()) {
+                      if (selectedState == 'Select State') {
+                        setState(() {
+                          _stateColor = Colors.red;
+                        });
+                      } else {
+                        update.avatar = avatar;
+                        key.save();
+                        updateProfile();
+                      }
                     }
-                  }
-                },
+                  },
+                ),
               )
             ],
           ),
@@ -542,6 +608,8 @@ class _ProfileState extends State<Profile> {
                 return Container(
                   color: Colors.transparent,
                   child: AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
                     content: LinearProgressIndicator(
                       backgroundColor: Colors.white,
                       valueColor:
@@ -565,6 +633,8 @@ class _ProfileState extends State<Profile> {
 
   updateFailed() {
     return AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20))),
       content: Text('Please check your internet connection'),
     );
   }
@@ -579,6 +649,8 @@ class _ProfileState extends State<Profile> {
               return Container(
                 color: Colors.transparent,
                 child: AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
                   content: LinearProgressIndicator(
                     backgroundColor: Colors.white,
                     valueColor:
@@ -589,10 +661,14 @@ class _ProfileState extends State<Profile> {
             } else if (snapshot.hasData) {
               avatar = snapshot.data;
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
                 content: Text('Avatar upload complete'),
               );
             } else
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
                 content: Text(
                     'Unable to upload connect, please check your connetion'),
               );
