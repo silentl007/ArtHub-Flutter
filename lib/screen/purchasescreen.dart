@@ -5,6 +5,7 @@ import 'package:ArtHub/screen/homescreen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:number_display/number_display.dart';
@@ -343,96 +344,99 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               left: padding5,
               right: padding5,
             ),
-            child: Material(
-              elevation: 3,
-              borderRadius: BorderRadius.all(Radius.circular(30)),
-              child: Container(
-                height: size.height * .20,
-                decoration: BoxDecoration(
-                  color: Colors.transparent,
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(padding8),
-                  child: Row(
-                    children: [
-                      Container(
-                        height: innerheight,
-                        width: size.height * .15,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(30.0),
-                          child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: snapshot[index]['avatar'],
-                            placeholder: (context, url) => new Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  CircularProgressIndicator(
-                                    valueColor:
-                                        new AlwaysStoppedAnimation<Color>(
-                                            AppColors.purple),
-                                    strokeWidth: 5.0,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            errorWidget: (context, url, error) =>
-                                new Icon(Icons.error),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        color: Colors.transparent,
-                        width: size.height * .22,
-                        padding: EdgeInsets.only(left: fontSize20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              '${snapshot[index]['product']}',
-                              style: TextStyle(
-                                  color: AppColors.purple,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: fontSize20),
-                            ),
-                            Text(
-                              '${snapshot[index]['type']}',
-                              style: TextStyle(
-                                  color: AppColors.purple,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: fontSize20),
-                            ),
-                            Text(
-                              '₦ ${displayNumber(snapshot[index]['cost'])}',
-                              style: TextStyle(
-                                  color: AppColors.red,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: fontSize20),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: RaisedButton(
-                                color: AppColors.blue,
-                                onPressed: () =>
-                                    remove(snapshot[index]['productID']),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(50))),
-                                child: Text(
-                                  'Remove',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: fontSize20),
+            child: FadeInDownBig(
+              preferences: AnimationPreferences(offset: Duration(seconds: 2)),
+                          child: Material(
+                elevation: 3,
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+                child: Container(
+                  height: size.height * .20,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(padding8),
+                    child: Row(
+                      children: [
+                        Container(
+                          height: innerheight,
+                          width: size.height * .15,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(30.0),
+                            child: CachedNetworkImage(
+                              fit: BoxFit.cover,
+                              imageUrl: snapshot[index]['avatar'],
+                              placeholder: (context, url) => new Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    CircularProgressIndicator(
+                                      valueColor:
+                                          new AlwaysStoppedAnimation<Color>(
+                                              AppColors.purple),
+                                      strokeWidth: 5.0,
+                                    ),
+                                  ],
                                 ),
                               ),
-                            )
-                          ],
+                              errorWidget: (context, url, error) =>
+                                  new Icon(Icons.error),
+                            ),
+                          ),
                         ),
-                      )
-                    ],
+                        Container(
+                          color: Colors.transparent,
+                          width: size.height * .22,
+                          padding: EdgeInsets.only(left: fontSize20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                '${snapshot[index]['product']}',
+                                style: TextStyle(
+                                    color: AppColors.purple,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontSize20),
+                              ),
+                              Text(
+                                '${snapshot[index]['type']}',
+                                style: TextStyle(
+                                    color: AppColors.purple,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: fontSize20),
+                              ),
+                              Text(
+                                '₦ ${displayNumber(snapshot[index]['cost'])}',
+                                style: TextStyle(
+                                    color: AppColors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: fontSize20),
+                              ),
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: RaisedButton(
+                                  color: AppColors.blue,
+                                  onPressed: () =>
+                                      remove(snapshot[index]['productID']),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(50))),
+                                  child: Text(
+                                    'Remove',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: fontSize20),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -455,92 +459,118 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Total Items ($itemnumber)',
-                style: TextStyle(
-                    color: AppColors.purple,
-                    fontWeight: FontWeight.bold,
-                    fontSize: fontSize25),
-              ),
-              Align(
-                alignment: Alignment.topRight,
+              SlideInLeft(
+                preferences: AnimationPreferences(offset: Duration(seconds: 2)),
                 child: Text(
-                  '₦ ${displayNumber(summation)}',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                      color: AppColors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: fontSize25),
-                ),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Service Charge',
+                  'Total Items ($itemnumber)',
                   style: TextStyle(
                       color: AppColors.purple,
                       fontWeight: FontWeight.bold,
-                      fontSize: fontSize15)),
-              Align(
-                alignment: Alignment.topRight,
-                child: Text(
-                  '₦ ${displayNumber(servicecharge)}',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                      color: AppColors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: fontSize15),
+                      fontSize: fontSize25),
+                ),
+              ),
+              SlideInRight(
+                preferences: AnimationPreferences(offset: Duration(seconds: 2)),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Text(
+                    '₦ ${displayNumber(summation)}',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                        color: AppColors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontSize25),
+                  ),
                 ),
               )
             ],
-          ),
-          Container(
-            width: double.infinity,
-            height: 1,
-            color: AppColors.purple,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Total',
-                style: TextStyle(
-                    color: AppColors.purple,
-                    fontWeight: FontWeight.bold,
-                    fontSize: fontSize25),
+              SlideInLeft(
+                preferences: AnimationPreferences(offset: Duration(seconds: 2)),
+                child: Text('Service Charge',
+                    style: TextStyle(
+                        color: AppColors.purple,
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontSize15)),
               ),
               Align(
                 alignment: Alignment.topRight,
-                child: Text(
-                  '₦ ${displayNumber(summation + servicecharge)}',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                      color: AppColors.red,
-                      fontWeight: FontWeight.bold,
-                      fontSize: fontSize25),
+                child: SlideInRight(
+                  preferences:
+                      AnimationPreferences(offset: Duration(seconds: 2)),
+                  child: Text(
+                    '₦ ${displayNumber(servicecharge)}',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                        color: AppColors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontSize15),
+                  ),
                 ),
               )
             ],
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
+          FadeInDownBig(
+            preferences: AnimationPreferences(offset: Duration(seconds: 2)),
             child: Container(
-              width: size.width * .35,
-              height: size.height * .07,
-              child: RaisedButton(
-                elevation: 15,
+              width: double.infinity,
+              height: 1,
+              color: AppColors.purple,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SlideInLeft(
+                preferences: AnimationPreferences(offset: Duration(seconds: 2)),
                 child: Text(
-                  'Checkout',
-                  style: TextStyle(fontSize: fontSize20, color: Colors.white),
+                  'Total',
+                  style: TextStyle(
+                      color: AppColors.purple,
+                      fontWeight: FontWeight.bold,
+                      fontSize: fontSize25),
                 ),
-                color: AppColors.red,
-                onPressed: () => checkitemsavailability(),
-                // onPressed: ()=> purchaseOrder(),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(50),
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: SlideInRight(
+                  preferences:
+                      AnimationPreferences(offset: Duration(seconds: 2)),
+                  child: Text(
+                    '₦ ${displayNumber(summation + servicecharge)}',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                        color: AppColors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontSize25),
+                  ),
+                ),
+              )
+            ],
+          ),
+          HeartBeat(
+            preferences: AnimationPreferences(offset: Duration(seconds: 4)),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                width: size.width * .35,
+                height: size.height * .07,
+                child: RaisedButton(
+                  elevation: 15,
+                  child: Text(
+                    'Checkout',
+                    style: TextStyle(fontSize: fontSize20, color: Colors.white),
+                  ),
+                  color: AppColors.red,
+                  onPressed: () => checkitemsavailability(),
+                  // onPressed: ()=> purchaseOrder(),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(50),
+                    ),
                   ),
                 ),
               ),
