@@ -2,6 +2,7 @@ import 'package:ArtHub/common/model.dart';
 import 'package:ArtHub/screen/freelanceartist/freelanceartistprofile.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 
 class FreelanceSearch extends StatefulWidget {
   final List data;
@@ -75,16 +76,22 @@ class _FreelanceSearchState extends State<FreelanceSearch> {
                                   new Icon(Icons.error),
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: ListTile(
-                              tileColor: AppColors.purple,
-                              title: Text(
-                                '${filter[index].name}',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
+                          Pulse(
+                            preferences: AnimationPreferences(
+                              autoPlay: AnimationPlayStates.Loop,
+                                offset: Duration(seconds: 2)
+                                ),
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: ListTile(
+                                tileColor: AppColors.purple,
+                                title: Text(
+                                  '${filter[index].name}',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                             ),
                           )

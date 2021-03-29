@@ -44,9 +44,9 @@ class _GalleryListState extends State<GalleryList> {
                       left: padding20,
                       right: padding20,
                     ),
-                    child: ZoomIn(
+                    child: ZoomInLeft(
                       preferences: AnimationPreferences(
-                      offset: Duration(seconds: 2),
+                      offset: Duration(seconds: 1),
                     ),
                       child: InkWell(
                         onTap: () => galleryart(filtereddata[index].works),

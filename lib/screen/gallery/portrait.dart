@@ -45,7 +45,7 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
                               top: padding10),
                           child: RubberBand(
                             preferences: AnimationPreferences(
-                              offset: Duration(seconds: 2),
+                              offset: Duration(seconds: 1),
                             ),
                             child: Material(
                               elevation: 10,
@@ -107,39 +107,62 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
                                             children: [
-                                              Text(
-                                                '${data.productname}',
-                                                style: TextStyle(
-                                                    color: AppColors.purple,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: fontSize20),
+                                              SlideInLeft(
+                                                preferences:
+                                                    AnimationPreferences(
+                                                  offset: Duration(seconds: 2),
+                                                ),
+                                                child: Text(
+                                                  '${data.productname}',
+                                                  style: TextStyle(
+                                                      color: AppColors.purple,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: fontSize20),
+                                                ),
                                               ),
-                                              Text(
-                                                '₦ ${displayNumber(data.cost)}',
-                                                style: TextStyle(
-                                                    color: AppColors.red,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: fontSize20),
+                                              SlideInRight(
+                                                preferences:
+                                                    AnimationPreferences(
+                                                  offset: Duration(seconds: 2),
+                                                ),
+                                                child: Text(
+                                                  '₦ ${displayNumber(data.cost)}',
+                                                  style: TextStyle(
+                                                      color: AppColors.red,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: fontSize20),
+                                                ),
                                               ),
                                               Align(
                                                 alignment:
                                                     Alignment.bottomRight,
-                                                child: RaisedButton(
-                                                  color: AppColors.blue,
-                                                  onPressed: () =>
-                                                      purchase(context, data),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  50))),
-                                                  child: Text(
-                                                    'View',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: fontSize20),
+                                                child: Pulse(
+                                                  preferences:
+                                                      AnimationPreferences(
+                                                          offset: Duration(
+                                                              seconds: 2),
+                                                          autoPlay:
+                                                              AnimationPlayStates
+                                                                  .Loop),
+                                                  child: RaisedButton(
+                                                    color: AppColors.blue,
+                                                    onPressed: () =>
+                                                        purchase(context, data),
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    50))),
+                                                    child: Text(
+                                                      'View',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: fontSize20),
+                                                    ),
                                                   ),
                                                 ),
                                               )

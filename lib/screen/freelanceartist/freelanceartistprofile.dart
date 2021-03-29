@@ -2,6 +2,7 @@ import 'package:ArtHub/common/model.dart';
 import 'package:ArtHub/common/middlemen/middlemanproductdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 
 class FreeLanceProfile extends StatefulWidget {
   final ParsedDataFreeLanceArts artistdata;
@@ -38,45 +39,53 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
                     children: [
                       Expanded(
                         flex: 1,
-                        child: ClipRRect(
-                          borderRadius:
-                              BorderRadius.only(topLeft: Radius.circular(100)),
-                          child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: widget.artistdata.avatar,
-                            placeholder: (context, url) => new Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  CircularProgressIndicator(
-                                    valueColor:
-                                        new AlwaysStoppedAnimation<Color>(
-                                            AppColors.purple),
-                                    strokeWidth: 5.0,
-                                  ),
-                                ],
+                        child: BounceInLeft(
+                          preferences: AnimationPreferences(
+                              offset: Duration(seconds: 1)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(100)),
+                            child: CachedNetworkImage(
+                              fit: BoxFit.cover,
+                              imageUrl: widget.artistdata.avatar,
+                              placeholder: (context, url) => new Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    CircularProgressIndicator(
+                                      valueColor:
+                                          new AlwaysStoppedAnimation<Color>(
+                                              AppColors.purple),
+                                      strokeWidth: 5.0,
+                                    ),
+                                  ],
+                                ),
                               ),
+                              errorWidget: (context, url, error) =>
+                                  new Icon(Icons.error),
                             ),
-                            errorWidget: (context, url, error) =>
-                                new Icon(Icons.error),
                           ),
                         ),
                       ),
                       Expanded(
                           flex: 1,
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Container(
-                              child: Padding(
-                                padding: EdgeInsets.only(left: padding18),
-                                child: Text(
-                                  '${widget.artistdata.name}',
-                                  style: TextStyle(
-                                      fontSize: fontSize40,
-                                      color: AppColors.purple,
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.justify,
+                          child: BounceInDown(
+                            preferences: AnimationPreferences(
+                                offset: Duration(seconds: 1)),
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Container(
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: padding18),
+                                  child: Text(
+                                    '${widget.artistdata.name}',
+                                    style: TextStyle(
+                                        fontSize: fontSize40,
+                                        color: AppColors.purple,
+                                        fontWeight: FontWeight.bold),
+                                    textAlign: TextAlign.justify,
+                                  ),
                                 ),
                               ),
                             ),
@@ -85,22 +94,6 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
                   ),
                 ),
               ),
-              // Expanded(
-              //   flex: 1,
-              //   child: Padding(
-              //     padding: EdgeInsets.only(top: padding15, bottom: padding10),
-              //     child: Container(
-              //       child: SingleChildScrollView(
-              //         child: Text(
-              //           '${widget.artistdata.aboutme}',
-              //           textAlign: TextAlign.justify,
-              //           textScaleFactor: 1,
-              //           style: TextStyle(color: AppColors.purple),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
               Expanded(
                 flex: 2,
                 child: Padding(
@@ -117,34 +110,43 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
                                   crossAxisSpacing: 20,
                                   mainAxisSpacing: 20),
                           itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
-                              onTap: () => details(
-                                  context, widget.artistdata.works[index]),
-                              child: ClipRRect(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
-                                child: CachedNetworkImage(
-                                  fit: BoxFit.cover,
-                                  imageUrl: widget.artistdata.works[index]
-                                      ['avatar'],
-                                  placeholder: (context, url) => new Center(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        CircularProgressIndicator(
-                                          valueColor:
-                                              new AlwaysStoppedAnimation<Color>(
-                                                  AppColors.purple),
-                                          strokeWidth: 5.0,
+                            return BounceInUp(
+                              preferences: AnimationPreferences(
+                                  offset: Duration(seconds: 2)),
+                              child: Pulse(
+                                preferences: AnimationPreferences(
+                                  autoPlay: AnimationPlayStates.Loop,
+                                ),
+                                child: InkWell(
+                                  onTap: () => details(
+                                      context, widget.artistdata.works[index]),
+                                  child: ClipRRect(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
+                                    child: CachedNetworkImage(
+                                      fit: BoxFit.cover,
+                                      imageUrl: widget.artistdata.works[index]
+                                          ['avatar'],
+                                      placeholder: (context, url) => new Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            CircularProgressIndicator(
+                                              valueColor:
+                                                  new AlwaysStoppedAnimation<
+                                                      Color>(AppColors.purple),
+                                              strokeWidth: 5.0,
+                                            ),
+                                          ],
                                         ),
-                                      ],
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          new Icon(Icons.error),
                                     ),
                                   ),
-                                  errorWidget: (context, url, error) =>
-                                      new Icon(Icons.error),
                                 ),
                               ),
                             );

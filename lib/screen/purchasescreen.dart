@@ -282,44 +282,53 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           backgroundColor: AppColors.purple,
         ),
         appBar: classWidget.apptitleBar(context, 'My Cart'),
-        body: Container(
-          color: Colors.white,
-          child: FutureBuilder(
-            future: cartItemsVar,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState != ConnectionState.done) {
-                return loading();
-              } else if (snapshot.hasData == true) {
-                return Container(
-                  child: snapshot.data.length != 0
-                      ? Padding(
-                          padding: EdgeInsets.all(padding40),
-                          child: Column(
-                            children: [
-                              Expanded(
-                                  flex: 2, child: itembuilder(snapshot.data)),
-                              Expanded(
-                                  flex: 1,
-                                  child: checkoutsummary(snapshot.data.length)),
-                            ],
+        body: WillPopScope(
+          onWillPop: () {
+            return Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+                (Route<dynamic> route) => false);
+          },
+          child: Container(
+            color: Colors.white,
+            child: FutureBuilder(
+              future: cartItemsVar,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return loading();
+                } else if (snapshot.hasData == true) {
+                  return Container(
+                    child: snapshot.data.length != 0
+                        ? Padding(
+                            padding: EdgeInsets.all(padding40),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                    flex: 2, child: itembuilder(snapshot.data)),
+                                Expanded(
+                                    flex: 1,
+                                    child:
+                                        checkoutsummary(snapshot.data.length)),
+                              ],
+                            ),
+                          )
+                        : Center(
+                            child: Text('No item in your cart!'),
                           ),
-                        )
-                      : Center(
-                          child: Text('No item in your cart!'),
-                        ),
-                );
-              } else {
-                return Container(
-                    child: Center(
-                        child: RaisedButton(
-                  child: Text('Retry'),
-                  onPressed: () {
-                    cartItemsVar = cartItems();
-                    setState(() {});
-                  },
-                )));
-              }
-            },
+                  );
+                } else {
+                  return Container(
+                      child: Center(
+                          child: RaisedButton(
+                    child: Text('Retry'),
+                    onPressed: () {
+                      cartItemsVar = cartItems();
+                      setState(() {});
+                    },
+                  )));
+                }
+              },
+            ),
           ),
         ),
       ),
@@ -344,9 +353,9 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               left: padding5,
               right: padding5,
             ),
-            child: FadeInDownBig(
+            child: BounceInDown(
               preferences: AnimationPreferences(offset: Duration(seconds: 2)),
-                          child: Material(
+              child: Material(
                 elevation: 3,
                 borderRadius: BorderRadius.all(Radius.circular(30)),
                 child: Container(
@@ -416,19 +425,24 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                               ),
                               Align(
                                 alignment: Alignment.bottomRight,
-                                child: RaisedButton(
-                                  color: AppColors.blue,
-                                  onPressed: () =>
-                                      remove(snapshot[index]['productID']),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(50))),
-                                  child: Text(
-                                    'Remove',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: fontSize20),
+                                child: Pulse(
+                                  preferences: AnimationPreferences(
+                                      offset: Duration(seconds: 3),
+                                      autoPlay: AnimationPlayStates.Loop),
+                                  child: RaisedButton(
+                                    color: AppColors.blue,
+                                    onPressed: () =>
+                                        remove(snapshot[index]['productID']),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(50))),
+                                    child: Text(
+                                      'Remove',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: fontSize20),
+                                    ),
                                   ),
                                 ),
                               )
@@ -552,7 +566,9 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
             ],
           ),
           HeartBeat(
-            preferences: AnimationPreferences(offset: Duration(seconds: 4)),
+            preferences: AnimationPreferences(
+                offset: Duration(seconds: 4),
+                autoPlay: AnimationPlayStates.Loop),
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Container(
