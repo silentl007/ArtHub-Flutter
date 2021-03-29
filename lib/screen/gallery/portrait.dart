@@ -1,6 +1,7 @@
 import 'package:ArtHub/common/model.dart';
 import 'package:ArtHub/common/middlemen/middlemanproductdetails.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:number_display/number_display.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -42,104 +43,112 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
                               left: padding40,
                               right: padding40,
                               top: padding10),
-                          child: Material(
-                            elevation: 10,
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                            child: Container(
-                              height: size.height * .20,
-                              decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
-                              ),
-                              child: Padding(
-                                padding: EdgeInsets.all(padding20),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      height: innerheight,
-                                      width: size.height * .15,
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(30.0),
-                                        child: CachedNetworkImage(
-                                          fit: BoxFit.cover,
-                                          imageUrl: data.avatar,
-                                          placeholder: (context, url) =>
-                                              new Center(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                CircularProgressIndicator(
-                                                  valueColor:
-                                                      new AlwaysStoppedAnimation<
-                                                              Color>(
-                                                          AppColors.purple),
-                                                  strokeWidth: 5.0,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          errorWidget: (context, url, error) =>
-                                              new Icon(Icons.error),
-                                        ),
-                                      ),
-                                    ),
-                                    SingleChildScrollView(
-                                      child: Container(
-                                        color: Colors.transparent,
-                                        width: size.height * .22,
-                                        padding:
-                                            EdgeInsets.only(left: padding20),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            Text(
-                                              '${data.productname}',
-                                              style: TextStyle(
-                                                  color: AppColors.purple,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: fontSize20),
-                                            ),
-                                            Text(
-                                              '₦ ${displayNumber(data.cost)}',
-                                              style: TextStyle(
-                                                  color: AppColors.red,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: fontSize20),
-                                            ),
-                                            Align(
-                                              alignment: Alignment.bottomRight,
-                                              child: RaisedButton(
-                                                color: AppColors.blue,
-                                                onPressed: () =>
-                                                    purchase(context, data),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                50))),
-                                                child: Text(
-                                                  'View',
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: fontSize20),
-                                                ),
+                          child: RubberBand(
+                            preferences: AnimationPreferences(
+                              offset: Duration(seconds: 2),
+                            ),
+                            child: Material(
+                              elevation: 10,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30)),
+                              child: Container(
+                                height: size.height * .20,
+                                decoration: BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.all(padding20),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        height: innerheight,
+                                        width: size.height * .15,
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
+                                          child: CachedNetworkImage(
+                                            fit: BoxFit.cover,
+                                            imageUrl: data.avatar,
+                                            placeholder: (context, url) =>
+                                                new Center(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  CircularProgressIndicator(
+                                                    valueColor:
+                                                        new AlwaysStoppedAnimation<
+                                                                Color>(
+                                                            AppColors.purple),
+                                                    strokeWidth: 5.0,
+                                                  ),
+                                                ],
                                               ),
-                                            )
-                                          ],
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    new Icon(Icons.error),
+                                          ),
                                         ),
                                       ),
-                                    )
-                                  ],
+                                      SingleChildScrollView(
+                                        child: Container(
+                                          color: Colors.transparent,
+                                          width: size.height * .22,
+                                          padding:
+                                              EdgeInsets.only(left: padding20),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Text(
+                                                '${data.productname}',
+                                                style: TextStyle(
+                                                    color: AppColors.purple,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: fontSize20),
+                                              ),
+                                              Text(
+                                                '₦ ${displayNumber(data.cost)}',
+                                                style: TextStyle(
+                                                    color: AppColors.red,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: fontSize20),
+                                              ),
+                                              Align(
+                                                alignment:
+                                                    Alignment.bottomRight,
+                                                child: RaisedButton(
+                                                  color: AppColors.blue,
+                                                  onPressed: () =>
+                                                      purchase(context, data),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  50))),
+                                                  child: Text(
+                                                    'View',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: fontSize20),
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

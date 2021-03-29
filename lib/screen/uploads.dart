@@ -251,8 +251,7 @@ class _UploadsState extends State<Uploads> {
                             return 'This field is empty';
                           } else if (value.contains(',')) {
                             return 'Please remove the ,';
-                          }
-                          else if (value.contains('.')) {
+                          } else if (value.contains('.')) {
                             return 'Please remove the .';
                           }
                         },
@@ -534,6 +533,8 @@ class _UploadsState extends State<Uploads> {
         uploadworksClass.images = [];
         uploadworksClass.avatar = '';
         uploadworksClass.images.length;
+        _avatarcolor = Colors.black;
+        _multicolor = Colors.black;
       });
     });
   }

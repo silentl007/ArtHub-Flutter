@@ -255,6 +255,7 @@ class _ProfileState extends State<Profile> {
                           child: Column(
                             children: [
                               CreditCardWidget(
+                                // null safety here
                                 cardNumber: cardNumber,
                                 expiryDate: expiryDate,
                                 cardHolderName: cardHolderName,
