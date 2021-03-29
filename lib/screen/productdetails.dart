@@ -3,6 +3,7 @@ import 'package:ArtHub/common/middlemen/middlemancart.dart';
 import 'package:ArtHub/common/model.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:number_display/number_display.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:http/http.dart' as http;
@@ -20,6 +21,8 @@ class _ProductDetailsState extends State<ProductDetails> {
   final ParsedDataProduct data;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final displayNumber = createDisplay(length: 8, decimal: 0);
+  GlobalKey<AnimatorWidgetState> _cartAnimationkey =
+      GlobalKey<AnimatorWidgetState>();
   List cart = [];
   List productIDs = [];
   int itemnumber;
@@ -85,26 +88,30 @@ class _ProductDetailsState extends State<ProductDetails> {
         appBar: AppBar(
           title: Text('Details'),
           actions: [
-            InkWell(
-              onTap: () {
-                purchasecreen();
-              },
-              child: Padding(
-                padding: EdgeInsets.only(right: padding30),
-                child: Row(
-                  children: [
-                    itemnumber == null
-                        ? loading()
-                        : Text(
-                            '$itemnumber',
-                            style: TextStyle(
-                                color: AppColors.purple, fontSize: fontSize20),
-                          ),
-                    Icon(
-                      Icons.shopping_cart,
-                      size: 30,
-                    ),
-                  ],
+            HeartBeat(
+              key: _cartAnimationkey,
+              child: InkWell(
+                onTap: () {
+                  purchasecreen();
+                },
+                child: Padding(
+                  padding: EdgeInsets.only(right: padding30),
+                  child: Row(
+                    children: [
+                      itemnumber == null
+                          ? loading()
+                          : Text(
+                              '$itemnumber',
+                              style: TextStyle(
+                                  color: AppColors.purple,
+                                  fontSize: fontSize20),
+                            ),
+                      Icon(
+                        Icons.shopping_cart,
+                        size: 30,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -211,35 +218,45 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     padding: EdgeInsets.only(left: padding70),
                                     child: Container(
                                       color: Colors.transparent,
-                                      child: Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            data.productname,
-                                            style: TextStyle(
-                                                color: AppColors.purple,
-                                                fontSize: fontSize25,
-                                                fontWeight: FontWeight.bold),
-                                          )),
+                                      child: SlideInLeft(
+                                        preferences: AnimationPreferences(
+                                            // offset: Duration(seconds: 2)
+                                            duration: Duration(seconds: 2)),
+                                        child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              data.productname,
+                                              style: TextStyle(
+                                                  color: AppColors.purple,
+                                                  fontSize: fontSize25,
+                                                  fontWeight: FontWeight.bold),
+                                            )),
+                                      ),
                                     ),
                                   )),
                               Expanded(
                                 flex: 1,
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Container(
-                                    height: costHeight40,
-                                    width: costWidth90,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
-                                        color: AppColors.red),
-                                    child: Center(
-                                        child: Text(
-                                      '₦ ${displayNumber(data.cost)}',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: fontSize20),
-                                    )),
+                                child: SlideInRight(
+                                  preferences: AnimationPreferences(
+                                      // offset: Duration(seconds: 2)
+                                      duration: Duration(seconds: 2)),
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Container(
+                                      height: costHeight40,
+                                      width: costWidth90,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+                                          color: AppColors.red),
+                                      child: Center(
+                                          child: Text(
+                                        '₦ ${displayNumber(data.cost)}',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: fontSize20),
+                                      )),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -250,68 +267,74 @@ class _ProductDetailsState extends State<ProductDetails> {
                       flex: 3,
                       child: Stack(
                         children: [
-                          Container(
-                            child: Padding(
-                              padding: EdgeInsets.only(left: padding70, top: 0),
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    Text('Type:',
+                          SlideInUp(
+                            preferences: AnimationPreferences(
+                                // offset: Duration(seconds: 2)
+                                duration: Duration(seconds: 2)),
+                            child: Container(
+                              child: Padding(
+                                padding:
+                                    EdgeInsets.only(left: padding70, top: 0),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      Text('Type:',
+                                          style: TextStyle(
+                                              fontSize: fontSize20,
+                                              color: AppColors.purple,
+                                              fontWeight: FontWeight.w700)),
+                                      Text('${data.type}',
+                                          style: TextStyle(
+                                              fontSize: fontSize20,
+                                              color: AppColors.purple)),
+                                      Text('Description:',
+                                          style: TextStyle(
+                                              fontSize: fontSize20,
+                                              color: AppColors.purple,
+                                              fontWeight: FontWeight.w700)),
+                                      Text(
+                                        '${data.description}',
                                         style: TextStyle(
                                             fontSize: fontSize20,
-                                            color: AppColors.purple,
-                                            fontWeight: FontWeight.w700)),
-                                    Text('${data.type}',
+                                            color: AppColors.purple),
+                                      ),
+                                      Text('Weight:',
+                                          style: TextStyle(
+                                              fontSize: fontSize20,
+                                              color: AppColors.purple,
+                                              fontWeight: FontWeight.w700)),
+                                      Text(
+                                        '${data.weight} kg',
                                         style: TextStyle(
                                             fontSize: fontSize20,
-                                            color: AppColors.purple)),
-                                    Text('Description:',
+                                            color: AppColors.purple),
+                                      ),
+                                      Text('Dimensions:',
+                                          style: TextStyle(
+                                              fontSize: fontSize20,
+                                              color: AppColors.purple,
+                                              fontWeight: FontWeight.w700)),
+                                      Text(
+                                        '${data.dimension} inchs',
                                         style: TextStyle(
                                             fontSize: fontSize20,
-                                            color: AppColors.purple,
-                                            fontWeight: FontWeight.w700)),
-                                    Text(
-                                      '${data.description}',
-                                      style: TextStyle(
-                                          fontSize: fontSize20,
-                                          color: AppColors.purple),
-                                    ),
-                                    Text('Weight:',
+                                            color: AppColors.purple),
+                                      ),
+                                      Text('Materials:',
+                                          style: TextStyle(
+                                              fontSize: fontSize20,
+                                              color: AppColors.purple,
+                                              fontWeight: FontWeight.w700)),
+                                      Text(
+                                        '${data.materials}',
                                         style: TextStyle(
                                             fontSize: fontSize20,
-                                            color: AppColors.purple,
-                                            fontWeight: FontWeight.w700)),
-                                    Text(
-                                      '${data.weight} kg',
-                                      style: TextStyle(
-                                          fontSize: fontSize20,
-                                          color: AppColors.purple),
-                                    ),
-                                    Text('Dimensions:',
-                                        style: TextStyle(
-                                            fontSize: fontSize20,
-                                            color: AppColors.purple,
-                                            fontWeight: FontWeight.w700)),
-                                    Text(
-                                      '${data.dimension} inchs',
-                                      style: TextStyle(
-                                          fontSize: fontSize20,
-                                          color: AppColors.purple),
-                                    ),
-                                    Text('Materials:',
-                                        style: TextStyle(
-                                            fontSize: fontSize20,
-                                            color: AppColors.purple,
-                                            fontWeight: FontWeight.w700)),
-                                    Text(
-                                      '${data.materials}',
-                                      style: TextStyle(
-                                          fontSize: fontSize20,
-                                          color: AppColors.purple),
-                                    ),
-                                  ],
+                                            color: AppColors.purple),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -373,6 +396,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             headers: {'Content-Type': 'application/json; charset=UTF-8'});
         if (add.statusCode == 200) {
           cartItems();
+          _cartAnimationkey.currentState.forward();
           return snackbar('Added to cart!', 1, AppColors.purple);
         }
       } catch (error) {
