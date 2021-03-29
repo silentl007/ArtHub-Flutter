@@ -72,28 +72,33 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
           key: _scaffoldKey,
-          bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: AppColors.purple,
-            showUnselectedLabels: true,
-            onTap: (index) {
-              if (accountType == 'Customer') {
-                _bottomNavCustomer(index);
-              } else
-                _bottomNavOthers(index);
-            },
-            items: accountType == 'Customer'
-                ? options
-                    .map((element) => BottomNavigationBarItem(
-                        backgroundColor: AppColors.purple,
-                        icon: element.optionIcon,
-                        label: element.option))
-                    .toList()
-                : options2
-                    .map((element) => BottomNavigationBarItem(
-                        backgroundColor: AppColors.purple,
-                        icon: element.optionIcon,
-                        label: element.option))
-                    .toList(),
+          bottomNavigationBar: JackInTheBox(
+            preferences: AnimationPreferences(offset: Duration(seconds: 2)
+                // duration: Duration(seconds: 0)
+                ),
+            child: BottomNavigationBar(
+              backgroundColor: AppColors.purple,
+              showUnselectedLabels: true,
+              onTap: (index) {
+                if (accountType == 'Customer') {
+                  _bottomNavCustomer(index);
+                } else
+                  _bottomNavOthers(index);
+              },
+              items: accountType == 'Customer'
+                  ? options
+                      .map((element) => BottomNavigationBarItem(
+                          backgroundColor: AppColors.purple,
+                          icon: element.optionIcon,
+                          label: element.option))
+                      .toList()
+                  : options2
+                      .map((element) => BottomNavigationBarItem(
+                          backgroundColor: AppColors.purple,
+                          icon: element.optionIcon,
+                          label: element.option))
+                      .toList(),
+            ),
           ),
           appBar: _apptitleBar('Home'),
           body: WillPopScope(
@@ -109,10 +114,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   BounceInLeft(
-                    preferences: AnimationPreferences(
-                      offset: Duration(seconds: 2)
-                      // duration: Duration(seconds: 0)
-                    ),
+                    preferences:
+                        AnimationPreferences(offset: Duration(seconds: 2)
+                            // duration: Duration(seconds: 0)
+                            ),
                     child: Container(
                       width: size.width * .7,
                       height: size.height * .08,
@@ -136,10 +141,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 15,
                   ),
                   BounceInRight(
-                    preferences: AnimationPreferences(
-                      offset: Duration(seconds: 2)
-                      // duration: Duration(seconds: 0)
-                    ),
+                    preferences:
+                        AnimationPreferences(offset: Duration(seconds: 2)
+                            // duration: Duration(seconds: 0)
+                            ),
                     child: Container(
                       width: size.width * .7,
                       height: size.height * .08,
