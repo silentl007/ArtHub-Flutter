@@ -6,7 +6,7 @@ import 'package:ArtHub/screen/aboutus.dart';
 import 'package:ArtHub/screen/freelanceartist/freelanceartistlist.dart';
 import 'package:ArtHub/screen/login.dart';
 import 'package:ArtHub/screen/uploads.dart';
-import 'package:ArtHub/screen/user/userorders.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:ArtHub/screen/user/userprofile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -108,40 +108,54 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Container(
-                    width: size.width * .7,
-                    height: size.height * .08,
-                    child: RaisedButton(
-                      color: AppColors.purple,
-                      onPressed: () => galleries(),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(50))),
-                      child: Text(
-                        'Galleries',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w900,
-                            fontSize: fontSize),
+                  BounceInLeft(
+                    preferences: AnimationPreferences(
+                      offset: Duration(seconds: 2)
+                      // duration: Duration(seconds: 0)
+                    ),
+                    child: Container(
+                      width: size.width * .7,
+                      height: size.height * .08,
+                      child: RaisedButton(
+                        color: AppColors.purple,
+                        onPressed: () => galleries(),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50))),
+                        child: Text(
+                          'Galleries',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w900,
+                              fontSize: fontSize),
+                        ),
                       ),
                     ),
                   ),
                   SizedBox(
                     height: 15,
                   ),
-                  Container(
-                    width: size.width * .7,
-                    height: size.height * .08,
-                    child: RaisedButton(
-                      color: AppColors.red,
-                      onPressed: () => freelancers(),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(50))),
-                      child: Text(
-                        'Freelance',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w900,
-                            fontSize: fontSize),
+                  BounceInRight(
+                    preferences: AnimationPreferences(
+                      offset: Duration(seconds: 2)
+                      // duration: Duration(seconds: 0)
+                    ),
+                    child: Container(
+                      width: size.width * .7,
+                      height: size.height * .08,
+                      child: RaisedButton(
+                        color: AppColors.red,
+                        onPressed: () => freelancers(),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50))),
+                        child: Text(
+                          'Freelance',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w900,
+                              fontSize: fontSize),
+                        ),
                       ),
                     ),
                   ),
