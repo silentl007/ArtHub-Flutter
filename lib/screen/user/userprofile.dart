@@ -110,195 +110,211 @@ class _ProfileState extends State<Profile> {
     double containerHeight = size.height * 0.25;
     double containerwidth = size.width * 0.355;
     double padding40 = size.height * 0.05;
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      padding: EdgeInsets.only(left: padding40, right: padding40),
-      decoration: BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage('assets/appimages/welcomeback.png'),
-            fit: BoxFit.cover),
-      ),
-      child: Column(children: [
-        accountType == 'Freelancer'
-            ? Container(
-                // alignment: Alignment.topLeft,
-                height: containerHeight,
-                width: containerwidth,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(70)),
-                  image: DecorationImage(
-                    image: NetworkImage(avatar),
-                    fit: BoxFit.cover,
+    return WillPopScope(
+      onWillPop: () {
+        return Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen()),
+            (Route<dynamic> route) => false);
+      },
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        padding: EdgeInsets.only(left: padding40, right: padding40),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/appimages/welcomeback.png'),
+              fit: BoxFit.cover),
+        ),
+        child: Column(children: [
+          accountType == 'Freelancer'
+              ? Container(
+                  // alignment: Alignment.topLeft,
+                  height: containerHeight,
+                  width: containerwidth,
+                  decoration: BoxDecoration(
+                    borderRadius:
+                        BorderRadius.only(topLeft: Radius.circular(70)),
+                    image: DecorationImage(
+                      image: NetworkImage(avatar),
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(70)),
-                  child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    imageUrl: avatar,
-                    placeholder: (context, url) => new Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          CircularProgressIndicator(
-                            valueColor: new AlwaysStoppedAnimation<Color>(
-                                AppColors.purple),
-                            strokeWidth: 5.0,
-                          ),
-                        ],
+                  child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.only(topLeft: Radius.circular(70)),
+                    child: CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      imageUrl: avatar,
+                      placeholder: (context, url) => new Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            CircularProgressIndicator(
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                  AppColors.purple),
+                              strokeWidth: 5.0,
+                            ),
+                          ],
+                        ),
                       ),
+                      errorWidget: (context, url, error) =>
+                          new Icon(Icons.error),
                     ),
-                    errorWidget: (context, url, error) => new Icon(Icons.error),
                   ),
-                ),
-              )
-            : Container(),
-        TextFormField(
-          readOnly: true,
-          initialValue: email,
-          cursorColor: AppColors.purple,
-          textCapitalization: TextCapitalization.words,
-          keyboardType: TextInputType.name,
-          textInputAction: TextInputAction.next,
-          onEditingComplete: () => node.nextFocus(),
-          decoration: InputDecoration(
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.purple)),
-              labelText: 'Email',
-              icon: Icon(Icons.email, color: AppColors.purple)),
-        ),
-        TextFormField(
-          readOnly: true,
-          initialValue: displayName,
-          cursorColor: AppColors.purple,
-          textCapitalization: TextCapitalization.words,
-          keyboardType: TextInputType.name,
-          textInputAction: TextInputAction.next,
-          onEditingComplete: () => node.nextFocus(),
-          decoration: InputDecoration(
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.purple)),
-              labelText: 'Full Name',
-              icon: Icon(Icons.title, color: AppColors.purple)),
-        ),
-        TextFormField(
-          readOnly: true,
-          initialValue: number,
-          cursorColor: AppColors.purple,
-          keyboardType: TextInputType.number,
-          textInputAction: TextInputAction.next,
-          onEditingComplete: () => node.nextFocus(),
-          maxLength: 11,
-          decoration: InputDecoration(
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.purple)),
-              labelText: 'Phone No.',
-              icon: Icon(Icons.phone, color: AppColors.purple)),
-        ),
-        TextFormField(
-          readOnly: true,
-          initialValue: address,
-          cursorColor: AppColors.purple,
-          textCapitalization: TextCapitalization.words,
-          textInputAction: TextInputAction.next,
-          onEditingComplete: () => node.nextFocus(),
-          decoration: InputDecoration(
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.purple)),
-              labelText: 'Address',
-              icon: Icon(Icons.gps_fixed, color: AppColors.purple)),
-        ),
-        TextFormField(
-          readOnly: true,
-          initialValue: state,
-          cursorColor: AppColors.purple,
-          textCapitalization: TextCapitalization.words,
-          textInputAction: TextInputAction.next,
-          onEditingComplete: () => node.nextFocus(),
-          decoration: InputDecoration(
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.purple)),
-              labelText: 'State',
-              icon: Icon(Icons.location_city, color: AppColors.purple)),
-        ),
-        accountType == 'Freelancer'
-            ? TextFormField(
-                readOnly: true,
-                cursorColor: AppColors.purple,
-                initialValue: aboutme,
-                maxLines: 3,
-                maxLength: 400,
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.purple)),
-                    labelText: 'About me',
-                    icon: Icon(Icons.text_fields, color: AppColors.purple)),
-              )
-            : Container(),
-        RaisedButton(
-          color: AppColors.purple,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(50))),
-          child: Text('Save payment details',
-              style: TextStyle(color: Colors.white)),
-          onPressed: () {
-            return showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: StatefulBuilder(
-                      builder: (context, StateSetter setState) {
-                        return SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              CreditCardWidget(
-                                // null safety here
-                                cardNumber: cardNumber == null ? '': cardNumber,
-                                expiryDate: expiryDate == null ? '': expiryDate,
-                                cardHolderName: cardHolderName == null ? '': cardHolderName,
-                                cvvCode: cvvCode == null ? '': cvvCode,
-                                showBackView: isCvvFocused,
-                              ),
-                              CreditCardForm(
-                                themeColor: Colors.red,
-                                onCreditCardModelChange:
-                                    (CreditCardModel creditCardModel) {
-                                  setState(() {
-                                    cardNumber = creditCardModel.cardNumber;
-                                    expiryDate = creditCardModel.expiryDate;
-                                    cardHolderName =
-                                        creditCardModel.cardHolderName;
-                                    cvvCode = creditCardModel.cvvCode;
-                                    isCvvFocused = creditCardModel.isCvvFocused;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                    actions: [
-                      RaisedButton(
-                        color: AppColors.purple,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(50))),
-                        child:
-                            Text('Save', style: TextStyle(color: Colors.white)),
-                        onPressed: () {
-                          saveCard();
+                )
+              : Container(),
+          TextFormField(
+            readOnly: true,
+            initialValue: email,
+            cursorColor: AppColors.purple,
+            textCapitalization: TextCapitalization.words,
+            keyboardType: TextInputType.name,
+            textInputAction: TextInputAction.next,
+            onEditingComplete: () => node.nextFocus(),
+            decoration: InputDecoration(
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.purple)),
+                labelText: 'Email',
+                icon: Icon(Icons.email, color: AppColors.purple)),
+          ),
+          TextFormField(
+            readOnly: true,
+            initialValue: displayName,
+            cursorColor: AppColors.purple,
+            textCapitalization: TextCapitalization.words,
+            keyboardType: TextInputType.name,
+            textInputAction: TextInputAction.next,
+            onEditingComplete: () => node.nextFocus(),
+            decoration: InputDecoration(
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.purple)),
+                labelText: 'Full Name',
+                icon: Icon(Icons.title, color: AppColors.purple)),
+          ),
+          TextFormField(
+            readOnly: true,
+            initialValue: number,
+            cursorColor: AppColors.purple,
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.next,
+            onEditingComplete: () => node.nextFocus(),
+            maxLength: 11,
+            decoration: InputDecoration(
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.purple)),
+                labelText: 'Phone No.',
+                icon: Icon(Icons.phone, color: AppColors.purple)),
+          ),
+          TextFormField(
+            readOnly: true,
+            initialValue: address,
+            cursorColor: AppColors.purple,
+            textCapitalization: TextCapitalization.words,
+            textInputAction: TextInputAction.next,
+            onEditingComplete: () => node.nextFocus(),
+            decoration: InputDecoration(
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.purple)),
+                labelText: 'Address',
+                icon: Icon(Icons.gps_fixed, color: AppColors.purple)),
+          ),
+          TextFormField(
+            readOnly: true,
+            initialValue: state,
+            cursorColor: AppColors.purple,
+            textCapitalization: TextCapitalization.words,
+            textInputAction: TextInputAction.next,
+            onEditingComplete: () => node.nextFocus(),
+            decoration: InputDecoration(
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: AppColors.purple)),
+                labelText: 'State',
+                icon: Icon(Icons.location_city, color: AppColors.purple)),
+          ),
+          accountType == 'Freelancer'
+              ? TextFormField(
+                  readOnly: true,
+                  cursorColor: AppColors.purple,
+                  initialValue: aboutme,
+                  maxLines: 3,
+                  maxLength: 400,
+                  textInputAction: TextInputAction.next,
+                  decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.purple)),
+                      labelText: 'About me',
+                      icon: Icon(Icons.text_fields, color: AppColors.purple)),
+                )
+              : Container(),
+          RaisedButton(
+            color: AppColors.purple,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(50))),
+            child: Text('Save payment details',
+                style: TextStyle(color: Colors.white)),
+            onPressed: () {
+              return showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      content: StatefulBuilder(
+                        builder: (context, StateSetter setState) {
+                          return SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                CreditCardWidget(
+                                  // null safety here
+                                  cardNumber:
+                                      cardNumber == null ? '' : cardNumber,
+                                  expiryDate:
+                                      expiryDate == null ? '' : expiryDate,
+                                  cardHolderName: cardHolderName == null
+                                      ? ''
+                                      : cardHolderName,
+                                  cvvCode: cvvCode == null ? '' : cvvCode,
+                                  showBackView: isCvvFocused,
+                                ),
+                                CreditCardForm(
+                                  themeColor: Colors.red,
+                                  onCreditCardModelChange:
+                                      (CreditCardModel creditCardModel) {
+                                    setState(() {
+                                      cardNumber = creditCardModel.cardNumber;
+                                      expiryDate = creditCardModel.expiryDate;
+                                      cardHolderName =
+                                          creditCardModel.cardHolderName;
+                                      cvvCode = creditCardModel.cvvCode;
+                                      isCvvFocused =
+                                          creditCardModel.isCvvFocused;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
                         },
-                      )
-                    ],
-                  );
-                });
-          },
-        ),
-      ]),
+                      ),
+                      actions: [
+                        RaisedButton(
+                          color: AppColors.purple,
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50))),
+                          child: Text('Save',
+                              style: TextStyle(color: Colors.white)),
+                          onPressed: () {
+                            saveCard();
+                          },
+                        )
+                      ],
+                    );
+                  });
+            },
+          ),
+        ]),
+      ),
     );
   }
 
