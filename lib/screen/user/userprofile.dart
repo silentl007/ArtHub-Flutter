@@ -5,6 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloudinary_client/cloudinary_client.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:credit_card/flutter_credit_card.dart';
+import 'package:credit_card/credit_card_form.dart';
+import 'package:credit_card/credit_card_model.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -13,11 +16,17 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   Widgets classWidget = Widgets();
+  List cardDate = [];
   UpdateProfile update = UpdateProfile();
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final List<String> states = ['Select State', 'Lagos', 'Bayelsa'];
   String selectedState = 'Select State';
+  String cardNumber = '';
+  String expiryDate = '';
+  String cardHolderName = '';
+  String cvvCode = '';
+  bool isCvvFocused = false;
   String avatar = '';
   String email = '';
   String displayName = '';
@@ -53,6 +62,9 @@ class _ProfileState extends State<Profile> {
       state = prefs.getString('location');
       aboutme = prefs.getString('aboutme');
       number = prefs.getInt('number').toString();
+      cardNumber = prefs.getString('cardNumber');
+      cvvCode = prefs.getString('cvvCode');
+      expiryDate = prefs.getString('expiryDate');
     });
   }
 
@@ -225,9 +237,79 @@ class _ProfileState extends State<Profile> {
                     labelText: 'About me',
                     icon: Icon(Icons.text_fields, color: AppColors.purple)),
               )
-            : Container()
+            : Container(),
+        RaisedButton(
+          color: AppColors.purple,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(50))),
+          child: Text('Save payment details',
+              style: TextStyle(color: Colors.white)),
+          onPressed: () {
+            return showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: StatefulBuilder(
+                      builder: (context, StateSetter setState) {
+                        return SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              CreditCardWidget(
+                                cardNumber: cardNumber,
+                                expiryDate: expiryDate,
+                                cardHolderName: cardHolderName,
+                                cvvCode: cvvCode,
+                                showBackView: isCvvFocused,
+                              ),
+                              CreditCardForm(
+                                themeColor: Colors.red,
+                                onCreditCardModelChange:
+                                    (CreditCardModel creditCardModel) {
+                                  setState(() {
+                                    cardNumber = creditCardModel.cardNumber;
+                                    expiryDate = creditCardModel.expiryDate;
+                                    cardHolderName =
+                                        creditCardModel.cardHolderName;
+                                    cvvCode = creditCardModel.cvvCode;
+                                    isCvvFocused = creditCardModel.isCvvFocused;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                    actions: [
+                      RaisedButton(
+                        color: AppColors.purple,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(50))),
+                        child:
+                            Text('Save', style: TextStyle(color: Colors.white)),
+                        onPressed: () {
+                          saveCard();
+                        },
+                      )
+                    ],
+                  );
+                });
+          },
+        ),
       ]),
     );
+  }
+
+  saveCard() async {
+    cardDate = expiryDate.split('/');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('cardNumber', cardNumber);
+    prefs.setString('expiryDate', expiryDate);
+    prefs.setString('cvvCode', cvvCode);
+    prefs.setInt('expiryMonth', num.tryParse(cardDate[0]));
+    prefs.setInt('expiryYear', num.tryParse(cardDate[1]));
+    Navigator.pop(context);
   }
 
   _profileEdit() {

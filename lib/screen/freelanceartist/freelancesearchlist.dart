@@ -28,6 +28,7 @@ class _FreelanceSearchState extends State<FreelanceSearch> {
     double padding20 = size.height * 0.025;
     double padding15 = size.height * 0.01875;
     double padding10 = size.height * 0.01252;
+    filter.shuffle();
     return Container(
       padding: EdgeInsets.fromLTRB(padding20, padding15, padding10, 0),
       child: Column(
@@ -48,13 +49,13 @@ class _FreelanceSearchState extends State<FreelanceSearch> {
                     onTap: () => profile(filter[index]),
                     child: Container(
                       child: Stack(
-                        fit: StackFit.expand,
+                        fit: StackFit.passthrough,
                         children: [
                           ClipRRect(
                             borderRadius:
                                 BorderRadius.only(topLeft: Radius.circular(70)),
                             child: CachedNetworkImage(
-                              fit: BoxFit.fill,
+                              fit: BoxFit.cover,
                               imageUrl: filter[index].avatar,
                               placeholder: (context, url) => new Center(
                                 child: Column(

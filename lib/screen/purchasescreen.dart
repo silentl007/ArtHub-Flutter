@@ -27,7 +27,11 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   String publicKey = 'pk_test_317423d856fb6d9a2201e6b5540a0ad74904da87';
   String address = '';
   String location = '';
+  String cardNumber = '';
+  String cvvCode = '';
   List data;
+  int expiryMonth;
+  int expiryYear;
   int summation = 0;
   int servicecharge = 500;
   int payment;
@@ -46,6 +50,10 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     username = prefs.getString('displayName');
     address = prefs.getString('address');
     location = prefs.getString('location');
+    cardNumber = prefs.getString('cardNumber');
+    cvvCode = prefs.getString('cvvCode');
+    expiryMonth = prefs.getInt('expiryMonth');
+    expiryYear = prefs.getInt('expiryYear');
     prefs.setBool('inapp', true);
   }
 
@@ -91,7 +99,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   }
 
   checkitemsavailability() async {
-    snackbar('Please wait! Checking product availability', 4, AppColors.purple);
+    snackbar('Please wait! Checking product availability', 1, AppColors.purple);
     String link = '${Server.link}/apiS/checkcart';
     Map<String, dynamic> body = {"purchaseditems": data, "test": "tested"};
     var encodedData = jsonEncode(body);
@@ -177,6 +185,12 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     Charge charge = Charge()
       ..amount = payment
       ..reference = _getReference()
+      ..card = PaymentCard(
+        number: cardNumber,
+        expiryMonth: expiryMonth,
+        expiryYear: expiryYear,
+        cvc: cvvCode,
+      )
       // or ..accessCode = _getAccessCodeFrmInitialization()
       ..email = useremail;
     CheckoutResponse response = await PaystackPlugin.checkout(
