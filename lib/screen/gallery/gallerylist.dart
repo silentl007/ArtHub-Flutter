@@ -1,5 +1,6 @@
 import 'package:ArtHub/screen/gallery/galleryart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 
 class GalleryList extends StatefulWidget {
   final data;
@@ -35,7 +36,7 @@ class _GalleryListState extends State<GalleryList> {
         children: [
           searchbar(),
           Expanded(
-            child:  ListView.builder(
+            child: ListView.builder(
                 itemCount: filtereddata.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
@@ -43,78 +44,83 @@ class _GalleryListState extends State<GalleryList> {
                       left: padding20,
                       right: padding20,
                     ),
-                    child: InkWell(
-                      onTap: () => galleryart(filtereddata[index].works),
-                      child: Material(
-                        borderRadius: BorderRadius.all(Radius.circular(30)),
-                        child: Container(
-                          height: containerHeight,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                      'assets/appimages/gallerylistback.png'),
-                                  fit: BoxFit.fill)),
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                left: padding50,
-                                top: padding25 / 2,
-                                bottom: padding25 / 2),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("${filtereddata[index].name}",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white,
-                                        fontSize: fontSize30)),
-                                SizedBox(
-                                  height: sizedBox9,
-                                ),
-                                Row(
-                                  children: [
-                                    Image.asset(
-                                      'assets/appimages/addressicon.png',
-                                      height: imageHeight20,
-                                    ),
-                                    SizedBox(
-                                      width: sizedBox10,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text('${filtereddata[index].address}',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: fontSize13)),
-                                        Text(
-                                            '${filtereddata[index].location} State',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: fontSize13)),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: sizedBox9,
-                                ),
-                                Row(
-                                  children: [
-                                    Image.asset(
-                                      'assets/appimages/callicon.png',
-                                      height: imageHeight20,
-                                    ),
-                                    SizedBox(
-                                      width: sizedBox10,
-                                    ),
-                                    Text('0${filtereddata[index].contact}',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: fontSize13))
-                                  ],
-                                )
-                              ],
+                    child: ZoomIn(
+                      preferences: AnimationPreferences(
+                      offset: Duration(seconds: 2),
+                    ),
+                      child: InkWell(
+                        onTap: () => galleryart(filtereddata[index].works),
+                        child: Material(
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          child: Container(
+                            height: containerHeight,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/appimages/gallerylistback.png'),
+                                    fit: BoxFit.fill)),
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  left: padding50,
+                                  top: padding25 / 2,
+                                  bottom: padding25 / 2),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("${filtereddata[index].name}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.white,
+                                          fontSize: fontSize30)),
+                                  SizedBox(
+                                    height: sizedBox9,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/appimages/addressicon.png',
+                                        height: imageHeight20,
+                                      ),
+                                      SizedBox(
+                                        width: sizedBox10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text('${filtereddata[index].address}',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: fontSize13)),
+                                          Text(
+                                              '${filtereddata[index].location} State',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: fontSize13)),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: sizedBox9,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/appimages/callicon.png',
+                                        height: imageHeight20,
+                                      ),
+                                      SizedBox(
+                                        width: sizedBox10,
+                                      ),
+                                      Text('0${filtereddata[index].contact}',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: fontSize13))
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
