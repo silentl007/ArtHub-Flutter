@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -120,8 +121,14 @@ class ParsedOrder {
   int totalcost;
   int itemscost;
   List purchaseditems;
-  ParsedOrder({this.orderID, this.status, this.itemnumber, this.dateOrdered,
-      this.totalcost, this.itemscost, this.purchaseditems});
+  ParsedOrder(
+      {this.orderID,
+      this.status,
+      this.itemnumber,
+      this.dateOrdered,
+      this.totalcost,
+      this.itemscost,
+      this.purchaseditems});
 }
 
 // ------------ Endpoints ----------------

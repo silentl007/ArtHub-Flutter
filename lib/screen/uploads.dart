@@ -1,5 +1,6 @@
 import 'package:ArtHub/common/model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloudinary_client/cloudinary_client.dart';
 
@@ -49,24 +50,26 @@ class _UploadsState extends State<Uploads> {
                   padding: EdgeInsets.only(left: padding40, right: padding40),
                   child: Column(
                     children: [
-                      TextFormField(
-                        textCapitalization: TextCapitalization.words,
-                        textInputAction: TextInputAction.next,
-                        onEditingComplete: () => node.nextFocus(),
-                        decoration: InputDecoration(
-                          labelText: 'Name of Artwork',
-                          icon: Icon(Icons.art_track),
+                      slideLeft(
+                        TextFormField(
+                          textCapitalization: TextCapitalization.words,
+                          textInputAction: TextInputAction.next,
+                          onEditingComplete: () => node.nextFocus(),
+                          decoration: InputDecoration(
+                            labelText: 'Name of Artwork',
+                            icon: Icon(Icons.art_track),
+                          ),
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'This field is empty';
+                            }
+                          },
+                          onSaved: (value) {
+                            uploadworksClass.productName = value;
+                          },
                         ),
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'This field is empty';
-                          }
-                        },
-                        onSaved: (value) {
-                          uploadworksClass.productName = value;
-                        },
                       ),
-                      TextFormField(
+                      slideRight(TextFormField(
                         maxLength: 160,
                         textInputAction: TextInputAction.next,
                         onEditingComplete: () => node.nextFocus(),
@@ -84,9 +87,9 @@ class _UploadsState extends State<Uploads> {
                         onSaved: (value) {
                           uploadworksClass.description = value;
                         },
-                      ),
+                      )),
                       SizedBox(
-                        height: 15,
+                        height: fontSize15,
                       ),
                       Container(
                           alignment: Alignment.centerLeft,
@@ -363,6 +366,21 @@ class _UploadsState extends State<Uploads> {
           ],
         ),
       ),
+    );
+  }
+
+  slideLeft(Widget widget) {
+    return SlideInLeft(
+      preferences: AnimationPreferences(
+          duration: Duration(seconds: 2), ),
+      child: widget,
+    );
+  }
+
+  slideRight(Widget widget) {
+    return SlideInRight(
+      preferences: AnimationPreferences(duration: Duration(seconds: 2)),
+      child: widget,
     );
   }
 

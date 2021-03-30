@@ -299,18 +299,20 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                 } else if (snapshot.hasData == true) {
                   return Container(
                     child: snapshot.data.length != 0
-                        ? Padding(
-                            padding: EdgeInsets.all(padding40),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                    flex: 2, child: itembuilder(snapshot.data)),
-                                Expanded(
-                                    flex: 1,
-                                    child:
-                                        checkoutsummary(snapshot.data.length)),
-                              ],
-                            ),
+                        ? Column(
+                            children: [
+                              Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                      padding: EdgeInsets.all(padding40),
+                                      child: itembuilder(snapshot.data))),
+                              Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                      padding: EdgeInsets.all(padding40),
+                                      child: checkoutsummary(
+                                          snapshot.data.length))),
+                            ],
                           )
                         : Center(
                             child: Text('No item in your cart!'),

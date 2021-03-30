@@ -39,31 +39,34 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
                     children: [
                       Expanded(
                         flex: 1,
-                        child: BounceInLeft(
-                          preferences: AnimationPreferences(
-                              offset: Duration(seconds: 1)),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(100)),
-                            child: CachedNetworkImage(
-                              fit: BoxFit.cover,
-                              imageUrl: widget.artistdata.avatar,
-                              placeholder: (context, url) => new Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    CircularProgressIndicator(
-                                      valueColor:
-                                          new AlwaysStoppedAnimation<Color>(
-                                              AppColors.purple),
-                                      strokeWidth: 5.0,
-                                    ),
-                                  ],
+                        child: Container(
+                          height: double.infinity,
+                          child: BounceInLeft(
+                            preferences: AnimationPreferences(
+                                offset: Duration(seconds: 1)),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(100)),
+                              child: CachedNetworkImage(
+                                fit: BoxFit.fitHeight,
+                                imageUrl: widget.artistdata.avatar,
+                                placeholder: (context, url) => new Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      CircularProgressIndicator(
+                                        valueColor:
+                                            new AlwaysStoppedAnimation<Color>(
+                                                AppColors.purple),
+                                        strokeWidth: 5.0,
+                                      ),
+                                    ],
+                                  ),
                                 ),
+                                errorWidget: (context, url, error) =>
+                                    new Icon(Icons.error),
                               ),
-                              errorWidget: (context, url, error) =>
-                                  new Icon(Icons.error),
                             ),
                           ),
                         ),

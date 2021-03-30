@@ -22,6 +22,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final Widgets classWidget = Widgets();
+  int offsetDuration = 2;
   String displayName = '';
   String accountType = '';
   final List<DrawerOptions> options = [
@@ -54,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
       accountType = prefs.getString('accountType');
     });
     if (prefs.getBool('inapp') == true) {
+      offsetDuration = 1;
     } else {
       _welcome();
     }
@@ -73,9 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
           key: _scaffoldKey,
           bottomNavigationBar: JackInTheBox(
-            preferences: AnimationPreferences(offset: Duration(seconds: 2)
-                // duration: Duration(seconds: 0)
-                ),
+            preferences:
+                AnimationPreferences(offset: Duration(seconds: offsetDuration)),
             child: BottomNavigationBar(
               backgroundColor: AppColors.purple,
               showUnselectedLabels: true,
@@ -113,26 +114,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  BounceInLeft(
-                    preferences:
-                        AnimationPreferences(offset: Duration(seconds: 2)
-                            // duration: Duration(seconds: 0)
-                            ),
-                    child: Container(
-                      width: size.width * .7,
-                      height: size.height * .08,
-                      child: RaisedButton(
-                        color: AppColors.purple,
-                        onPressed: () => galleries(),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(50))),
-                        child: Text(
-                          'Galleries',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w900,
-                              fontSize: fontSize),
+                  Pulse(
+                    preferences: AnimationPreferences(
+                        autoPlay: AnimationPlayStates.Loop),
+                    child: BounceInLeft(
+                      preferences: AnimationPreferences(
+                          offset: Duration(seconds: offsetDuration)),
+                      child: Container(
+                        width: size.width * .7,
+                        height: size.height * .08,
+                        child: RaisedButton(
+                          color: AppColors.purple,
+                          onPressed: () => galleries(),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50))),
+                          child: Text(
+                            'Galleries',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w900,
+                                fontSize: fontSize),
+                          ),
                         ),
                       ),
                     ),
@@ -140,26 +143,28 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 15,
                   ),
-                  BounceInRight(
-                    preferences:
-                        AnimationPreferences(offset: Duration(seconds: 2)
-                            // duration: Duration(seconds: 0)
-                            ),
-                    child: Container(
-                      width: size.width * .7,
-                      height: size.height * .08,
-                      child: RaisedButton(
-                        color: AppColors.red,
-                        onPressed: () => freelancers(),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(50))),
-                        child: Text(
-                          'Freelance',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w900,
-                              fontSize: fontSize),
+                  Pulse(
+                    preferences: AnimationPreferences(
+                        autoPlay: AnimationPlayStates.Loop),
+                    child: BounceInRight(
+                      preferences: AnimationPreferences(
+                          offset: Duration(seconds: offsetDuration)),
+                      child: Container(
+                        width: size.width * .7,
+                        height: size.height * .08,
+                        child: RaisedButton(
+                          color: AppColors.red,
+                          onPressed: () => freelancers(),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50))),
+                          child: Text(
+                            'Freelance',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w900,
+                                fontSize: fontSize),
+                          ),
                         ),
                       ),
                     ),
@@ -212,42 +217,50 @@ class _HomeScreenState extends State<HomeScreen> {
       actions: [
         Padding(
           padding: EdgeInsets.only(right: padding30),
-          child: Row(
-            children: [
-              IconButton(
-                padding: const EdgeInsets.only(right: 0),
-                icon: Icon(Icons.exit_to_app),
-                onPressed: () => _logout(),
-              ),
-              InkWell(
-                onTap: () => _logout(),
-                child: Text(
-                  'Log out',
-                  style: TextStyle(
-                      color: AppColors.purple,
-                      fontWeight: FontWeight.bold,
-                      fontSize: fontSize),
-                  textAlign: TextAlign.center,
+          child: SlideInLeft(
+            preferences:
+                AnimationPreferences(offset: Duration(seconds: offsetDuration)),
+            child: Row(
+              children: [
+                IconButton(
+                  padding: const EdgeInsets.only(right: 0),
+                  icon: Icon(Icons.exit_to_app),
+                  onPressed: () => _logout(),
                 ),
-              ),
-            ],
+                InkWell(
+                  onTap: () => _logout(),
+                  child: Text(
+                    'Log out',
+                    style: TextStyle(
+                        color: AppColors.purple,
+                        fontWeight: FontWeight.bold,
+                        fontSize: fontSize),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
           ),
         )
       ],
       title: Padding(
         padding: EdgeInsets.only(right: padding30),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              text,
-              style: TextStyle(
-                color: AppColors.purple,
-                fontWeight: FontWeight.bold,
+        child: SlideInRight(
+          preferences:
+              AnimationPreferences(offset: Duration(seconds: offsetDuration)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                text,
+                style: TextStyle(
+                  color: AppColors.purple,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -80,37 +80,43 @@ class _ProductDetailsState extends State<ProductDetails> {
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.white,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => addcart(data),
-          child: Icon(Icons.add_shopping_cart),
-          backgroundColor: AppColors.purple,
+        floatingActionButton: BounceInDown(
+          preferences: AnimationPreferences(duration: Duration(seconds: 2)),
+          child: FloatingActionButton(
+            onPressed: () => addcart(data),
+            child: Icon(Icons.add_shopping_cart),
+            backgroundColor: AppColors.purple,
+          ),
         ),
         appBar: AppBar(
           title: Text('Details'),
           actions: [
-            HeartBeat(
-              key: _cartAnimationkey,
-              child: InkWell(
-                onTap: () {
-                  purchasecreen();
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(right: padding30),
-                  child: Row(
-                    children: [
-                      itemnumber == null
-                          ? loading()
-                          : Text(
-                              '$itemnumber',
-                              style: TextStyle(
-                                  color: AppColors.purple,
-                                  fontSize: fontSize20),
-                            ),
-                      Icon(
-                        Icons.shopping_cart,
-                        size: 30,
-                      ),
-                    ],
+            SlideInLeft(
+              preferences: AnimationPreferences(duration: Duration(seconds: 2)),
+              child: HeartBeat(
+                key: _cartAnimationkey,
+                child: InkWell(
+                  onTap: () {
+                    purchasecreen();
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.only(right: padding30),
+                    child: Row(
+                      children: [
+                        itemnumber == null
+                            ? loading()
+                            : Text(
+                                '$itemnumber',
+                                style: TextStyle(
+                                    color: AppColors.purple,
+                                    fontSize: fontSize20),
+                              ),
+                        Icon(
+                          Icons.shopping_cart,
+                          size: 30,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
