@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
       accountType = prefs.getString('accountType');
     });
     if (prefs.getBool('inapp') == true) {
-      offsetDuration = 1;
+      offsetDuration = 0;
     } else {
       _welcome();
     }

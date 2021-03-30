@@ -271,15 +271,18 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
-                (Route<dynamic> route) => false);
-          },
-          child: Icon(Icons.home),
-          backgroundColor: AppColors.purple,
+        floatingActionButton: BounceInDown(
+          preferences: AnimationPreferences(offset: Duration(seconds: 1)),
+          child: FloatingActionButton(
+            onPressed: () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (Route<dynamic> route) => false);
+            },
+            child: Icon(Icons.home),
+            backgroundColor: AppColors.purple,
+          ),
         ),
         appBar: classWidget.apptitleBar(context, 'My Cart'),
         body: WillPopScope(
@@ -355,223 +358,137 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               left: padding5,
               right: padding5,
             ),
-            child: index.isEven || index == 0
-                ? SlideInLeft(
-                    preferences:
-                        AnimationPreferences(offset: Duration(seconds: 2)),
-                    child: Material(
-                      elevation: 3,
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      child: Container(
-                        height: size.height * .20,
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(padding8),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: innerheight,
-                                width: size.height * .15,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  child: CachedNetworkImage(
-                                    fit: BoxFit.cover,
-                                    imageUrl: snapshot[index]['avatar'],
-                                    placeholder: (context, url) => new Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          CircularProgressIndicator(
-                                            valueColor:
-                                                new AlwaysStoppedAnimation<
-                                                    Color>(AppColors.purple),
-                                            strokeWidth: 5.0,
-                                          ),
-                                        ],
+            child: BounceInDown(
+              preferences: AnimationPreferences(offset: Duration(seconds: 2)),
+              child: Material(
+                elevation: 3,
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+                child: Container(
+                  height: size.height * .20,
+                  decoration: BoxDecoration(
+                    color: Colors.transparent,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(padding8),
+                    child: Row(
+                      children: [
+                        slide(
+                          'left',
+                          3,
+                          Container(
+                            height: innerheight,
+                            width: size.height * .15,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(30.0),
+                              child: CachedNetworkImage(
+                                fit: BoxFit.cover,
+                                imageUrl: snapshot[index]['avatar'],
+                                placeholder: (context, url) => new Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      CircularProgressIndicator(
+                                        valueColor:
+                                            new AlwaysStoppedAnimation<Color>(
+                                                AppColors.purple),
+                                        strokeWidth: 5.0,
                                       ),
-                                    ),
-                                    errorWidget: (context, url, error) =>
-                                        new Icon(Icons.error),
+                                    ],
                                   ),
                                 ),
+                                errorWidget: (context, url, error) =>
+                                    new Icon(Icons.error),
                               ),
-                              Container(
-                                color: Colors.transparent,
-                                width: size.height * .22,
-                                padding: EdgeInsets.only(left: fontSize20),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      '${snapshot[index]['product']}',
-                                      style: TextStyle(
-                                          color: AppColors.purple,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: fontSize20),
-                                    ),
-                                    Text(
-                                      '${snapshot[index]['type']}',
-                                      style: TextStyle(
-                                          color: AppColors.purple,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: fontSize20),
-                                    ),
-                                    Text(
-                                      '₦ ${displayNumber(snapshot[index]['cost'])}',
-                                      style: TextStyle(
-                                          color: AppColors.red,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: fontSize20),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: Pulse(
-                                        preferences: AnimationPreferences(
-                                            offset: Duration(seconds: 3),
-                                            autoPlay: AnimationPlayStates.Loop),
-                                        child: RaisedButton(
-                                          color: AppColors.blue,
-                                          onPressed: () => remove(
-                                              snapshot[index]['productID']),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(50))),
-                                          child: Text(
-                                            'Remove',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: fontSize20),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  )
-                : SlideInRight(
-                    preferences:
-                        AnimationPreferences(offset: Duration(seconds: 2)),
-                    child: Material(
-                      elevation: 3,
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                      child: Container(
-                        height: size.height * .20,
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(padding8),
-                          child: Row(
-                            children: [
-                              Container(
-                                height: innerheight,
-                                width: size.height * .15,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  child: CachedNetworkImage(
-                                    fit: BoxFit.cover,
-                                    imageUrl: snapshot[index]['avatar'],
-                                    placeholder: (context, url) => new Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          CircularProgressIndicator(
-                                            valueColor:
-                                                new AlwaysStoppedAnimation<
-                                                    Color>(AppColors.purple),
-                                            strokeWidth: 5.0,
-                                          ),
-                                        ],
+                        slide(
+                          'right',
+                          5,
+                          Container(
+                            color: Colors.transparent,
+                            width: size.height * .22,
+                            padding: EdgeInsets.only(left: fontSize20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Text(
+                                  '${snapshot[index]['product']}',
+                                  style: TextStyle(
+                                      color: AppColors.purple,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: fontSize20),
+                                ),
+                                Text(
+                                  '${snapshot[index]['type']}',
+                                  style: TextStyle(
+                                      color: AppColors.purple,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: fontSize20),
+                                ),
+                                Text(
+                                  '₦ ${displayNumber(snapshot[index]['cost'])}',
+                                  style: TextStyle(
+                                      color: AppColors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: fontSize20),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Pulse(
+                                    preferences: AnimationPreferences(
+                                        offset: Duration(seconds: 3),
+                                        autoPlay: AnimationPlayStates.Loop),
+                                    child: RaisedButton(
+                                      color: AppColors.blue,
+                                      onPressed: () =>
+                                          remove(snapshot[index]['productID']),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(50))),
+                                      child: Text(
+                                        'Remove',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: fontSize20),
                                       ),
                                     ),
-                                    errorWidget: (context, url, error) =>
-                                        new Icon(Icons.error),
                                   ),
-                                ),
-                              ),
-                              Container(
-                                color: Colors.transparent,
-                                width: size.height * .22,
-                                padding: EdgeInsets.only(left: fontSize20),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      '${snapshot[index]['product']}',
-                                      style: TextStyle(
-                                          color: AppColors.purple,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: fontSize20),
-                                    ),
-                                    Text(
-                                      '${snapshot[index]['type']}',
-                                      style: TextStyle(
-                                          color: AppColors.purple,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: fontSize20),
-                                    ),
-                                    Text(
-                                      '₦ ${displayNumber(snapshot[index]['cost'])}',
-                                      style: TextStyle(
-                                          color: AppColors.red,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: fontSize20),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: Pulse(
-                                        preferences: AnimationPreferences(
-                                            offset: Duration(seconds: 3),
-                                            autoPlay: AnimationPlayStates.Loop),
-                                        child: RaisedButton(
-                                          color: AppColors.blue,
-                                          onPressed: () => remove(
-                                              snapshot[index]['productID']),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(50))),
-                                          child: Text(
-                                            'Remove',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: fontSize20),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      ),
+                        )
+                      ],
                     ),
                   ),
+                ),
+              ),
+            ),
           );
         },
       ),
     );
+  }
+
+  slide(String direction, int duration, Widget widget) {
+    if (direction == 'left') {
+      return SlideInLeft(
+        preferences: AnimationPreferences(
+          offset: Duration(seconds: duration),
+        ),
+        child: widget,
+      );
+    } else {
+      return SlideInRight(
+        preferences:
+            AnimationPreferences(duration: Duration(seconds: duration)),
+        child: widget,
+      );
+    }
   }
 
   checkoutsummary(int itemnumber) {
@@ -678,27 +595,31 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               )
             ],
           ),
-          HeartBeat(
-            preferences: AnimationPreferences(
-                offset: Duration(seconds: 4),
-                autoPlay: AnimationPlayStates.Loop),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                width: size.width * .35,
-                height: size.height * .07,
-                child: RaisedButton(
-                  elevation: 15,
-                  child: Text(
-                    'Checkout',
-                    style: TextStyle(fontSize: fontSize20, color: Colors.white),
-                  ),
-                  color: AppColors.red,
-                  onPressed: () => checkitemsavailability(),
-                  // onPressed: ()=> purchaseOrder(),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(50),
+          BounceInDown(
+            preferences: AnimationPreferences(offset: Duration(seconds: 1)),
+            child: HeartBeat(
+              preferences: AnimationPreferences(
+                  offset: Duration(seconds: 3),
+                  autoPlay: AnimationPlayStates.Loop),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  width: size.width * .35,
+                  height: size.height * .07,
+                  child: RaisedButton(
+                    elevation: 15,
+                    child: Text(
+                      'Checkout',
+                      style:
+                          TextStyle(fontSize: fontSize20, color: Colors.white),
+                    ),
+                    color: AppColors.red,
+                    onPressed: () => checkitemsavailability(),
+                    // onPressed: ()=> purchaseOrder(),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(50),
+                      ),
                     ),
                   ),
                 ),

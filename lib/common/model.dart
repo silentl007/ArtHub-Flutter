@@ -27,13 +27,16 @@ class Widgets {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text(
-              text,
-              style: TextStyle(
-                color: AppColors.purple,
-                fontWeight: FontWeight.bold,
+            SlideInLeft(
+              preferences: AnimationPreferences(offset: Duration(seconds: 1)),
+              child: Text(
+                text,
+                style: TextStyle(
+                  color: AppColors.purple,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             ),
           ],
         ),
