@@ -327,7 +327,7 @@ class _HomeScreenState extends State<HomeScreen> {
           context, MaterialPageRoute(builder: (context) => MiddleOrders()));
     } else if (index == 2) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MiddleCart()));
+          context, MaterialPageRoute(builder: (context) => MiddleCart(homecheck: 'home',)));
     } else if (index == 3) {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => MiddleUserArtWorks()));

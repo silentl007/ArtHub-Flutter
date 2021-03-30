@@ -57,7 +57,9 @@ class Widgets {
               MaterialPageRoute(builder: (context) => HomeScreen()),
               (Route<dynamic> route) => false);
         },
-        child: Icon(Icons.home),
+        child: Pulse(
+          preferences: AnimationPreferences(autoPlay: AnimationPlayStates.Loop),
+          child: Icon(Icons.home)),
         backgroundColor: AppColors.purple,
       ),
     );

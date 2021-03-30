@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:ArtHub/screen/freelanceartist/freelancesearchlist.dart';
+import 'package:ArtHub/screen/homescreen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
@@ -54,37 +55,45 @@ class _FreeLanceArtistState extends State<FreeLanceArtist> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: classWidget.apptitleBar(context, 'Freelancers'),
-        body: FutureBuilder(
-            future: freelancers,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState != ConnectionState.done) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      CircularProgressIndicator(
-                        valueColor:
-                            new AlwaysStoppedAnimation<Color>(AppColors.purple),
-                        strokeWidth: 9.0,
-                      ),
-                    ],
-                  ),
-                );
-              } else if (snapshot.hasData) {
-                return FreelanceSearch(data: snapshot.data);
-              } else {
-                return Center(
-                  child: RaisedButton(
-                    child: Text('Retry'),
-                    onPressed: () {
-                      freelancers = _getFreelancers();
-                      setState(() {});
-                    },
-                  ),
-                );
-              }
-            }),
+        body: WillPopScope(
+          onWillPop: () {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+                (Route<dynamic> route) => false);
+          },
+          child: FutureBuilder(
+              future: freelancers,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        CircularProgressIndicator(
+                          valueColor: new AlwaysStoppedAnimation<Color>(
+                              AppColors.purple),
+                          strokeWidth: 9.0,
+                        ),
+                      ],
+                    ),
+                  );
+                } else if (snapshot.hasData) {
+                  return FreelanceSearch(data: snapshot.data);
+                } else {
+                  return Center(
+                    child: RaisedButton(
+                      child: Text('Retry'),
+                      onPressed: () {
+                        freelancers = _getFreelancers();
+                        setState(() {});
+                      },
+                    ),
+                  );
+                }
+              }),
+        ),
       ),
     );
   }

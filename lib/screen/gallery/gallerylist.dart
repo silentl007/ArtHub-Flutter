@@ -66,66 +66,71 @@ class _GalleryListState extends State<GalleryList> {
                                         left: padding50,
                                         top: padding25 / 2,
                                         bottom: padding25 / 2),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("${filtereddata[index].name}",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.white,
-                                                fontSize: fontSize30)),
-                                        SizedBox(
-                                          height: sizedBox9,
-                                        ),
-                                        Row(
+                                    child: slide(
+                                        'right',
+                                        2,
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Image.asset(
-                                              'assets/appimages/addressicon.png',
-                                              height: imageHeight20,
-                                            ),
+                                            Text("${filtereddata[index].name}",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.white,
+                                                    fontSize: fontSize30)),
                                             SizedBox(
-                                              width: sizedBox10,
+                                              height: sizedBox9,
                                             ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                            Row(
                                               children: [
-                                                Text(
-                                                    '${filtereddata[index].address}',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: fontSize13)),
-                                                Text(
-                                                    '${filtereddata[index].location} State',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: fontSize13)),
+                                                Image.asset(
+                                                  'assets/appimages/addressicon.png',
+                                                  height: imageHeight20,
+                                                ),
+                                                SizedBox(
+                                                  width: sizedBox10,
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                        '${filtereddata[index].address}',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize:
+                                                                fontSize13)),
+                                                    Text(
+                                                        '${filtereddata[index].location} State',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize:
+                                                                fontSize13)),
+                                                  ],
+                                                ),
                                               ],
                                             ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: sizedBox9,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              'assets/appimages/callicon.png',
-                                              height: imageHeight20,
-                                            ),
                                             SizedBox(
-                                              width: sizedBox10,
+                                              height: sizedBox9,
                                             ),
-                                            Text(
-                                                '0${filtereddata[index].contact}',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: fontSize13))
+                                            Row(
+                                              children: [
+                                                Image.asset(
+                                                  'assets/appimages/callicon.png',
+                                                  height: imageHeight20,
+                                                ),
+                                                SizedBox(
+                                                  width: sizedBox10,
+                                                ),
+                                                Text(
+                                                    '0${filtereddata[index].contact}',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: fontSize13))
+                                              ],
+                                            )
                                           ],
-                                        )
-                                      ],
-                                    ),
+                                        )),
                                   ),
                                 ),
                               ),
@@ -152,66 +157,71 @@ class _GalleryListState extends State<GalleryList> {
                                         left: padding50,
                                         top: padding25 / 2,
                                         bottom: padding25 / 2),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("${filtereddata[index].name}",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.white,
-                                                fontSize: fontSize30)),
-                                        SizedBox(
-                                          height: sizedBox9,
-                                        ),
-                                        Row(
+                                    child: slide(
+                                        'left',
+                                        2,
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
-                                            Image.asset(
-                                              'assets/appimages/addressicon.png',
-                                              height: imageHeight20,
-                                            ),
+                                            Text("${filtereddata[index].name}",
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.white,
+                                                    fontSize: fontSize30)),
                                             SizedBox(
-                                              width: sizedBox10,
+                                              height: sizedBox9,
                                             ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                            Row(
                                               children: [
-                                                Text(
-                                                    '${filtereddata[index].address}',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: fontSize13)),
-                                                Text(
-                                                    '${filtereddata[index].location} State',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: fontSize13)),
+                                                Image.asset(
+                                                  'assets/appimages/addressicon.png',
+                                                  height: imageHeight20,
+                                                ),
+                                                SizedBox(
+                                                  width: sizedBox10,
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                        '${filtereddata[index].address}',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize:
+                                                                fontSize13)),
+                                                    Text(
+                                                        '${filtereddata[index].location} State',
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize:
+                                                                fontSize13)),
+                                                  ],
+                                                ),
                                               ],
                                             ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: sizedBox9,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              'assets/appimages/callicon.png',
-                                              height: imageHeight20,
-                                            ),
                                             SizedBox(
-                                              width: sizedBox10,
+                                              height: sizedBox9,
                                             ),
-                                            Text(
-                                                '0${filtereddata[index].contact}',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: fontSize13))
+                                            Row(
+                                              children: [
+                                                Image.asset(
+                                                  'assets/appimages/callicon.png',
+                                                  height: imageHeight20,
+                                                ),
+                                                SizedBox(
+                                                  width: sizedBox10,
+                                                ),
+                                                Text(
+                                                    '0${filtereddata[index].contact}',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: fontSize13))
+                                              ],
+                                            )
                                           ],
-                                        )
-                                      ],
-                                    ),
+                                        )),
                                   ),
                                 ),
                               ),

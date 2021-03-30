@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ArtHub/common/model.dart';
 
 class MiddleCart extends StatefulWidget {
+  final homecheck;
+  MiddleCart({this.homecheck});
   @override
   _MiddleCartState createState() => _MiddleCartState();
 }
@@ -52,7 +54,10 @@ class _MiddleCartState extends State<MiddleCart> {
       return Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => PurchaseScreen(userDetails: data)));
+              builder: (context) => PurchaseScreen(
+                    userDetails: data,
+                    homecheck: widget.homecheck,
+                  )));
     });
   }
 }

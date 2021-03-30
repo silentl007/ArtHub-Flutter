@@ -13,7 +13,8 @@ import 'package:http/http.dart' as http;
 
 class PurchaseScreen extends StatefulWidget {
   final List userDetails;
-  PurchaseScreen({this.userDetails});
+  final homecheck;
+  PurchaseScreen({this.userDetails, this.homecheck});
   @override
   _PurchaseScreenState createState() => _PurchaseScreenState();
 }
@@ -275,10 +276,14 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         appBar: classWidget.apptitleBar(context, 'My Cart'),
         body: WillPopScope(
           onWillPop: () {
-            return Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
-                (Route<dynamic> route) => false);
+            if (widget.homecheck == 'home') {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (Route<dynamic> route) => false);
+            } else {
+              Navigator.pop(context);
+            }
           },
           child: Container(
             color: Colors.white,

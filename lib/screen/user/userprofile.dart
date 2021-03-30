@@ -133,7 +133,6 @@ class _ProfileState extends State<Profile> {
               ? BounceInDown(
                 preferences: AnimationPreferences(offset: Duration(seconds: 2)),
                               child: Container(
-                    // alignment: Alignment.topLeft,
                     height: containerHeight,
                     width: containerwidth,
                     decoration: BoxDecoration(

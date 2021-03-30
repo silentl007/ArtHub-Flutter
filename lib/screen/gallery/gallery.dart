@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:ArtHub/screen/gallery/gallerylist.dart';
+import 'package:ArtHub/screen/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,41 +54,49 @@ class _GalleriesState extends State<Galleries> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: classWidget.apptitleBar(context, 'Galleries'),
-        body: FutureBuilder(
-            future: gallery,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState != ConnectionState.done) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      CircularProgressIndicator(
-                        valueColor:
-                            new AlwaysStoppedAnimation<Color>(AppColors.purple),
-                        strokeWidth: 9.0,
-                      ),
-                    ],
-                  ),
-                );
-              } else if (snapshot.hasData) {
-                return GalleryList(
-                  data: snapshot.data,
-                );
-              } else {
-                return Center(
-                  child: RaisedButton(
-                    child: Text('Retry'),
-                    onPressed: () {
-                      gallery = _getGallery();
-                      setState(() {
-                        
-                      });
-                    },
-                  ),
-                );
-              }
-            }),
+        body: WillPopScope(
+          onWillPop: (){
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => HomeScreen()),
+              (Route<dynamic> route) => false);
+          },
+                  child: FutureBuilder(
+              future: gallery,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState != ConnectionState.done) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        CircularProgressIndicator(
+                          valueColor:
+                              new AlwaysStoppedAnimation<Color>(AppColors.purple),
+                          strokeWidth: 9.0,
+                        ),
+                      ],
+                    ),
+                  );
+                } else if (snapshot.hasData) {
+                  return GalleryList(
+                    data: snapshot.data,
+                  );
+                } else {
+                  return Center(
+                    child: RaisedButton(
+                      child: Text('Retry'),
+                      onPressed: () {
+                        gallery = _getGallery();
+                        setState(() {
+                          
+                        });
+                      },
+                    ),
+                  );
+                }
+              }),
+        ),
       ),
     );
   }
