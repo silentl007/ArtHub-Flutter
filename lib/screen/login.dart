@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
     double fontSize = size.height * 0.025;
     double sizeHeight10 = size.height * 0.0125;
     double padding40 = size.height * 0.05;
-
+    final node = FocusScope.of(context);
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
@@ -73,6 +73,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 slide(
                     'left',
                     TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                          onEditingComplete: () => node.nextFocus(),
                       cursorColor: AppColors.purple,
                       decoration: InputDecoration(
                           focusedBorder: UnderlineInputBorder(
