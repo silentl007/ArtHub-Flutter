@@ -2,6 +2,7 @@ import 'package:ArtHub/screen/homescreen.dart';
 import 'package:ArtHub/screen/user/ordersdelivered.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'orderspending.dart';
 
@@ -40,18 +41,22 @@ class _OrdersState extends State<Orders> {
       length: 2,
       child: SafeArea(
           child: Scaffold(
-            backgroundColor: Colors.white,
+        backgroundColor: Colors.white,
         appBar: AppBar(
             title: Padding(
               padding: EdgeInsets.only(right: padding30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    'Orders',
-                    style: TextStyle(
-                      color: AppColors.purple,
-                      fontWeight: FontWeight.bold,
+                  SlideInLeft(
+                    preferences:
+                        AnimationPreferences(offset: Duration(seconds: 2)),
+                    child: Text(
+                      'Orders',
+                      style: TextStyle(
+                        color: AppColors.purple,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],

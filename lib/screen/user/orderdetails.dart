@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:number_display/number_display.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class OrderDetails extends StatefulWidget {
-  List data;
+  final List data;
   OrderDetails(this.data);
   @override
   _OrderDetailsState createState() => _OrderDetailsState();
@@ -25,6 +26,7 @@ class _OrderDetailsState extends State<OrderDetails> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: classWidget.apptitleBar(context, 'Order Details'),
+        floatingActionButton: classWidget.floatingHome(context),
         body: Container(
           child: Padding(
             padding: EdgeInsets.all(padding40),
@@ -53,27 +55,34 @@ class _OrderDetailsState extends State<OrderDetails> {
                             Container(
                               height: innerheight,
                               width: size.height * .15,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(30.0),
-                                child: CachedNetworkImage(
-                                  fit: BoxFit.cover,
-                                  imageUrl: widget.data[index]['avatar'],
-                                  placeholder: (context, url) => new Center(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        CircularProgressIndicator(
-                                          valueColor:
-                                              new AlwaysStoppedAnimation<Color>(
-                                                  AppColors.purple),
-                                          strokeWidth: 5.0,
-                                        ),
-                                      ],
+                              child: FadeInDown(
+                                preferences: AnimationPreferences(
+                                  offset: Duration(seconds: 2),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                  child: CachedNetworkImage(
+                                    fit: BoxFit.cover,
+                                    imageUrl: widget.data[index]['avatar'],
+                                    placeholder: (context, url) => new Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          CircularProgressIndicator(
+                                            valueColor:
+                                                new AlwaysStoppedAnimation<
+                                                    Color>(AppColors.purple),
+                                            strokeWidth: 5.0,
+                                          ),
+                                        ],
+                                      ),
                                     ),
+                                    errorWidget: (context, url, error) =>
+                                        new Icon(Icons.error),
                                   ),
-                                  errorWidget: (context, url, error) =>
-                                      new Icon(Icons.error),
                                 ),
                               ),
                             ),
@@ -83,29 +92,36 @@ class _OrderDetailsState extends State<OrderDetails> {
                               padding: EdgeInsets.only(left: fontSize20),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
-                                  Text(
-                                    '${widget.data[index]['product']}',
-                                    style: TextStyle(
-                                        color: AppColors.purple,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: fontSize20),
-                                  ),
-                                  Text(
-                                    '${widget.data[index]['type']}',
-                                    style: TextStyle(
-                                        color: AppColors.purple,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: fontSize20),
-                                  ),
-                                  Text(
-                                    '₦ ${displayNumber(widget.data[index]['cost'])}',
-                                    style: TextStyle(
-                                        color: AppColors.red,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: fontSize20),
-                                  ),
+                                  slide(
+                                      'left',
+                                      Text(
+                                        '${widget.data[index]['product']}',
+                                        style: TextStyle(
+                                            color: AppColors.purple,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: fontSize20),
+                                      )),
+                                  slide(
+                                      'right',
+                                      Text(
+                                        '${widget.data[index]['type']}',
+                                        style: TextStyle(
+                                            color: AppColors.purple,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: fontSize20),
+                                      )),
+                                  slide(
+                                      'left',
+                                      Text(
+                                        '₦ ${displayNumber(widget.data[index]['cost'])}',
+                                        style: TextStyle(
+                                            color: AppColors.red,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: fontSize20),
+                                      )),
                                 ],
                               ),
                             )
@@ -121,5 +137,22 @@ class _OrderDetailsState extends State<OrderDetails> {
         ),
       ),
     );
+  }
+
+  slide(String direction, Widget widget) {
+    int duration = 2;
+    if (direction == 'left') {
+      return SlideInLeft(
+        preferences: AnimationPreferences(
+          offset: Duration(seconds: duration),
+        ),
+        child: widget,
+      );
+    } else {
+      return SlideInRight(
+        preferences: AnimationPreferences(offset: Duration(seconds: duration)),
+        child: widget,
+      );
+    }
   }
 }

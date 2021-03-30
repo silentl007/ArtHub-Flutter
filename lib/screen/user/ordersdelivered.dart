@@ -1,6 +1,7 @@
 import 'package:ArtHub/screen/user/orderdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'dart:convert';
 import 'package:number_display/number_display.dart';
 import 'package:http/http.dart' as http;
@@ -91,39 +92,65 @@ class _DeliveredState extends State<Delivered> {
     return ListView.builder(
       itemCount: snapshot.length,
       itemBuilder: (BuildContext context, int index) {
-        return Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(25),
-            ),
+        return BounceInDown(
+          preferences: AnimationPreferences(
+            offset: Duration(seconds: 2),
           ),
-          child: ListTile(
-            onTap: () {
-              orderDetails(snapshot[index].purchaseditems);
-            },
-            leading: Icon(Icons.menu),
-            trailing: Icon(Icons.arrow_right),
-            title: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Order ID'),
-                Text('${snapshot[index].orderID}'),
-              ],
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(25),
+              ),
             ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Date: ${snapshot[index].dateOrdered}'),
-                Text('Number of items: ${snapshot[index].itemnumber}'),
-                Text(
-                    'Total cost of items: ₦${displayNumber(snapshot[index].itemscost)}'),
-              ],
+            child: ListTile(
+              onTap: () {
+                orderDetails(snapshot[index].purchaseditems);
+              },
+              leading: Icon(Icons.check),
+              trailing: Icon(Icons.arrow_right),
+              title: slide(
+                  'right',
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Order ID'),
+                      Text('${snapshot[index].orderID}'),
+                    ],
+                  )),
+              subtitle: slide(
+                  'right',
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Date: ${snapshot[index].dateOrdered}'),
+                      Text('No. of items: ${snapshot[index].itemnumber}'),
+                      Text(
+                          'Cost of items: ₦${displayNumber(snapshot[index].itemscost)}'),
+                    ],
+                  )),
             ),
           ),
         );
       },
     );
+  }
+
+  slide(String direction, Widget widget) {
+    int duration = 2;
+    if (direction == 'left') {
+      return SlideInLeft(
+        preferences: AnimationPreferences(
+          offset: Duration(seconds: duration),
+        ),
+        child: widget,
+      );
+    } else {
+      return SlideInRight(
+        preferences: AnimationPreferences(offset: Duration(seconds: duration)),
+        child: widget,
+      );
+    }
   }
 
   void orderDetails(List orderdetails) {

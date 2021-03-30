@@ -128,238 +128,237 @@ class _ProfileState extends State<Profile> {
               image: AssetImage('assets/appimages/welcomeback.png'),
               fit: BoxFit.cover),
         ),
-        child: Column(children: [
-          accountType == 'Freelancer'
-              ? BounceInDown(
-                  preferences:
-                      AnimationPreferences(offset: Duration(seconds: 2)),
-                  child: Container(
-                    height: containerHeight,
-                    width: containerwidth,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.only(topLeft: Radius.circular(70)),
-                      image: DecorationImage(
-                        image: NetworkImage(avatar),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    child: ClipRRect(
-                      borderRadius:
-                          BorderRadius.only(topLeft: Radius.circular(70)),
-                      child: CachedNetworkImage(
-                        fit: BoxFit.cover,
-                        imageUrl: avatar,
-                        placeholder: (context, url) => new Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              CircularProgressIndicator(
-                                valueColor: new AlwaysStoppedAnimation<Color>(
-                                    AppColors.purple),
-                                strokeWidth: 5.0,
-                              ),
-                            ],
-                          ),
+        child: SingleChildScrollView(
+                  child: Column(children: [
+              accountType == 'Freelancer'
+                  ? BounceInDown(
+            preferences:
+                AnimationPreferences(offset: Duration(seconds: 2)),
+            child: Container(
+              height: containerHeight,
+              width: containerwidth,
+              decoration: BoxDecoration(
+                borderRadius:
+                    BorderRadius.only(topLeft: Radius.circular(70)),
+                image: DecorationImage(
+                  image: NetworkImage(avatar),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: ClipRRect(
+                borderRadius:
+                    BorderRadius.only(topLeft: Radius.circular(70)),
+                child: CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  imageUrl: avatar,
+                  placeholder: (context, url) => new Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        CircularProgressIndicator(
+                          valueColor: new AlwaysStoppedAnimation<Color>(
+                              AppColors.purple),
+                          strokeWidth: 5.0,
                         ),
-                        errorWidget: (context, url, error) =>
-                            new Icon(Icons.error),
-                      ),
+                      ],
                     ),
                   ),
-                )
-              : Container(),
-          SlideInLeft(
-            preferences: AnimationPreferences(duration: Duration(seconds: 4)),
-            child: TextFormField(
-              readOnly: true,
-              initialValue: email,
-              cursorColor: AppColors.purple,
-              textCapitalization: TextCapitalization.words,
-              keyboardType: TextInputType.name,
-              textInputAction: TextInputAction.next,
-              onEditingComplete: () => node.nextFocus(),
-              decoration: InputDecoration(
-                  focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.purple)),
-                  labelText: 'Email',
-                  icon: Icon(Icons.email, color: AppColors.purple)),
-            ),
-          ),
-          SlideInRight(
-            preferences: AnimationPreferences(duration: Duration(seconds: 4)),
-            child: TextFormField(
-              readOnly: true,
-              initialValue: displayName,
-              cursorColor: AppColors.purple,
-              textCapitalization: TextCapitalization.words,
-              keyboardType: TextInputType.name,
-              textInputAction: TextInputAction.next,
-              onEditingComplete: () => node.nextFocus(),
-              decoration: InputDecoration(
-                  focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.purple)),
-                  labelText: 'Full Name',
-                  icon: Icon(Icons.title, color: AppColors.purple)),
-            ),
-          ),
-          SlideInLeft(
-            preferences: AnimationPreferences(duration: Duration(seconds: 4)),
-            child: TextFormField(
-              readOnly: true,
-              initialValue: number,
-              cursorColor: AppColors.purple,
-              keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.next,
-              onEditingComplete: () => node.nextFocus(),
-              maxLength: 11,
-              decoration: InputDecoration(
-                  focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.purple)),
-                  labelText: 'Phone No.',
-                  icon: Icon(Icons.phone, color: AppColors.purple)),
-            ),
-          ),
-          SlideInRight(
-            preferences: AnimationPreferences(duration: Duration(seconds: 4)),
-            child: TextFormField(
-              readOnly: true,
-              initialValue: address,
-              cursorColor: AppColors.purple,
-              textCapitalization: TextCapitalization.words,
-              textInputAction: TextInputAction.next,
-              onEditingComplete: () => node.nextFocus(),
-              decoration: InputDecoration(
-                  focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.purple)),
-                  labelText: 'Address',
-                  icon: Icon(Icons.gps_fixed, color: AppColors.purple)),
-            ),
-          ),
-          SlideInLeft(
-            preferences: AnimationPreferences(duration: Duration(seconds: 4)),
-            child: TextFormField(
-              readOnly: true,
-              initialValue: state,
-              cursorColor: AppColors.purple,
-              textCapitalization: TextCapitalization.words,
-              textInputAction: TextInputAction.next,
-              onEditingComplete: () => node.nextFocus(),
-              decoration: InputDecoration(
-                  focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.purple)),
-                  labelText: 'State',
-                  icon: Icon(Icons.location_city, color: AppColors.purple)),
-            ),
-          ),
-          BounceInDown(
-            preferences: AnimationPreferences(offset: Duration(seconds: 2)),
-            child: Pulse(
-              preferences: AnimationPreferences(
-                              autoPlay: AnimationPlayStates.Loop,
-                              offset: Duration(seconds: 3)),
-                          child: RaisedButton(
-                color: AppColors.purple,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(50))),
-                child: Text('Save payment details',
-                    style: TextStyle(color: Colors.white)),
-                onPressed: () {
-                  return showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          content: StatefulBuilder(
-                            builder: (context, StateSetter setState) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/appimages/welcomeback.png'),
-                                      fit: BoxFit.cover),
-                                ),
-                                child: Expanded(
-                                  flex: 1,
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        SlideInLeft(
-                                          preferences: AnimationPreferences(
-                                              offset: Duration(seconds: 1)),
-                                          child: CreditCardWidget(
-                                            cardNumber: cardNumber == null
-                                                ? ''
-                                                : cardNumber,
-                                            expiryDate: expiryDate == null
-                                                ? ''
-                                                : expiryDate,
-                                            cardHolderName: cardHolderName == null
-                                                ? ''
-                                                : cardHolderName,
-                                            cvvCode:
-                                                cvvCode == null ? '' : cvvCode,
-                                            showBackView: isCvvFocused,
-                                          ),
-                                        ),
-                                        SlideInRight(
-                                          preferences: AnimationPreferences(
-                                              offset: Duration(seconds: 1)),
-                                          child: CreditCardForm(
-                                            themeColor: Colors.red,
-                                            onCreditCardModelChange:
-                                                (CreditCardModel
-                                                    creditCardModel) {
-                                              setState(() {
-                                                cardNumber =
-                                                    creditCardModel.cardNumber;
-                                                expiryDate =
-                                                    creditCardModel.expiryDate;
-                                                cardHolderName = creditCardModel
-                                                    .cardHolderName;
-                                                cvvCode = creditCardModel.cvvCode;
-                                                isCvvFocused =
-                                                    creditCardModel.isCvvFocused;
-                                              });
-                                            },
-                                          ),
-                                        ),
-                                        Align(
-                                          alignment: Alignment.bottomRight,
-                                          child: BounceInDown(
-                                            preferences: AnimationPreferences(
-                                                offset: Duration(seconds: 1)),
-                                            child: RaisedButton(
-                                              color: AppColors.purple,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(50))),
-                                              child: Text('Save',
-                                                  style: TextStyle(
-                                                      color: Colors.white)),
-                                              onPressed: () {
-                                                saveCard();
-                                              },
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      });
-                },
+                  errorWidget: (context, url, error) =>
+                      new Icon(Icons.error),
+                ),
               ),
             ),
-          ),
-        ]),
+          )
+                  : Container(),
+              SlideInLeft(
+                preferences: AnimationPreferences(duration: Duration(seconds: 4)),
+                child: TextFormField(
+                  readOnly: true,
+                  initialValue: email,
+                  cursorColor: AppColors.purple,
+                  textCapitalization: TextCapitalization.words,
+                  keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
+                  onEditingComplete: () => node.nextFocus(),
+                  decoration: InputDecoration(
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.purple)),
+            labelText: 'Email',
+            icon: Icon(Icons.email, color: AppColors.purple)),
+                ),
+              ),
+              SlideInRight(
+                preferences: AnimationPreferences(duration: Duration(seconds: 4)),
+                child: TextFormField(
+                  readOnly: true,
+                  initialValue: displayName,
+                  cursorColor: AppColors.purple,
+                  textCapitalization: TextCapitalization.words,
+                  keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
+                  onEditingComplete: () => node.nextFocus(),
+                  decoration: InputDecoration(
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.purple)),
+            labelText: 'Full Name',
+            icon: Icon(Icons.title, color: AppColors.purple)),
+                ),
+              ),
+              SlideInLeft(
+                preferences: AnimationPreferences(duration: Duration(seconds: 4)),
+                child: TextFormField(
+                  readOnly: true,
+                  initialValue: number,
+                  cursorColor: AppColors.purple,
+                  keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.next,
+                  onEditingComplete: () => node.nextFocus(),
+                  maxLength: 11,
+                  decoration: InputDecoration(
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.purple)),
+            labelText: 'Phone No.',
+            icon: Icon(Icons.phone, color: AppColors.purple)),
+                ),
+              ),
+              SlideInRight(
+                preferences: AnimationPreferences(duration: Duration(seconds: 4)),
+                child: TextFormField(
+                  readOnly: true,
+                  initialValue: address,
+                  cursorColor: AppColors.purple,
+                  textCapitalization: TextCapitalization.words,
+                  textInputAction: TextInputAction.next,
+                  onEditingComplete: () => node.nextFocus(),
+                  decoration: InputDecoration(
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.purple)),
+            labelText: 'Address',
+            icon: Icon(Icons.gps_fixed, color: AppColors.purple)),
+                ),
+              ),
+              SlideInLeft(
+                preferences: AnimationPreferences(duration: Duration(seconds: 4)),
+                child: TextFormField(
+                  readOnly: true,
+                  initialValue: state,
+                  cursorColor: AppColors.purple,
+                  textCapitalization: TextCapitalization.words,
+                  textInputAction: TextInputAction.next,
+                  onEditingComplete: () => node.nextFocus(),
+                  decoration: InputDecoration(
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.purple)),
+            labelText: 'State',
+            icon: Icon(Icons.location_city, color: AppColors.purple)),
+                ),
+              ),
+              BounceInDown(
+                preferences: AnimationPreferences(offset: Duration(seconds: 2)),
+                child: Pulse(
+                  preferences: AnimationPreferences(
+                        autoPlay: AnimationPlayStates.Loop,
+                        offset: Duration(seconds: 3)),
+                    child: RaisedButton(
+          color: AppColors.purple,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(50))),
+          child: Text('Save payment details',
+              style: TextStyle(color: Colors.white)),
+          onPressed: () {
+            return showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.all(Radius.circular(20))),
+                    content: StatefulBuilder(
+                      builder: (context, StateSetter setState) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    'assets/appimages/welcomeback.png'),
+                                fit: BoxFit.cover),
+                          ),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                SlideInLeft(
+                                  preferences: AnimationPreferences(
+                                      offset: Duration(seconds: 1)),
+                                  child: CreditCardWidget(
+                                    cardNumber: cardNumber == null
+                                        ? ''
+                                        : cardNumber,
+                                    expiryDate: expiryDate == null
+                                        ? ''
+                                        : expiryDate,
+                                    cardHolderName: cardHolderName == null
+                                        ? ''
+                                        : cardHolderName,
+                                    cvvCode:
+                                        cvvCode == null ? '' : cvvCode,
+                                    showBackView: isCvvFocused,
+                                  ),
+                                ),
+                                SlideInRight(
+                                  preferences: AnimationPreferences(
+                                      offset: Duration(seconds: 1)),
+                                  child: CreditCardForm(
+                                    themeColor: Colors.red,
+                                    onCreditCardModelChange:
+                                        (CreditCardModel
+                                            creditCardModel) {
+                                      setState(() {
+                                        cardNumber =
+                                            creditCardModel.cardNumber;
+                                        expiryDate =
+                                            creditCardModel.expiryDate;
+                                        cardHolderName = creditCardModel
+                                            .cardHolderName;
+                                        cvvCode = creditCardModel.cvvCode;
+                                        isCvvFocused =
+                                            creditCardModel.isCvvFocused;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: BounceInDown(
+                                    preferences: AnimationPreferences(
+                                        offset: Duration(seconds: 1)),
+                                    child: RaisedButton(
+                                      color: AppColors.purple,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(50))),
+                                      child: Text('Save',
+                                          style: TextStyle(
+                                              color: Colors.white)),
+                                      onPressed: () {
+                                        saveCard();
+                                      },
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                });
+          },
+                  ),
+                ),
+              ),
+            ]),
+        ),
       ),
     );
   }
