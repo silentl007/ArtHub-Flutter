@@ -1,3 +1,4 @@
+import 'package:ArtHub/screen/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:http/http.dart' as http;
@@ -28,7 +29,7 @@ class Widgets {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             SlideInLeft(
-              preferences: AnimationPreferences(offset: Duration(seconds: 1)),
+              preferences: AnimationPreferences(offset: Duration(seconds: 2)),
               child: Text(
                 text,
                 style: TextStyle(
@@ -40,6 +41,24 @@ class Widgets {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget floatingHome(
+    BuildContext context,
+  ) {
+    return BounceInDown(
+      preferences: AnimationPreferences(offset: Duration(seconds: 1)),
+      child: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => HomeScreen()),
+              (Route<dynamic> route) => false);
+        },
+        child: Icon(Icons.home),
+        backgroundColor: AppColors.purple,
       ),
     );
   }

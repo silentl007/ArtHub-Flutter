@@ -69,10 +69,10 @@ class _ProfileState extends State<Profile> {
     });
   }
 
-  _warning() {
+  _cardSaved() {
     _scaffoldKey.currentState.showSnackBar(SnackBar(
         backgroundColor: AppColors.purple,
-        content: Text('Please only edit fields you wish to change')));
+        content: Text('Card details saved!')));
   }
 
   @override
@@ -130,42 +130,45 @@ class _ProfileState extends State<Profile> {
         ),
         child: Column(children: [
           accountType == 'Freelancer'
-              ? Container(
-                  // alignment: Alignment.topLeft,
-                  height: containerHeight,
-                  width: containerwidth,
-                  decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.only(topLeft: Radius.circular(70)),
-                    image: DecorationImage(
-                      image: NetworkImage(avatar),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: ClipRRect(
-                    borderRadius:
-                        BorderRadius.only(topLeft: Radius.circular(70)),
-                    child: CachedNetworkImage(
-                      fit: BoxFit.cover,
-                      imageUrl: avatar,
-                      placeholder: (context, url) => new Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            CircularProgressIndicator(
-                              valueColor: new AlwaysStoppedAnimation<Color>(
-                                  AppColors.purple),
-                              strokeWidth: 5.0,
-                            ),
-                          ],
-                        ),
+              ? BounceInDown(
+                preferences: AnimationPreferences(offset: Duration(seconds: 2)),
+                              child: Container(
+                    // alignment: Alignment.topLeft,
+                    height: containerHeight,
+                    width: containerwidth,
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          BorderRadius.only(topLeft: Radius.circular(70)),
+                      image: DecorationImage(
+                        image: NetworkImage(avatar),
+                        fit: BoxFit.cover,
                       ),
-                      errorWidget: (context, url, error) =>
-                          new Icon(Icons.error),
+                    ),
+                    child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.only(topLeft: Radius.circular(70)),
+                      child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        imageUrl: avatar,
+                        placeholder: (context, url) => new Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              CircularProgressIndicator(
+                                valueColor: new AlwaysStoppedAnimation<Color>(
+                                    AppColors.purple),
+                                strokeWidth: 5.0,
+                              ),
+                            ],
+                          ),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            new Icon(Icons.error),
+                      ),
                     ),
                   ),
-                )
+              )
               : Container(),
           SlideInLeft(
             preferences: AnimationPreferences(duration: Duration(seconds: 1)),
@@ -365,6 +368,7 @@ class _ProfileState extends State<Profile> {
     prefs.setInt('expiryMonth', num.tryParse(cardDate[0]));
     prefs.setInt('expiryYear', num.tryParse(cardDate[1]));
     Navigator.pop(context);
+    _cardSaved();
   }
 
   _profileEdit() {

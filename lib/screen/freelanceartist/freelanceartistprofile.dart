@@ -20,14 +20,13 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
     Size size = MediaQuery.of(context).size;
     double fontSize40 = size.height * 0.05;
     double padding22 = size.height * 0.0275;
-    double padding15 = size.height * 0.01875;
-    double padding10 = size.height * 0.01252;
     double padding18 = size.height * 0.02253;
     double padding8 = size.height * 0.01001;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: classWidget.apptitleBar(context, '${widget.artistdata.name}'),
+        floatingActionButton: classWidget.floatingHome(context),
         body: Padding(
           padding: EdgeInsets.all(padding22),
           child: Column(

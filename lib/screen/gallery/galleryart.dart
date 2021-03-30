@@ -1,6 +1,7 @@
 import 'package:ArtHub/screen/gallery/portrait.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 
 class GalleryArt extends StatefulWidget {
   final worksdata;
@@ -12,6 +13,7 @@ class GalleryArt extends StatefulWidget {
 class _GalleryArtState extends State<GalleryArt> {
   List<ParsedDataProduct> portraitworks = [];
   List<ParsedDataProduct> sculpworks = [];
+  Widgets classWidget = Widgets();
 
   @override
   initState() {
@@ -79,17 +81,22 @@ class _GalleryArtState extends State<GalleryArt> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.white,
+          floatingActionButton: classWidget.floatingHome(context),
           appBar: AppBar(
               title: Padding(
                 padding: EdgeInsets.only(right: padding30),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      'Art',
-                      style: TextStyle(
-                        color: AppColors.purple,
-                        fontWeight: FontWeight.bold,
+                    SlideInLeft(
+                      preferences:
+                          AnimationPreferences(offset: Duration(seconds: 1)),
+                      child: Text(
+                        'Art',
+                        style: TextStyle(
+                          color: AppColors.purple,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],

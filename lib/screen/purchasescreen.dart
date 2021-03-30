@@ -271,19 +271,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
-        floatingActionButton: BounceInDown(
-          preferences: AnimationPreferences(offset: Duration(seconds: 1)),
-          child: FloatingActionButton(
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                  (Route<dynamic> route) => false);
-            },
-            child: Icon(Icons.home),
-            backgroundColor: AppColors.purple,
-          ),
-        ),
+        floatingActionButton: classWidget.floatingHome(context),
         appBar: classWidget.apptitleBar(context, 'My Cart'),
         body: WillPopScope(
           onWillPop: () {
