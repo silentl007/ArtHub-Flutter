@@ -4,6 +4,7 @@ import 'package:ArtHub/common/model.dart';
 import 'package:http/http.dart' as http;
 import 'package:number_display/number_display.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 
 class Sold extends StatefulWidget {
   final List userDetails;
@@ -125,27 +126,32 @@ class _SoldState extends State<Sold> {
                       Container(
                         height: innerheight,
                         width: size.height * .15,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(30.0),
-                          child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: snapshot[index]['avatar'],
-                            placeholder: (context, url) => new Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  CircularProgressIndicator(
-                                    valueColor:
-                                        new AlwaysStoppedAnimation<Color>(
-                                            AppColors.purple),
-                                    strokeWidth: 5.0,
-                                  ),
-                                ],
+                        child: FadeInDown(
+                          preferences: AnimationPreferences(
+                            offset: Duration(seconds: 2),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(30.0),
+                            child: CachedNetworkImage(
+                              fit: BoxFit.cover,
+                              imageUrl: snapshot[index]['avatar'],
+                              placeholder: (context, url) => new Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    CircularProgressIndicator(
+                                      valueColor:
+                                          new AlwaysStoppedAnimation<Color>(
+                                              AppColors.purple),
+                                      strokeWidth: 5.0,
+                                    ),
+                                  ],
+                                ),
                               ),
+                              errorWidget: (context, url, error) =>
+                                  new Icon(Icons.error),
                             ),
-                            errorWidget: (context, url, error) =>
-                                new Icon(Icons.error),
                           ),
                         ),
                       ),
@@ -157,27 +163,33 @@ class _SoldState extends State<Sold> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text(
-                              '${snapshot[index]['product']}',
-                              style: TextStyle(
-                                  color: AppColors.purple,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: fontSize20),
-                            ),
-                            Text(
-                              '${snapshot[index]['type']}',
-                              style: TextStyle(
-                                  color: AppColors.purple,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: fontSize20),
-                            ),
-                            Text(
-                              '₦ ${displayNumber(snapshot[index]['cost'])}',
-                              style: TextStyle(
-                                  color: AppColors.red,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: fontSize20),
-                            ),
+                            slide(
+                                'left',
+                                Text(
+                                  '${snapshot[index]['product']}',
+                                  style: TextStyle(
+                                      color: AppColors.purple,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: fontSize20),
+                                )),
+                            slide(
+                                'right',
+                                Text(
+                                  '${snapshot[index]['type']}',
+                                  style: TextStyle(
+                                      color: AppColors.purple,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: fontSize20),
+                                )),
+                            slide(
+                                'left',
+                                Text(
+                                  '₦ ${displayNumber(snapshot[index]['cost'])}',
+                                  style: TextStyle(
+                                      color: AppColors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: fontSize20),
+                                )),
                           ],
                         ),
                       )
@@ -198,24 +210,44 @@ class _SoldState extends State<Sold> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          'Total Items ($itemnumber)',
-          style: TextStyle(
-              color: AppColors.purple,
-              fontWeight: FontWeight.bold,
-              fontSize: fontSize25),
-        ), 
-          Text(
-            '₦ ${displayNumber(summation)}',
-            textAlign: TextAlign.right,
-            style: TextStyle(
-                color: AppColors.red,
-                fontWeight: FontWeight.bold,
-                fontSize: fontSize25),
-          ),
-        // )
+        slide(
+            'right',
+            Text(
+              'Total Items ($itemnumber)',
+              style: TextStyle(
+                  color: AppColors.purple,
+                  fontWeight: FontWeight.bold,
+                  fontSize: fontSize25),
+            )),
+        slide(
+            'left',
+            Text(
+              '₦ ${displayNumber(summation)}',
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                  color: AppColors.red,
+                  fontWeight: FontWeight.bold,
+                  fontSize: fontSize25),
+            )),
       ],
     );
+  }
+
+  slide(String direction, Widget widget) {
+    int duration = 2;
+    if (direction == 'left') {
+      return SlideInLeft(
+        preferences: AnimationPreferences(
+          offset: Duration(seconds: duration),
+        ),
+        child: widget,
+      );
+    } else {
+      return SlideInRight(
+        preferences: AnimationPreferences(offset: Duration(seconds: duration)),
+        child: widget,
+      );
+    }
   }
 
   loading() {
