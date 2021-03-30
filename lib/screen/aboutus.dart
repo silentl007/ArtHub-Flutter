@@ -1,3 +1,4 @@
+import 'package:ArtHub/screen/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
 
@@ -8,7 +9,14 @@ class AboutUs extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
           appBar: classWidget.apptitleBar(context, 'About Us'),
-          body: Container()),
+          body: WillPopScope(
+              onWillPop: () {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    (Route<dynamic> route) => false);
+              },
+              child: Container())),
     );
   }
 }

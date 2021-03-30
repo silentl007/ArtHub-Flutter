@@ -4,6 +4,8 @@ import 'package:ArtHub/common/model.dart';
 import 'package:http/http.dart' as http;
 import 'package:number_display/number_display.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_animator/flutter_animator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Available extends StatefulWidget {
   final List userDetails;
@@ -22,6 +24,12 @@ class _AvailableState extends State<Available> {
   void initState() {
     super.initState();
     upload = uploads();
+    getprefs();
+  }
+
+  getprefs() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('inapp', true);
   }
 
   uploads() async {
@@ -138,27 +146,32 @@ class _AvailableState extends State<Available> {
                       Container(
                         height: innerheight,
                         width: size.height * .15,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(30.0),
-                          child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl: snapshot[index]['avatar'],
-                            placeholder: (context, url) => new Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  CircularProgressIndicator(
-                                    valueColor:
-                                        new AlwaysStoppedAnimation<Color>(
-                                            AppColors.purple),
-                                    strokeWidth: 5.0,
-                                  ),
-                                ],
+                        child: FadeInDown(
+                          preferences: AnimationPreferences(
+                            offset: Duration(seconds: 2),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(30.0),
+                            child: CachedNetworkImage(
+                              fit: BoxFit.cover,
+                              imageUrl: snapshot[index]['avatar'],
+                              placeholder: (context, url) => new Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    CircularProgressIndicator(
+                                      valueColor:
+                                          new AlwaysStoppedAnimation<Color>(
+                                              AppColors.purple),
+                                      strokeWidth: 5.0,
+                                    ),
+                                  ],
+                                ),
                               ),
+                              errorWidget: (context, url, error) =>
+                                  new Icon(Icons.error),
                             ),
-                            errorWidget: (context, url, error) =>
-                                new Icon(Icons.error),
                           ),
                         ),
                       ),
@@ -170,45 +183,57 @@ class _AvailableState extends State<Available> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text(
-                              '${snapshot[index]['product']}',
-                              style: TextStyle(
-                                  color: AppColors.purple,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: fontSize20),
-                            ),
-                            Text(
-                              '${snapshot[index]['type']}',
-                              style: TextStyle(
-                                  color: AppColors.purple,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: fontSize20),
-                            ),
-                            Text(
-                              '₦ ${displayNumber(snapshot[index]['cost'])}',
-                              style: TextStyle(
-                                  color: AppColors.red,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: fontSize20),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: RaisedButton(
-                                color: AppColors.blue,
-                                onPressed: () =>
-                                    remove(snapshot[index]['productID']),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(50))),
-                                child: Text(
-                                  'Remove',
+                            slide(
+                                'left',
+                                Text(
+                                  '${snapshot[index]['product']}',
                                   style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.purple,
+                                      fontWeight: FontWeight.bold,
                                       fontSize: fontSize20),
-                                ),
-                              ),
-                            )
+                                )),
+                            slide(
+                                'right',
+                                Text(
+                                  '${snapshot[index]['type']}',
+                                  style: TextStyle(
+                                      color: AppColors.purple,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: fontSize20),
+                                )),
+                            slide(
+                                'left',
+                                Text(
+                                  '₦ ${displayNumber(snapshot[index]['cost'])}',
+                                  style: TextStyle(
+                                      color: AppColors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: fontSize20),
+                                )),
+                            slide(
+                                'right',
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Pulse(
+                                    preferences: AnimationPreferences(
+                                        autoPlay: AnimationPlayStates.Loop),
+                                    child: RaisedButton(
+                                      color: AppColors.blue,
+                                      onPressed: () =>
+                                          remove(snapshot[index]['productID']),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(50))),
+                                      child: Text(
+                                        'Remove',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: fontSize20),
+                                      ),
+                                    ),
+                                  ),
+                                ))
                           ],
                         ),
                       )
@@ -221,6 +246,22 @@ class _AvailableState extends State<Available> {
         },
       ),
     );
+  }
+
+  slide(String direction, Widget widget) {
+    if (direction == 'left') {
+      return SlideInLeft(
+        preferences: AnimationPreferences(
+          offset: Duration(seconds: 2),
+        ),
+        child: widget,
+      );
+    } else {
+      return SlideInRight(
+        preferences: AnimationPreferences(offset: Duration(seconds: 2)),
+        child: widget,
+      );
+    }
   }
 
   loading() {

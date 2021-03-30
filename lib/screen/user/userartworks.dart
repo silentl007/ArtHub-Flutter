@@ -1,3 +1,4 @@
+import 'package:ArtHub/screen/homescreen.dart';
 import 'package:ArtHub/screen/user/artworkavailable.dart';
 import 'package:ArtHub/screen/user/artworksold.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class _ArtworksState extends State<Artworks> {
       length: 2,
       child: SafeArea(
           child: Scaffold(
-            backgroundColor: Colors.white,
+        backgroundColor: Colors.white,
         appBar: AppBar(
             title: Padding(
               padding: EdgeInsets.only(right: padding30),
@@ -59,11 +60,19 @@ class _ArtworksState extends State<Artworks> {
                 ),
               )
             ])),
-        body: TabBarView(
-          children: [
-            Available(userDetails: widget.userDetails),
-            Sold(widget.userDetails),
-          ],
+        body: WillPopScope(
+          onWillPop: () {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+                (Route<dynamic> route) => false);
+          },
+          child: TabBarView(
+            children: [
+              Available(userDetails: widget.userDetails),
+              Sold(widget.userDetails),
+            ],
+          ),
         ),
       )),
     );

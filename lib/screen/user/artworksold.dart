@@ -204,10 +204,7 @@ class _SoldState extends State<Sold> {
               color: AppColors.purple,
               fontWeight: FontWeight.bold,
               fontSize: fontSize25),
-        ),
-        // Align(
-        //   alignment: Alignment.topRight,
-          // child: 
+        ), 
           Text(
             '₦ ${displayNumber(summation)}',
             textAlign: TextAlign.right,
