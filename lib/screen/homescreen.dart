@@ -1,4 +1,3 @@
-// import 'package:ArtHub/common/middlemen/middlefreelance.dart';
 import 'package:ArtHub/common/middlemen/middlemancart.dart';
 import 'package:ArtHub/common/middlemen/middlemanuserartworks.dart';
 import 'package:ArtHub/common/middlemen/middleorders.dart';

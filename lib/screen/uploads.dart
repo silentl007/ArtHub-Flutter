@@ -44,6 +44,8 @@ class _UploadsState extends State<Uploads> {
     Size size = MediaQuery.of(context).size;
     double fontSize15 = size.height * 0.01870;
     double padding40 = size.height * 0.05;
+    double sizeHeight5 = size.height * 0.00625;
+    double sizeHeight3 = size.height * 0.00375;
     final node = FocusScope.of(context);
     return SafeArea(
       child: Scaffold(
@@ -160,7 +162,7 @@ class _UploadsState extends State<Uploads> {
                               )),
                         ),
                         SizedBox(
-                          height: 5,
+                          height: sizeHeight5,
                         ),
                         slide(
                           'right',
@@ -178,7 +180,7 @@ class _UploadsState extends State<Uploads> {
                                     Icon(Icons.upload_file,
                                         color: Colors.white),
                                     SizedBox(
-                                      width: 3,
+                                      width: sizeHeight3,
                                     ),
                                     Text(
                                       'Upload',
@@ -205,7 +207,7 @@ class _UploadsState extends State<Uploads> {
                                       color: Colors.white,
                                     ),
                                     SizedBox(
-                                      width: 3,
+                                      width: sizeHeight3,
                                     ),
                                     Text(
                                       'Remove',
@@ -231,7 +233,7 @@ class _UploadsState extends State<Uploads> {
                               )),
                         ),
                         SizedBox(
-                          height: 5,
+                          height: sizeHeight5,
                         ),
                         slide(
                           'left',
@@ -251,7 +253,7 @@ class _UploadsState extends State<Uploads> {
                                       color: Colors.white,
                                     ),
                                     SizedBox(
-                                      width: 3,
+                                      width: sizeHeight3,
                                     ),
                                     Text(
                                       'Upload',
@@ -278,7 +280,7 @@ class _UploadsState extends State<Uploads> {
                                       color: Colors.white,
                                     ),
                                     SizedBox(
-                                      width: 3,
+                                      width: sizeHeight3,
                                     ),
                                     Text(
                                       'Remove Previous',

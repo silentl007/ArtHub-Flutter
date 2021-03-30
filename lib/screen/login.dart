@@ -3,6 +3,7 @@ import 'package:ArtHub/screen/register.dart';
 import 'package:ArtHub/screen/forgotpassword.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,6 +18,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final usernameControl = TextEditingController();
   final passwordControl = TextEditingController();
+  int offsetduration = 1;
+  int duration = 3;
   bool showpassword = true;
   String he = '';
   @override
@@ -29,6 +32,8 @@ class _LoginScreenState extends State<LoginScreen> {
   getLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getBool('logged') == true) {
+      offsetduration = 2;
+      duration = 2;
       _sneakerAlert();
     }
   }
@@ -37,7 +42,8 @@ class _LoginScreenState extends State<LoginScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
     _scaffoldKey.currentState.showSnackBar(SnackBar(
-      content: Text('Something went wrong, please try again'),
+      content:
+          Text('Could not autologin, please check connection and try again'),
       backgroundColor: AppColors.purple,
     ));
   }
@@ -46,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double fontSize = size.height * 0.025;
+    double sizeHeight10 = size.height * 0.0125;
     double padding40 = size.height * 0.05;
 
     return SafeArea(
@@ -63,73 +70,115 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                TextFormField(
-                  cursorColor: AppColors.purple,
-                  decoration: InputDecoration(
-                      focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: AppColors.purple)),
-                      labelText: 'Email',
-                      icon: Icon(Icons.email, color: AppColors.purple)),
-                  controller: usernameControl,
-                  onSaved: (value) {
-                    setState(() {
-                      loginClass.email = value.toLowerCase();
-                    });
-                  },
-                ),
-                TextFormField(
-                    cursorColor: AppColors.purple,
-                    controller: passwordControl,
-                    decoration: InputDecoration(
-                      focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: AppColors.purple)),
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.remove_red_eye),
-                        color: AppColors.purple,
-                        onPressed: () {
-                          if (showpassword == true) {
-                            setState(() {
-                              showpassword = false;
-                            });
-                          } else {
-                            setState(() {
-                              showpassword = true;
-                            });
-                          }
+                slide(
+                    'left',
+                    TextFormField(
+                      cursorColor: AppColors.purple,
+                      decoration: InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.purple)),
+                          labelText: 'Email',
+                          icon: Icon(Icons.email, color: AppColors.purple)),
+                      controller: usernameControl,
+                      onSaved: (value) {
+                        setState(() {
+                          loginClass.email = value.toLowerCase();
+                        });
+                      },
+                    )),
+                slide(
+                    'right',
+                    TextFormField(
+                        cursorColor: AppColors.purple,
+                        controller: passwordControl,
+                        decoration: InputDecoration(
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: AppColors.purple)),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.remove_red_eye),
+                            color: AppColors.purple,
+                            onPressed: () {
+                              if (showpassword == true) {
+                                setState(() {
+                                  showpassword = false;
+                                });
+                              } else {
+                                setState(() {
+                                  showpassword = true;
+                                });
+                              }
+                            },
+                          ),
+                          labelText: 'Password',
+                          icon: Icon(Icons.security, color: AppColors.purple),
+                        ),
+                        obscureText: showpassword,
+                        onSaved: (value) {
+                          setState(() {
+                            loginClass.password = value;
+                          });
                         },
-                      ),
-                      labelText: 'Password',
-                      icon: Icon(Icons.security, color: AppColors.purple),
+                        validator: (value) {
+                          if (value.length < 6) {
+                            return 'Password is less than six (6) characters';
+                          }
+                        })),
+                SizedBox(
+                  height: sizeHeight10,
+                ),
+                bounce(Pulse(
+                    preferences: AnimationPreferences(
+                      autoPlay: AnimationPlayStates.Loop,
                     ),
-                    obscureText: showpassword,
-                    onSaved: (value) {
-                      setState(() {
-                        loginClass.password = value;
-                      });
-                    },
-                    validator: (value) {
-                      if (value.length < 6) {
-                        return 'Password is less than six (6) characters';
-                      }
-                    }),
+                    child: _ink('Login', fontSize))),
                 SizedBox(
-                  height: 10,
+                  height: sizeHeight10,
                 ),
-                _ink('Login', fontSize),
+                bounce(Pulse(
+                    preferences: AnimationPreferences(
+                      autoPlay: AnimationPlayStates.Loop,
+                    ),
+                    child: _ink('New user? Register', fontSize))),
                 SizedBox(
-                  height: 10,
+                  height: sizeHeight10,
                 ),
-                _ink('New user? Register', fontSize),
-                SizedBox(
-                  height: 10,
-                ),
-                _ink('Forgot Password?', fontSize),
+                bounce(Pulse(
+                    preferences: AnimationPreferences(
+                      autoPlay: AnimationPlayStates.Loop,
+                    ),
+                    child: _ink('Forgot Password?', fontSize))),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  slide(String direction, Widget widget) {
+    if (direction == 'left') {
+      return SlideInLeft(
+        preferences: AnimationPreferences(
+            offset: Duration(seconds: offsetduration),
+            duration: Duration(seconds: duration)),
+        child: widget,
+      );
+    } else {
+      return SlideInRight(
+        preferences: AnimationPreferences(
+            offset: Duration(seconds: offsetduration),
+            duration: Duration(seconds: duration)),
+        child: widget,
+      );
+    }
+  }
+
+  bounce(Widget widget) {
+    return BounceInDown(
+        preferences: AnimationPreferences(
+            offset: Duration(seconds: offsetduration),
+            duration: Duration(seconds: duration)),
+        child: widget);
   }
 
   _ink(String text, double font) {
@@ -165,6 +214,8 @@ class _LoginScreenState extends State<LoginScreen> {
             return Container(
               color: Colors.transparent,
               child: AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
                 content: LinearProgressIndicator(
                   backgroundColor: Colors.white,
                   valueColor:

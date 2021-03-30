@@ -1,5 +1,7 @@
+import 'package:ArtHub/screen/login.dart';
 import 'package:flutter/material.dart';
 import 'package:ArtHub/common/model.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   @override
@@ -17,111 +19,156 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     Size size = MediaQuery.of(context).size;
     final node = FocusScope.of(context);
     double padding40 = size.height * 0.05;
+    double sizeHeight5 = size.height * 0.00625;
     return SafeArea(
       child: Scaffold(
         appBar: classWidget.apptitleBar(context, 'Forgot Password'),
-        body: Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('assets/appimages/welcomeback.png'),
-                  fit: BoxFit.cover)),
-          child: Form(
-            key: textKey,
-            child: Container(
-              padding: EdgeInsets.only(left: padding40, right: padding40),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextFormField(
-                    cursorColor: AppColors.purple,
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                    onEditingComplete: () => node.nextFocus(),
-                    decoration: InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.purple)),
-                        labelText: 'E-mail',
-                        icon: Icon(Icons.email, color: AppColors.purple)),
-                    onSaved: (text) {
-                      setState(() {
-                        return resetClass.email = text.toLowerCase();
-                      });
-                    },
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'This field is empty';
-                      }
-                    },
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  TextFormField(
-                    cursorColor: AppColors.purple,
-                    obscureText: showpassword,
-                    textInputAction: TextInputAction.next,
-                    onEditingComplete: () => node.nextFocus(),
-                    decoration: InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.purple)),
-                        suffixIcon: IconButton(
-                          icon: Icon(Icons.remove_red_eye),
-                          color: AppColors.purple,
-                          onPressed: () {
-                            if (showpassword == true) {
-                              setState(() {
-                                showpassword = false;
-                              });
-                            } else {
-                              setState(() {
-                                showpassword = true;
-                              });
+        body: WillPopScope(
+          onWillPop: () {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+                (Route<dynamic> route) => false);
+          },
+                  child: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/appimages/welcomeback.png'),
+                    fit: BoxFit.cover)),
+            child: Form(
+              key: textKey,
+              child: Container(
+                padding: EdgeInsets.only(left: padding40, right: padding40),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    slide(
+                        'left',
+                        TextFormField(
+                          cursorColor: AppColors.purple,
+                          keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
+                          onEditingComplete: () => node.nextFocus(),
+                          decoration: InputDecoration(
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: AppColors.purple)),
+                              labelText: 'E-mail',
+                              icon: Icon(Icons.email, color: AppColors.purple)),
+                          onSaved: (text) {
+                            setState(() {
+                              return resetClass.email = text.toLowerCase();
+                            });
+                          },
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'This field is empty';
                             }
                           },
-                        ),
-                        labelText: 'Password',
-                        helperText:
-                            'must at least be six (6) characters and has at least a digit',
-                        icon: Icon(Icons.security, color: AppColors.purple)),
-                    onSaved: (text) {
-                      setState(() {
-                        return resetClass.password = text;
-                      });
-                    },
-                    validator: (value) {
-                      if (value.length < 6) {
-                        return 'Password is less than six (6) characters';
-                      } else if (value.contains(RegExp(r'[0-9]')) == false) {
-                        return 'Password does not contain a digit';
-                      }
-                    },
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  RaisedButton(
-                    onPressed: () {
-                      var keyform = textKey.currentState;
-                      if (keyform.validate()) {
-                        keyform.save();
-                        futureDiag();
-                      }
-                    },
-                    child: Text(
-                      'Reset',
-                      style: TextStyle(fontSize: 15, color: Colors.white),
+                        )),
+                    SizedBox(
+                      height: sizeHeight5,
                     ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(50))),
-                    color: AppColors.purple,
-                  )
-                ],
+                    slide(
+                        'right',
+                        TextFormField(
+                          cursorColor: AppColors.purple,
+                          obscureText: showpassword,
+                          textInputAction: TextInputAction.next,
+                          onEditingComplete: () => node.nextFocus(),
+                          decoration: InputDecoration(
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: AppColors.purple)),
+                              suffixIcon: IconButton(
+                                icon: Icon(Icons.remove_red_eye),
+                                color: AppColors.purple,
+                                onPressed: () {
+                                  if (showpassword == true) {
+                                    setState(() {
+                                      showpassword = false;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      showpassword = true;
+                                    });
+                                  }
+                                },
+                              ),
+                              labelText: 'Password',
+                              helperText:
+                                  'must at least be six (6) characters and has at least a digit',
+                              icon:
+                                  Icon(Icons.security, color: AppColors.purple)),
+                          onSaved: (text) {
+                            setState(() {
+                              return resetClass.password = text;
+                            });
+                          },
+                          validator: (value) {
+                            if (value.length < 6) {
+                              return 'Password is less than six (6) characters';
+                            } else if (value.contains(RegExp(r'[0-9]')) ==
+                                false) {
+                              return 'Password does not contain a digit';
+                            }
+                          },
+                        )),
+                    SizedBox(
+                      height: sizeHeight5,
+                    ),
+                    BounceInDown(
+                      preferences:
+                          AnimationPreferences(offset: Duration(seconds: 2)),
+                      child: Pulse(
+                        preferences: AnimationPreferences(
+                            autoPlay: AnimationPlayStates.Loop,
+                            offset: Duration(seconds: 3)),
+                        child: RaisedButton(
+                          onPressed: () {
+                            var keyform = textKey.currentState;
+                            if (keyform.validate()) {
+                              keyform.save();
+                              futureDiag();
+                            }
+                          },
+                          child: Text(
+                            'Reset',
+                            style: TextStyle(fontSize: 15, color: Colors.white),
+                          ),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50))),
+                          color: AppColors.purple,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  slide(String direction, Widget widget) {
+    int duration = 4;
+    if (direction == 'left') {
+      return SlideInLeft(
+        preferences: AnimationPreferences(
+          duration: Duration(seconds: duration),
+        ),
+        child: widget,
+      );
+    } else {
+      return SlideInRight(
+        preferences:
+            AnimationPreferences(duration: Duration(seconds: duration)),
+        child: widget,
+      );
+    }
   }
 
   futureDiag() {
