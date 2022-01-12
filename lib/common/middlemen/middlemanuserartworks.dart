@@ -48,8 +48,8 @@ class _MiddleUserArtWorksState extends State<MiddleUserArtWorks> {
   }
 
   productscreen(List data) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      return Navigator.pushReplacement(
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => Artworks(data)));

@@ -183,13 +183,15 @@ class _PendingState extends State<Pending> {
   showQR(String orderID, double qrsize) {
     return showDialog(
         context: context,
-        child: Center(
-          child: QrImage(
-            backgroundColor: Colors.white,
-            size: qrsize,
-            data: orderID,
-            version: QrVersions.auto,
-          ),
-        ));
+        builder: (context) {
+          return Center(
+            child: QrImage(
+              backgroundColor: Colors.white,
+              size: qrsize,
+              data: orderID,
+              version: QrVersions.auto,
+            ),
+          );
+        });
   }
 }

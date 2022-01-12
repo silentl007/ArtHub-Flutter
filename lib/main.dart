@@ -86,17 +86,17 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _loginSuccess() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       Navigator.pop(context);
-      return Navigator.push(
+       Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
     });
   }
 
   _loginFailed() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       Navigator.pop(context);
-      return Navigator.push(
+       Navigator.push(
           context, MaterialPageRoute(builder: (context) => LoginScreen()));
     });
   }

@@ -19,7 +19,7 @@ class AppColors {
 }
 
 class Widgets {
-  Widget apptitleBar(BuildContext context, String text) {
+   apptitleBar(BuildContext context, String text) {
     final Size size = MediaQuery.of(context).size;
     double padding30 = size.height * 0.03755;
     return AppBar(
@@ -67,21 +67,21 @@ class Widgets {
 }
 
 class DrawerOptions {
-  String option;
-  Icon optionIcon;
-  int index;
+  String? option;
+  Icon? optionIcon;
+  int? index;
   DrawerOptions({this.option, this.optionIcon, this.index});
 }
 
 // ------------ Data Parsers ----------------
 
 class ParsedDataFreeLanceArts {
-  String name;
-  String youtube;
-  String aboutme;
-  String address;
-  String avatar;
-  List works;
+  String? name;
+  String? youtube;
+  String? aboutme;
+  String? address;
+  String? avatar;
+  List? works;
   ParsedDataFreeLanceArts(
       {this.name,
       this.address,
@@ -102,22 +102,22 @@ class ParsedDataGallery {
 }
 
 class ParsedDataProduct {
-  int id;
-  String productID;
-  String artistname;
-  String productname;
-  String artistemail;
-  int cost;
-  String accountType;
-  String type;
-  String avatar;
-  String desc;
-  String description;
-  bool avail;
-  double weight;
-  String dimension;
-  String materials;
-  List images;
+  int? id;
+  String? productID;
+  String? artistname;
+  String? productname;
+  String? artistemail;
+  int? cost;
+  String? accountType;
+  String? type;
+  String? avatar;
+  String? desc;
+  String? description;
+  bool? avail;
+  double? weight;
+  String? dimension;
+  String? materials;
+  List? images;
   ParsedDataProduct(
       {this.id,
       this.productID,
@@ -138,13 +138,13 @@ class ParsedDataProduct {
 }
 
 class ParsedOrder {
-  String orderID;
-  String status;
-  int itemnumber;
-  String dateOrdered;
-  int totalcost;
-  int itemscost;
-  List purchaseditems;
+  String? orderID;
+  String? status;
+  int? itemnumber;
+  String? dateOrdered;
+  int? totalcost;
+  int? itemscost;
+  List? purchaseditems;
   ParsedOrder(
       {this.orderID,
       this.status,
@@ -158,20 +158,20 @@ class ParsedOrder {
 // ------------ Endpoints ----------------
 
 class Registeration {
-  int failed = 400;
-  int sameemail = 401;
-  String fullName = '';
-  String email = '';
-  String password = '';
-  String address = '';
-  String avatar = '';
-  String number = '';
-  String location = '';
-  String account = '';
-  String aboutme = '';
-  List orders = [];
-  List works = [];
-  List purchasedworks = [];
+  int? failed = 400;
+  int? sameemail = 401;
+  String? fullName = '';
+  String? email = '';
+  String? password = '';
+  String? address = '';
+  String? avatar = '';
+  String? number = '';
+  String? location = '';
+  String? account = '';
+  String? aboutme = '';
+  List? orders = [];
+  List? works = [];
+  List? purchasedworks = [];
 
   Future register() async {
     String registerdbLink = '${Server.link}/apiS/register';
@@ -208,8 +208,8 @@ class Registeration {
 
 class Login {
   int internetNetwork = 500;
-  String email;
-  String password;
+  String? email;
+  String? password;
   Future login() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getBool('logged') == true) {
@@ -218,8 +218,8 @@ class Login {
     }
     String loginLink = '${Server.link}/apiS/login';
     Map<String, String> loginData = {
-      'email': email,
-      'password': password,
+      'email': email!,
+      'password': password!,
     };
 
     try {
@@ -259,8 +259,8 @@ class Login {
 
 class ResetPassword {
   int datafailed = 400;
-  String email;
-  String password;
+  String? email;
+  String? password;
   Future reset() async {
     String resetLink = '${Server.link}/apiC/resetpassword';
     Map databody = {'email': email, 'password': password};
@@ -324,10 +324,10 @@ class UploadWorks {
 
 class UpdateProfile {
   int failed = 500;
-  String name;
-  String address;
-  int number;
-  String location;
+  String? name;
+  String? address;
+  int? number;
+  String? location;
   String avatar = '';
   String aboutme = '';
 

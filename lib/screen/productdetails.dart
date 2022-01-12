@@ -19,14 +19,14 @@ class ProductDetails extends StatefulWidget {
 
 class _ProductDetailsState extends State<ProductDetails> {
   final ParsedDataProduct data;
+  _ProductDetailsState(this.data);
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final displayNumber = createDisplay(length: 8, decimal: 0);
   GlobalKey<AnimatorWidgetState> _cartAnimationkey =
       GlobalKey<AnimatorWidgetState>();
   List cart = [];
   List productIDs = [];
-  int itemnumber;
-  _ProductDetailsState(this.data);
+  int? itemnumber;
   @override
   initState() {
     super.initState();
@@ -144,7 +144,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                           _current = index;
                         });
                       },
-                      items: data.images.map((imageURL) {
+                      items: data.images!.map((imageURL) {
                         return Material(
                           color: Colors.transparent,
                           // elevation: 1,
@@ -179,7 +179,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: map<Widget>(data.images, (index, url) {
+                    children: map<Widget>(data.images!, (index, url) {
                       return Container(
                         width: 10,
                         height: 10,
@@ -231,7 +231,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                         child: Align(
                                             alignment: Alignment.center,
                                             child: Text(
-                                              data.productname,
+                                              data.productname!,
                                               style: TextStyle(
                                                   color: AppColors.purple,
                                                   fontSize: fontSize25,
@@ -257,7 +257,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                           color: AppColors.red),
                                       child: Center(
                                           child: Text(
-                                        '₦ ${displayNumber(data.cost)}',
+                                        '₦ ${displayNumber(data.cost!)}',
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: fontSize20),
@@ -402,7 +402,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             headers: {'Content-Type': 'application/json; charset=UTF-8'});
         if (add.statusCode == 200) {
           cartItems();
-          _cartAnimationkey.currentState.forward();
+          _cartAnimationkey.currentState!.forward();
           return snackbar('Added to cart!', 1, AppColors.purple);
         }
       } catch (error) {
@@ -425,7 +425,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   snackbar(String text, int duration, Color background) {
-    return _scaffoldKey.currentState.showSnackBar(SnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(text),
       duration: Duration(seconds: duration),
       backgroundColor: background,

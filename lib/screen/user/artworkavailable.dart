@@ -8,7 +8,7 @@ import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Available extends StatefulWidget {
-  final List userDetails;
+  final List? userDetails;
   Available({this.userDetails});
   @override
   _AvailableState createState() => _AvailableState();
@@ -34,7 +34,7 @@ class _AvailableState extends State<Available> {
 
   uploads() async {
     String link =
-        '${Server.link}/apiR/uploaded/${widget.userDetails[0]}/${widget.userDetails[1]}';
+        '${Server.link}/apiR/uploaded/${widget.userDetails![0]}/${widget.userDetails![1]}';
 
     try {
       var query = await http.get(link,
@@ -50,7 +50,7 @@ class _AvailableState extends State<Available> {
   remove(String productID) async {
     snackbar('Please wait!', 1, AppColors.purple);
     String link =
-        '${Server.link}/apiD/uploadremove/${widget.userDetails[0]}/$productID/${widget.userDetails[1]}';
+        '${Server.link}/apiD/uploadremove/${widget.userDetails![0]}/$productID/${widget.userDetails![1]}';
     try {
       var query = await http.delete(link);
       if (query.statusCode == 200) {
@@ -65,11 +65,11 @@ class _AvailableState extends State<Available> {
   }
 
   snackbar(String text, int duration, Color background) {
-    return _scaffoldKey.currentState.showSnackBar(SnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar((SnackBar(
       content: Text(text),
       duration: Duration(seconds: duration),
       backgroundColor: background,
-    ));
+    )));
   }
 
   @override

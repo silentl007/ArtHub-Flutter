@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
   _sneakerAlert() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content:
           Text('Could not autologin, please check connection and try again'),
       backgroundColor: AppColors.purple,
@@ -85,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: usernameControl,
                       onSaved: (value) {
                         setState(() {
-                          loginClass.email = value.toLowerCase();
+                          loginClass.email = value!.toLowerCase();
                         });
                       },
                     )),
@@ -122,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           });
                         },
                         validator: (value) {
-                          if (value.length < 6) {
+                          if (value!.length < 6) {
                             return 'Password is less than six (6) characters';
                           }
                         })),
@@ -193,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
       onTap: () {
         if (text == 'Login') {
           var keyState = _key.currentState;
-          if (keyState.validate()) {
+          if (keyState!.validate()) {
             keyState.save();
             _loginLogic();
           }
@@ -210,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
   _loginLogic() {
     return showDialog(
       context: context,
-      child: FutureBuilder(
+      builder:(context){return FutureBuilder(
         future: loginClass.login(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
@@ -237,31 +237,31 @@ class _LoginScreenState extends State<LoginScreen> {
             return Container();
           }
         },
-      ),
+      );},
     );
   }
 
   _loginSuccess() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       Navigator.pop(context);
-      return Navigator.pushReplacement(
+      Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
     });
   }
 
   _wrongdetails() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       Navigator.pop(context);
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: AppColors.purple,
           content: Text('Wrong email or password')));
     });
   }
 
   _internet() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       Navigator.pop(context);
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: AppColors.purple,
           content: Text(
               'Unable to connect, please check your internet connection')));

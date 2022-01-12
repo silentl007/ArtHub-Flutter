@@ -1,11 +1,10 @@
 import 'package:ArtHub/common/model.dart';
-import 'package:ArtHub/screen/freelanceartist/freelanceartistlist.dart';
 import 'package:ArtHub/screen/user/userorders.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MiddleOrders extends StatefulWidget {
-  final int page;
+  final int? page;
   MiddleOrders({this.page});
   @override
   _MiddleOrdersState createState() => _MiddleOrdersState();
@@ -57,9 +56,9 @@ class _MiddleOrdersState extends State<MiddleOrders> {
   }
 
   orderscreen(List data) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      return Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => Orders(userdetails: data, page: widget.page,)));
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => Orders(userdetails: data, page: widget.page!,)));
     });
   }
 }

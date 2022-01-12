@@ -13,8 +13,8 @@ class FreeLanceArtist extends StatefulWidget {
 
 class _FreeLanceArtistState extends State<FreeLanceArtist> {
   Widgets classWidget = Widgets();
-  List<ParsedDataFreeLanceArts> collecteddata = List();
-  Future freelancers;
+  List<ParsedDataFreeLanceArts> collecteddata = [];
+  Future? freelancers;
   @override
   void initState() {
     getprefs();
@@ -56,11 +56,12 @@ class _FreeLanceArtistState extends State<FreeLanceArtist> {
         backgroundColor: Colors.white,
         appBar: classWidget.apptitleBar(context, 'Freelancers'),
         body: WillPopScope(
-          onWillPop: () {
+          onWillPop: () async {
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => HomeScreen()),
                 (Route<dynamic> route) => false);
+                return true;
           },
           child: FutureBuilder(
               future: freelancers,

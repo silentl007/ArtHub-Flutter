@@ -17,7 +17,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     AccountType(type: 'Freelancer', index: 2),
     AccountType(type: 'Gallery', index: 3),
   ];
-  String accountchoice;
+  String? accountchoice;
   final List<String> states = ['Select State', 'Lagos', 'Bayelsa'];
   String selectedState = 'Select State';
   Widgets classWidget = Widgets();
@@ -49,11 +49,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         backgroundColor: Colors.white,
         appBar: classWidget.apptitleBar(context, 'Register'),
         body: WillPopScope(
-          onWillPop: () {
+          onWillPop: ()async {
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => LoginScreen()),
                 (Route<dynamic> route) => false);
+                return true;
           },
           child: Stack(
             children: [
@@ -90,11 +91,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               return RadioListTile(
                                   activeColor: AppColors.purple,
                                   title: Text('${data.type}'),
-                                  value: data.index,
+                                  value: data.index!,
                                   groupValue: defaultaccount,
                                   onChanged: (value) {
                                     setState(() {
-                                      defaultaccount = data.index;
+                                      defaultaccount = data.index!;
                                       accountchoice = data.type;
                                     });
                                   });
@@ -116,11 +117,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       color: AppColors.purple)),
                               onSaved: (text) {
                                 setState(() {
-                                  return registerClass.fullName = text;
+                                   registerClass.fullName = text;
                                 });
                               },
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'This field is empty';
                                 }
                               },
@@ -142,11 +143,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       color: AppColors.purple)),
                               onSaved: (text) {
                                 setState(() {
-                                  return registerClass.number = text;
+                                   registerClass.number = text;
                                 });
                               },
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'This field is empty';
                                 } else if (value.length != 11) {
                                   return 'The number is not complete';
@@ -169,11 +170,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       color: AppColors.purple)),
                               onSaved: (text) {
                                 setState(() {
-                                  return registerClass.address = text;
+                                   registerClass.address = text;
                                 });
                               },
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'This field is empty';
                                 }
                               },
@@ -197,11 +198,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                               color: AppColors.purple)),
                                       onSaved: (text) {
                                         setState(() {
-                                          return registerClass.aboutme = text;
+                                           registerClass.aboutme = text;
                                         });
                                       },
                                       validator: (value) {
-                                        if (value.isEmpty) {
+                                        if (value!.isEmpty) {
                                           return 'This field is empty';
                                         }
                                       },
@@ -283,7 +284,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 value: selectedState,
                                 onChanged: (text) {
                                   setState(() {
-                                    selectedState = text;
+                                    selectedState = text!;
                                     registerClass.location = selectedState;
                                   });
                                 },
@@ -316,12 +317,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       color: AppColors.purple)),
                               onSaved: (text) {
                                 setState(() {
-                                  return registerClass.email =
-                                      text.toLowerCase();
+                                   registerClass.email =
+                                      text!.toLowerCase();
                                 });
                               },
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'This field is empty';
                                 } else if (value.contains('@') == false) {
                                   return 'Not a valid email';
@@ -362,11 +363,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       color: AppColors.purple)),
                               onSaved: (text) {
                                 setState(() {
-                                  return registerClass.password = text;
+                                   registerClass.password = text;
                                 });
                               },
                               validator: (value) {
-                                if (value.length < 6) {
+                                if (value!.length < 6) {
                                   return 'Password is less than six (6) characters';
                                 } else if (value.contains(RegExp(r'[0-9]')) ==
                                     false) {
@@ -418,9 +419,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               value: _check,
                               checkColor: AppColors.purple,
                               activeColor: Colors.transparent,
-                              onChanged: (bool val) {
+                              onChanged: (bool? val) {
                                 setState(() {
-                                  _check = val;
+                                  _check = val!;
                                 });
                               },
                               title: InkWell(
@@ -452,7 +453,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 onPressed: () {
                                   final keyForm = _key.currentState;
 
-                                  if (keyForm.validate() == true) {
+                                  if (keyForm!.validate() == true) {
                                     if (_check == false) {
                                       setState(() {
                                         _terms = Colors.red;
@@ -505,7 +506,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   futureDiag(BuildContext context) {
     return showDialog(
         context: context,
-        child: FutureBuilder(
+        builder:(context){return FutureBuilder(
             future: registerClass.register(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData == false) {
@@ -527,7 +528,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ? _registerationEmail()
                         : _registerationFailed(),
               );
-            }));
+            });});
   }
 
   slide(String direction, Widget widget) {
@@ -549,9 +550,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   clearData() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       final keyForm = _key.currentState;
-      keyForm.reset();
+      keyForm!.reset();
       setState(() {
         passwordCtrl.text = '';
         defaultaccount = 0;
@@ -566,7 +567,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   changeAvatarColor() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       setState(() {
         _avatarcolor = Colors.green;
       });
@@ -574,7 +575,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   removeavatar() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       setState(() {
         registerClass.avatar = '';
         _avatarcolor = Colors.black;
@@ -605,7 +606,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   _termsConditions(BuildContext context) {
     return showDialog(
         context: context,
-        child: AlertDialog(
+        builder:(context) {return AlertDialog(
           title: Text(
             'Terms and Conditions',
             textAlign: TextAlign.center,
@@ -618,7 +619,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Text('Agree'),
             )
           ],
-        ));
+        );});
   }
 
   _avatarimagePicker() async {
@@ -632,7 +633,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         return response.secure_url;
       } catch (exception) {
         print(exception);
-        _scaffoldKey.currentState.showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.red,
             content: Text('Something went wrong! Please try again!')));
       }
@@ -642,7 +643,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   _avatarFuture() {
     return showDialog(
         context: context,
-        child: FutureBuilder(
+        builder:(context) {return FutureBuilder(
           future: _avatarimagePicker(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (registerClass.avatar != '') {
@@ -672,12 +673,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     'Unable to upload connect, please check your connetion'),
               );
           },
-        ));
+        );});
   }
 }
 
 class AccountType {
-  String type;
-  int index;
+  String? type;
+  int? index;
   AccountType({this.index, this.type});
 }

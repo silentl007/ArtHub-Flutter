@@ -50,8 +50,8 @@ class _MiddleState extends State<Middle> {
   }
 
   productscreen(List data) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      return Navigator.pushReplacement(
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
               builder: (context) => ProductDetails(widget.data, user)));

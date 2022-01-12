@@ -13,8 +13,8 @@ class Galleries extends StatefulWidget {
 
 class _GalleriesState extends State<Galleries> {
   Widgets classWidget = Widgets();
-  List<ParsedDataGallery> collecteddata = List();
-  Future gallery;
+  List<ParsedDataGallery> collecteddata = [];
+  Future? gallery;
   @override
   void initState() {
     super.initState();
@@ -55,11 +55,12 @@ class _GalleriesState extends State<Galleries> {
         backgroundColor: Colors.white,
         appBar: classWidget.apptitleBar(context, 'Galleries'),
         body: WillPopScope(
-          onWillPop: (){
+          onWillPop: ()async{
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => HomeScreen()),
               (Route<dynamic> route) => false);
+              return true;
           },
                   child: FutureBuilder(
               future: gallery,

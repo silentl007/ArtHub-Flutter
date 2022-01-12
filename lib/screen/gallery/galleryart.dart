@@ -26,7 +26,7 @@ class _GalleryArtState extends State<GalleryArt> {
     for (var data in items) {
       if (data['type'] == 'Painting' || data['type'] == 'painting') {
         String wString = data['weight'].toString();
-        double weight = double.tryParse(wString);
+        double weight = double.tryParse(wString)!;
         ParsedDataProduct parsed = ParsedDataProduct(
             artistname: data['name'],
             productname: data['product'],
@@ -46,7 +46,7 @@ class _GalleryArtState extends State<GalleryArt> {
         portraitworks.add(parsed);
       } else if (data['type'] == 'Sculptor' || data['type'] == 'sculptor') {
         String wString = data['weight'].toString();
-        double weight = double.tryParse(wString);
+        double weight = double.tryParse(wString)!;
         ParsedDataProduct parsed = ParsedDataProduct(
             artistname: data['name'],
             productname: data['product'],

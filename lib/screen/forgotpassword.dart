@@ -24,11 +24,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       child: Scaffold(
         appBar: classWidget.apptitleBar(context, 'Forgot Password'),
         body: WillPopScope(
-          onWillPop: () {
+          onWillPop: ()async  {
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => LoginScreen()),
                 (Route<dynamic> route) => false);
+                return true;
           },
                   child: Container(
             decoration: BoxDecoration(
@@ -57,11 +58,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               icon: Icon(Icons.email, color: AppColors.purple)),
                           onSaved: (text) {
                             setState(() {
-                              return resetClass.email = text.toLowerCase();
+                               resetClass.email = text!.toLowerCase();
                             });
                           },
                           validator: (value) {
-                            if (value.isEmpty) {
+                            if (value!.isEmpty) {
                               return 'This field is empty';
                             }
                           },
@@ -102,11 +103,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   Icon(Icons.security, color: AppColors.purple)),
                           onSaved: (text) {
                             setState(() {
-                              return resetClass.password = text;
+                               resetClass.password = text;
                             });
                           },
                           validator: (value) {
-                            if (value.length < 6) {
+                            if (value!.length < 6) {
                               return 'Password is less than six (6) characters';
                             } else if (value.contains(RegExp(r'[0-9]')) ==
                                 false) {
@@ -127,7 +128,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         child: RaisedButton(
                           onPressed: () {
                             var keyform = textKey.currentState;
-                            if (keyform.validate()) {
+                            if (keyform!.validate()) {
                               keyform.save();
                               futureDiag();
                             }
@@ -174,7 +175,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   futureDiag() {
     return showDialog(
         context: context,
-        child: FutureBuilder(
+        builder: (context){return FutureBuilder(
             future: resetClass.reset(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData == false) {
@@ -193,7 +194,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         ? _resetEmail()
                         : _resetFailed(),
               );
-            }));
+            });});
   }
 
   _resetPass() {
@@ -217,8 +218,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
   clearData() {
     var keyform = textKey.currentState;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      keyform.reset();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      keyform!.reset();
       setState(() {});
     });
   }

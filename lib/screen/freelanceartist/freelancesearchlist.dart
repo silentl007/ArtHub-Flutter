@@ -5,10 +5,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 
 class FreelanceSearch extends StatefulWidget {
-  final List data;
+  final List? data;
   FreelanceSearch({this.data});
   @override
-  _FreelanceSearchState createState() => _FreelanceSearchState(data);
+  _FreelanceSearchState createState() => _FreelanceSearchState(data!);
 }
 
 class _FreelanceSearchState extends State<FreelanceSearch> {

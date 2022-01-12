@@ -17,7 +17,7 @@ class _SoldState extends State<Sold> {
   final displayNumber = createDisplay(length: 8, decimal: 0);
   List data = [];
   List costlist = [];
-  int summation;
+  int? summation;
   var sold;
 
   @override
@@ -40,7 +40,8 @@ class _SoldState extends State<Sold> {
         for (var items in data) {
           costlist.add(items['cost']);
         }
-        summation = costlist.fold(0, (a, b) => a + b);
+        summation = costlist.reduce( (a, b) => a + b);
+       
       }
       return data;
     } catch (error) {
@@ -222,7 +223,7 @@ class _SoldState extends State<Sold> {
         slide(
             'left',
             Text(
-              '₦ ${displayNumber(summation)}',
+              '₦ ${displayNumber(summation!)}',
               textAlign: TextAlign.right,
               style: TextStyle(
                   color: AppColors.red,

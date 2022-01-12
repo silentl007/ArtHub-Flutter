@@ -12,7 +12,7 @@ import 'package:number_display/number_display.dart';
 import 'package:http/http.dart' as http;
 
 class PurchaseScreen extends StatefulWidget {
-  final List userDetails;
+  final List? userDetails;
   final homecheck;
   PurchaseScreen({this.userDetails, this.homecheck});
   @override
@@ -31,12 +31,12 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   String location = '';
   String cardNumber = '';
   String cvvCode = '';
-  List data;
-  int expiryMonth;
-  int expiryYear;
+  List? data;
+  int? expiryMonth;
+  int? expiryYear;
   int summation = 0;
   int servicecharge = 500;
-  int payment;
+  int? payment;
   List costlist = [];
   @override
   void initState() {
@@ -62,18 +62,18 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   // Server Logic
   cartItems() async {
     String link =
-        '${Server.link}/apiR/cartget/${widget.userDetails[0]}/${widget.userDetails[1]}';
+        '${Server.link}/apiR/cartget/${widget.userDetails![0]}/${widget.userDetails![1]}';
 
     try {
       var query = await http.get(link,
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
       var decode = jsonDecode(query.body);
       data = decode;
-      if (data.isNotEmpty) {
-        for (var items in data) {
+      if (data!.isNotEmpty) {
+        for (var items in data!) {
           costlist.add(items['cost']);
         }
-        summation = costlist.fold(0, (a, b) => a + b);
+        summation = costlist.reduce((a, b) => a + b);
       }
       return data;
     } catch (error) {
@@ -84,7 +84,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   remove(String productID) async {
     snackbar('Please wait!', 1, AppColors.purple);
     String link =
-        '${Server.link}/apiD/cartremove/${widget.userDetails[0]}/$productID/${widget.userDetails[1]}';
+        '${Server.link}/apiD/cartremove/${widget.userDetails![0]}/$productID/${widget.userDetails![1]}';
     try {
       var query = await http.delete(link);
       if (query.statusCode == 200) {
@@ -130,11 +130,11 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   purchaseOrder() async {
     String link = '${Server.link}/apiS/purchaseorders';
     Map body = {
-      "userID": widget.userDetails[0].toString(),
-      "accountType": widget.userDetails[1].toString(),
+      "userID": widget.userDetails![0].toString(),
+      "accountType": widget.userDetails![1].toString(),
       "name": username,
       "email": useremail,
-      "itemnumber": data.length,
+      "itemnumber": data!.length,
       "deliveryAddress": '$address, $location State',
       "totalcost": payment,
       "itemscost": summation,
@@ -164,7 +164,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   }
 
   snackbar(String text, int duration, Color background) {
-    return _scaffoldKey.currentState.showSnackBar(SnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(text),
       duration: Duration(seconds: duration),
       backgroundColor: background,
@@ -173,13 +173,14 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
 // functions for paystack payment
   String _getReference() {
+    // ignore: unused_local_variable
     String platform;
     if (Platform.isIOS) {
       platform = 'iOS';
     } else {
       platform = 'Android';
     }
-    return 'ChargedFrom user - ${widget.userDetails[0]} at time - _${DateTime.now().millisecondsSinceEpoch}';
+    return 'ChargedFrom user - ${widget.userDetails![0]} at time - _${DateTime.now().millisecondsSinceEpoch}';
   }
 
   chargeCard() async {
@@ -275,14 +276,16 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         floatingActionButton: classWidget.floatingHome(context),
         appBar: classWidget.apptitleBar(context, 'My Cart'),
         body: WillPopScope(
-          onWillPop: () {
+          onWillPop: () async{
             if (widget.homecheck == 'home') {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => HomeScreen()),
                   (Route<dynamic> route) => false);
+                  return true;
             } else {
               Navigator.pop(context);
+              return true;
             }
           },
           child: Container(

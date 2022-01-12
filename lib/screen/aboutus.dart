@@ -10,11 +10,12 @@ class AboutUs extends StatelessWidget {
       child: Scaffold(
           appBar: classWidget.apptitleBar(context, 'About Us'),
           body: WillPopScope(
-              onWillPop: () {
+              onWillPop: () async{
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => HomeScreen()),
                     (Route<dynamic> route) => false);
+                    return true;
               },
               child: Container())),
     );

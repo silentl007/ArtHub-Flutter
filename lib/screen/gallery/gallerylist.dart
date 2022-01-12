@@ -12,7 +12,7 @@ class GalleryList extends StatefulWidget {
 class _GalleryListState extends State<GalleryList> {
   final data;
   _GalleryListState({this.data});
-  List filtereddata = List();
+  List filtereddata = [];
   @override
   void initState() {
     super.initState();

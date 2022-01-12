@@ -61,11 +61,12 @@ class _ArtworksState extends State<Artworks> {
               )
             ])),
         body: WillPopScope(
-          onWillPop: () {
+          onWillPop: () async {
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => HomeScreen()),
                 (Route<dynamic> route) => false);
+                return true;
           },
           child: TabBarView(
             children: [

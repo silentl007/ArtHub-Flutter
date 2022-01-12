@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _welcome() {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         backgroundColor: AppColors.purple,
         content: Text('Welcome, $displayName')));
   }
@@ -89,13 +89,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? options
                       .map((element) => BottomNavigationBarItem(
                           backgroundColor: AppColors.purple,
-                          icon: element.optionIcon,
+                          icon: element.optionIcon!,
                           label: element.option))
                       .toList()
                   : options2
                       .map((element) => BottomNavigationBarItem(
                           backgroundColor: AppColors.purple,
-                          icon: element.optionIcon,
+                          icon: element.optionIcon!,
                           label: element.option))
                       .toList(),
             ),
@@ -185,30 +185,32 @@ class _HomeScreenState extends State<HomeScreen> {
         .push(MaterialPageRoute(builder: (context) => FreeLanceArtist()));
   }
 
-  Future<bool> _backFunction() {
-    return showDialog(
+  _backFunction() {
+    showDialog(
         context: context,
-        child: AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          title: Text('Are you sure?'),
-          content: Text('You are going to exit the application!'),
-          actions: [
-            RaisedButton(
-              color: AppColors.purple,
-              onPressed: () => SystemNavigator.pop(),
-              child: Text('Yes'),
-            ),
-            RaisedButton(
-              color: AppColors.purple,
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text('No'),
-            )
-          ],
-        ));
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            title: Text('Are you sure?'),
+            content: Text('You are going to exit the application!'),
+            actions: [
+              RaisedButton(
+                color: AppColors.purple,
+                onPressed: () => SystemNavigator.pop(),
+                child: Text('Yes'),
+              ),
+              RaisedButton(
+                color: AppColors.purple,
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text('No'),
+              )
+            ],
+          );
+        });
   }
 
-  Widget _apptitleBar(String text) {
+  _apptitleBar(String text) {
     final Size size = MediaQuery.of(context).size;
     final double fontSize = size.height * 0.025;
     double padding30 = size.height * 0.03755;
@@ -267,9 +269,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return showDialog(
+     showDialog(
         context: context,
-        child: AlertDialog(
+        builder: (context){return AlertDialog(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(20))),
           title: Text(
@@ -298,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text('No'),
             )
           ],
-        ));
+        );});
   }
 
   _bottomNavCustomer(int index) {
@@ -326,7 +328,11 @@ class _HomeScreenState extends State<HomeScreen> {
           context, MaterialPageRoute(builder: (context) => MiddleOrders()));
     } else if (index == 2) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MiddleCart(homecheck: 'home',)));
+          context,
+          MaterialPageRoute(
+              builder: (context) => MiddleCart(
+                    homecheck: 'home',
+                  )));
     } else if (index == 3) {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => MiddleUserArtWorks()));

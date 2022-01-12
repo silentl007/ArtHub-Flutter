@@ -20,7 +20,7 @@ class _UploadsState extends State<Uploads> {
   final _key = GlobalKey<FormState>();
   List<ArtType> arttypes = [ArtType('Painting', 1), ArtType('Sculptor', 2)];
   int defaultarttype = 0;
-  String arttypechoice;
+  String? arttypechoice;
   int avataruploadcontroller = 0;
   Color _radiocolor = Colors.black;
   Color _avatarcolor = Colors.black;
@@ -51,11 +51,12 @@ class _UploadsState extends State<Uploads> {
       child: Scaffold(
         appBar: classWidget.apptitleBar(context, 'Uploads'),
         body: WillPopScope(
-          onWillPop: () {
+          onWillPop: () async {
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => HomeScreen()),
                 (Route<dynamic> route) => false);
+            return true;
           },
           child: Stack(
             children: [
@@ -85,12 +86,12 @@ class _UploadsState extends State<Uploads> {
                               icon: Icon(Icons.art_track),
                             ),
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value!.isEmpty) {
                                 return 'This field is empty';
                               }
                             },
                             onSaved: (value) {
-                              uploadworksClass.productName = value;
+                              uploadworksClass.productName = value!;
                             },
                           ),
                         ),
@@ -106,14 +107,14 @@ class _UploadsState extends State<Uploads> {
                                 icon: Icon(Icons.book),
                               ),
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'This field is empty';
                                 } else if (value.length > 260) {
                                   return 'The description is too long';
                                 }
                               },
                               onSaved: (value) {
-                                uploadworksClass.description = value;
+                                uploadworksClass.description = value!;
                               },
                             )),
                         SizedBox(
@@ -306,7 +307,7 @@ class _UploadsState extends State<Uploads> {
                                 icon: Icon(Icons.money),
                               ),
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'This field is empty';
                                 } else if (value.contains(',')) {
                                   return 'Please remove the ,';
@@ -315,7 +316,7 @@ class _UploadsState extends State<Uploads> {
                                 }
                               },
                               onSaved: (value) {
-                                uploadworksClass.cost = num.tryParse(value);
+                                uploadworksClass.cost = int.tryParse(value!)!;
                               },
                             )),
                         slide(
@@ -329,13 +330,13 @@ class _UploadsState extends State<Uploads> {
                                   labelText: 'Weight (KG)',
                                   icon: Icon(Icons.pan_tool_sharp)),
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'This field is empty';
                                 }
                               },
                               onSaved: (value) {
                                 uploadworksClass.weight =
-                                    double.tryParse(value);
+                                    double.tryParse(value!)!;
                               },
                             )),
                         slide(
@@ -350,13 +351,13 @@ class _UploadsState extends State<Uploads> {
                                 icon: Icon(Icons.height),
                               ),
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'This field is empty';
                                 }
                               },
                               onSaved: (value) {
                                 uploadworksClass.height =
-                                    double.tryParse(value);
+                                    double.tryParse(value!)!;
                               },
                             )),
                         slide(
@@ -371,12 +372,13 @@ class _UploadsState extends State<Uploads> {
                                 icon: Icon(Icons.linear_scale),
                               ),
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'This field is empty';
                                 }
                               },
                               onSaved: (value) {
-                                uploadworksClass.width = double.tryParse(value);
+                                uploadworksClass.width =
+                                    double.tryParse(value!)!;
                               },
                             )),
                         slide(
@@ -389,12 +391,12 @@ class _UploadsState extends State<Uploads> {
                                       'Materials used (separate with , )',
                                   icon: Icon(Icons.carpenter_rounded)),
                               validator: (value) {
-                                if (value.isEmpty) {
+                                if (value!.isEmpty) {
                                   return 'This field is empty';
                                 }
                               },
                               onSaved: (value) {
-                                uploadworksClass.materials = value;
+                                uploadworksClass.materials = value!;
                               },
                             )),
                         BounceInDown(
@@ -416,7 +418,7 @@ class _UploadsState extends State<Uploads> {
                               ),
                               onPressed: () {
                                 final keyForm = _key.currentState;
-                                if (keyForm.validate()) {
+                                if (keyForm!.validate()) {
                                   if (uploadworksClass.avatar == '') {
                                     setState(() {
                                       _avatarcolor = Colors.red;
@@ -484,49 +486,51 @@ class _UploadsState extends State<Uploads> {
   _avatarFuture() {
     return showDialog(
         context: context,
-        child: FutureBuilder(
-          future: _avatarimagePicker(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (uploadworksClass.avatar != '') {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                content: Text('Avatar already uploaded'),
-              );
-            } else if (snapshot.connectionState != ConnectionState.done) {
-              return Container(
-                color: Colors.transparent,
-                child: AlertDialog(
+        builder: (context) {
+          return FutureBuilder(
+            future: _avatarimagePicker(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (uploadworksClass.avatar != '') {
+                return AlertDialog(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20))),
-                  content: LinearProgressIndicator(
-                    backgroundColor: Colors.white,
-                    valueColor:
-                        new AlwaysStoppedAnimation<Color>(AppColors.purple),
+                  content: Text('Avatar already uploaded'),
+                );
+              } else if (snapshot.connectionState != ConnectionState.done) {
+                return Container(
+                  color: Colors.transparent,
+                  child: AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    content: LinearProgressIndicator(
+                      backgroundColor: Colors.white,
+                      valueColor:
+                          new AlwaysStoppedAnimation<Color>(AppColors.purple),
+                    ),
                   ),
-                ),
-              );
-            } else if (snapshot.hasData) {
-              uploadworksClass.avatar = snapshot.data;
-              changeAvatarColor();
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                content: Text('Avatar upload complete'),
-              );
-            } else
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                content: Text(
-                    'Unable to upload connect, please check your connetion'),
-              );
-          },
-        ));
+                );
+              } else if (snapshot.hasData) {
+                uploadworksClass.avatar = snapshot.data;
+                changeAvatarColor();
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  content: Text('Avatar upload complete'),
+                );
+              } else
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  content: Text(
+                      'Unable to upload connect, please check your connetion'),
+                );
+            },
+          );
+        });
   }
 
   changeAvatarColor() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       setState(() {
         _avatarcolor = Colors.green;
       });
@@ -534,7 +538,7 @@ class _UploadsState extends State<Uploads> {
   }
 
   removeavatar() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       setState(() {
         uploadworksClass.avatar = '';
         _avatarcolor = Colors.black;
@@ -549,7 +553,7 @@ class _UploadsState extends State<Uploads> {
       var image = await picker.getImage(source: ImageSource.gallery);
       try {
         var response = await client.uploadImage(
-          image.path,
+          image!.path,
         );
         return response.secure_url;
       } catch (exception) {
@@ -561,54 +565,17 @@ class _UploadsState extends State<Uploads> {
   _multiFuture() {
     return showDialog(
         context: context,
-        child: FutureBuilder(
-          future: _multiimagePicker(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (uploadworksClass.images.length == 4) {
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                content: Text('Maximum number of images uploaded'),
-              );
-            } else if (snapshot.connectionState != ConnectionState.done) {
-              return Container(
-                color: Colors.transparent,
-                child: AlertDialog(
+        builder: (context) {
+          return FutureBuilder(
+            future: _multiimagePicker(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (uploadworksClass.images.length == 4) {
+                return AlertDialog(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20))),
-                  content: LinearProgressIndicator(
-                    backgroundColor: Colors.white,
-                    valueColor:
-                        new AlwaysStoppedAnimation<Color>(AppColors.purple),
-                  ),
-                ),
-              );
-            } else if (snapshot.hasData) {
-              uploadworksClass.images.add(snapshot.data);
-              uploadsCounter();
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                content: Text('Image upload complete'),
-              );
-            } else
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                content: Text(
-                    'Unable to upload connect, please check your connetion'),
-              );
-          },
-        ));
-  }
-
-  _uploadProcess() {
-    return showDialog(
-        context: context,
-        child: FutureBuilder(
-            future: uploadworksClass.upload(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData == false) {
+                  content: Text('Maximum number of images uploaded'),
+                );
+              } else if (snapshot.connectionState != ConnectionState.done) {
                 return Container(
                   color: Colors.transparent,
                   child: AlertDialog(
@@ -621,12 +588,53 @@ class _UploadsState extends State<Uploads> {
                     ),
                   ),
                 );
-              }
-              return Container(
-                  child: snapshot.data == 200
-                      ? _uploadSuccess()
-                      : _uploadFailed());
-            }));
+              } else if (snapshot.hasData) {
+                uploadworksClass.images.add(snapshot.data);
+                uploadsCounter();
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  content: Text('Image upload complete'),
+                );
+              } else
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  content: Text(
+                      'Unable to upload connect, please check your connetion'),
+                );
+            },
+          );
+        });
+  }
+
+  _uploadProcess() {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return FutureBuilder(
+              future: uploadworksClass.upload(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData == false) {
+                  return Container(
+                    color: Colors.transparent,
+                    child: AlertDialog(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      content: LinearProgressIndicator(
+                        backgroundColor: Colors.white,
+                        valueColor:
+                            new AlwaysStoppedAnimation<Color>(AppColors.purple),
+                      ),
+                    ),
+                  );
+                }
+                return Container(
+                    child: snapshot.data == 200
+                        ? _uploadSuccess()
+                        : _uploadFailed());
+              });
+        });
   }
 
   _uploadSuccess() {
@@ -647,9 +655,9 @@ class _UploadsState extends State<Uploads> {
   }
 
   clearData() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       final keyForm = _key.currentState;
-      keyForm.reset();
+      keyForm!.reset();
       setState(() {
         defaultarttype = 0;
         uploadworksClass.images = [];
@@ -662,7 +670,7 @@ class _UploadsState extends State<Uploads> {
   }
 
   uploadsCounter() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       setState(() {
         uploadworksClass.images.length;
         _multicolor = Colors.green;
@@ -671,7 +679,7 @@ class _UploadsState extends State<Uploads> {
   }
 
   removeimage() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       if (uploadworksClass.images.isNotEmpty) {
         if (uploadworksClass.images.length == 1) {
           uploadworksClass.images.removeAt(uploadworksClass.images.length - 1);
@@ -687,13 +695,15 @@ class _UploadsState extends State<Uploads> {
           });
         }
       } else {
-        return showDialog(
+        showDialog(
             context: context,
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              content: Text('There is no upload to remove!'),
-            ));
+            builder: (context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                content: Text('There is no upload to remove!'),
+              );
+            });
       }
     });
   }

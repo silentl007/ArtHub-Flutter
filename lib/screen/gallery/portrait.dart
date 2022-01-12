@@ -6,15 +6,15 @@ import 'package:number_display/number_display.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class PortraitDisplay extends StatefulWidget {
-  final List works;
+  final List? works;
 
   PortraitDisplay({this.works});
   @override
-  _PortraitDisplayState createState() => _PortraitDisplayState(works: works);
+  _PortraitDisplayState createState() => _PortraitDisplayState(works: works!);
 }
 
 class _PortraitDisplayState extends State<PortraitDisplay> {
-  final List works;
+  final List? works;
   _PortraitDisplayState({this.works});
   final displayNumber = createDisplay(length: 8, decimal: 0);
 
@@ -26,7 +26,7 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
     double padding40 = size.height * 0.05;
     double padding10 = size.height * 0.01252;
     double padding20 = size.height * 0.025;
-    return works.isEmpty
+    return works!.isEmpty
         ? Center(
             child: Text('No item found'),
           )
@@ -37,7 +37,7 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
                 Container(
                   child: SingleChildScrollView(
                     child: Column(
-                      children: works.map((data) {
+                      children: works!.map((data) {
                         return Padding(
                           padding: EdgeInsets.only(
                               left: padding40,

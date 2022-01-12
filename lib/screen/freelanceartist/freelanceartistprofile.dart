@@ -100,12 +100,12 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
                 flex: 2,
                 child: Padding(
                   padding: EdgeInsets.only(top: padding8),
-                  child: widget.artistdata.works.length == 0
+                  child: widget.artistdata.works!.length == 0
                       ? Center(
                           child: Text('Sorry, no item available!'),
                         )
                       : GridView.builder(
-                          itemCount: widget.artistdata.works.length,
+                          itemCount: widget.artistdata.works!.length,
                           gridDelegate:
                               SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 3,
@@ -121,13 +121,13 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
                                 ),
                                 child: InkWell(
                                   onTap: () => details(
-                                      context, widget.artistdata.works[index]),
+                                      context, widget.artistdata.works![index]),
                                   child: ClipRRect(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(20)),
                                     child: CachedNetworkImage(
                                       fit: BoxFit.cover,
-                                      imageUrl: widget.artistdata.works[index]
+                                      imageUrl: widget.artistdata.works![index]
                                           ['avatar'],
                                       placeholder: (context, url) => new Center(
                                         child: Column(
@@ -165,7 +165,7 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
 
   void details(BuildContext context, Map element) {
     String wString = element['weight'].toString();
-    double weight = double.tryParse(wString);
+    double weight = double.tryParse(wString)!;
     ParsedDataProduct details = ParsedDataProduct(
         artistname: element['name'],
         productname: element['product'],
