@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:artHub/common/middlemen/middlemancart.dart';
-import 'package:artHub/common/model.dart';
+import 'package:art_hub/common/middlemen/middlemancart.dart';
+import 'package:art_hub/common/model.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_animator/flutter_animator.dart';

@@ -1,8 +1,8 @@
-import 'package:artHub/screen/homescreen.dart';
-import 'package:artHub/screen/register.dart';
-import 'package:artHub/screen/forgotpassword.dart';
+import 'package:art_hub/screen/homescreen.dart';
+import 'package:art_hub/screen/register.dart';
+import 'package:art_hub/screen/forgotpassword.dart';
 import 'package:flutter/material.dart';
-import 'package:artHub/common/model.dart';
+import 'package:art_hub/common/model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,7 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
   String he = '';
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getLogin();
   }

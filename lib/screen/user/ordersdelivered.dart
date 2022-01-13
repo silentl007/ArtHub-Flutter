@@ -1,11 +1,12 @@
-import 'package:artHub/screen/user/orderdetails.dart';
+import 'package:art_hub/screen/user/orderdetails.dart';
 import 'package:flutter/material.dart';
-import 'package:artHub/common/model.dart';
+import 'package:art_hub/common/model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'dart:convert';
 import 'package:number_display/number_display.dart';
 import 'package:http/http.dart' as http;
 
+// ignore: must_be_immutable
 class Delivered extends StatefulWidget {
   List userDetails;
   Delivered(this.userDetails);
@@ -25,7 +26,8 @@ class _DeliveredState extends State<Delivered> {
   }
 
   getDelivered() async {
-    Uri link = Uri.parse('${Server.link}/apiR/orders/${widget.userDetails[0]}/${widget.userDetails[1]}');
+    Uri link = Uri.parse(
+        '${Server.link}/apiR/orders/${widget.userDetails[0]}/${widget.userDetails[1]}');
 
     try {
       var query = await http.get(link,
@@ -75,8 +77,12 @@ class _DeliveredState extends State<Delivered> {
         } else {
           return Container(
               child: Center(
-                  child: RaisedButton(
-            child: Text('Retry'),
+                  child: ElevatedButton(
+            style: Decorations().buttonDecor(context: context, noBorder: true),
+            child: Decorations().buttonText(
+              buttonText: 'Retry',
+              context: context,
+            ),
             onPressed: () {
               getdelivered = getDelivered();
               setState(() {});

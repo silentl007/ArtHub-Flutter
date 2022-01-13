@@ -1,5 +1,5 @@
-import 'package:artHub/common/model.dart';
-import 'package:artHub/screen/login.dart';
+import 'package:art_hub/common/model.dart';
+import 'package:art_hub/screen/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:image_picker/image_picker.dart';
@@ -50,12 +50,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         backgroundColor: Colors.white,
         appBar: classWidget.apptitleBar(context, 'Register'),
         body: WillPopScope(
-          onWillPop: ()async {
+          onWillPop: () async {
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => LoginScreen()),
                 (Route<dynamic> route) => false);
-                return true;
+            return true;
           },
           child: Stack(
             children: [
@@ -118,7 +118,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       color: AppColors.purple)),
                               onSaved: (text) {
                                 setState(() {
-                                   registerClass.fullName = text;
+                                  registerClass.fullName = text;
                                 });
                               },
                               validator: (value) {
@@ -144,7 +144,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       color: AppColors.purple)),
                               onSaved: (text) {
                                 setState(() {
-                                   registerClass.number = text;
+                                  registerClass.number = text;
                                 });
                               },
                               validator: (value) {
@@ -171,7 +171,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       color: AppColors.purple)),
                               onSaved: (text) {
                                 setState(() {
-                                   registerClass.address = text;
+                                  registerClass.address = text;
                                 });
                               },
                               validator: (value) {
@@ -199,7 +199,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                               color: AppColors.purple)),
                                       onSaved: (text) {
                                         setState(() {
-                                           registerClass.aboutme = text;
+                                          registerClass.aboutme = text;
                                         });
                                       },
                                       validator: (value) {
@@ -224,12 +224,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ),
                                     Row(
                                       children: [
-                                        RaisedButton(
+                                        ElevatedButton(
                                           onPressed: () => _avatarFuture(),
-                                          color: AppColors.purple,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(150))),
+                                          style: Decorations().buttonDecor(
+                                              context: context,
+                                              borderRadius: Sizes.w150),
                                           child: Row(
                                             children: [
                                               Icon(Icons.upload_file,
@@ -237,22 +236,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                               SizedBox(
                                                 width: sizeHeight5,
                                               ),
-                                              Text(
-                                                'Upload',
-                                                style: TextStyle(
-                                                    fontSize: fontSize15,
-                                                    color: Colors.white),
-                                              )
+                                              Decorations().buttonText(
+                                                  buttonText: 'Upload',
+                                                  context: context),
                                             ],
                                           ),
                                         ),
                                         SizedBox(width: sizeHeight3),
-                                        RaisedButton(
+                                        ElevatedButton(
                                           onPressed: () => removeavatar(),
-                                          color: AppColors.purple,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(150))),
+                                          style: Decorations().buttonDecor(
+                                              context: context,
+                                              borderRadius: Sizes.w150),
                                           child: Row(
                                             children: [
                                               Icon(Icons.cancel,
@@ -260,12 +255,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                               SizedBox(
                                                 width: sizeHeight5,
                                               ),
-                                              Text(
-                                                'Remove',
-                                                style: TextStyle(
-                                                    fontSize: fontSize15,
-                                                    color: Colors.white),
-                                              )
+                                              Decorations().buttonText(
+                                                  buttonText: 'Remove',
+                                                  context: context),
                                             ],
                                           ),
                                         )
@@ -318,8 +310,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       color: AppColors.purple)),
                               onSaved: (text) {
                                 setState(() {
-                                   registerClass.email =
-                                      text!.toLowerCase();
+                                  registerClass.email = text!.toLowerCase();
                                 });
                               },
                               validator: (value) {
@@ -364,7 +355,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       color: AppColors.purple)),
                               onSaved: (text) {
                                 setState(() {
-                                   registerClass.password = text;
+                                  registerClass.password = text;
                                 });
                               },
                               validator: (value) {
@@ -440,17 +431,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               preferences: AnimationPreferences(
                                   autoPlay: AnimationPlayStates.Loop,
                                   offset: Duration(seconds: 3)),
-                              child: RaisedButton(
-                                color: AppColors.purple,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(50))),
-                                child: Text(
-                                  'Register',
-                                  style: TextStyle(
-                                      fontSize: fontSize15,
-                                      color: Colors.white),
+                              child: ElevatedButton(
+                                style: Decorations().buttonDecor(
+                                  context: context,
                                 ),
+                                child: Decorations().buttonText(
+                                    buttonText: 'Register', context: context),
                                 onPressed: () {
                                   final keyForm = _key.currentState;
 
@@ -507,29 +493,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
   futureDiag(BuildContext context) {
     return showDialog(
         context: context,
-        builder:(context){return FutureBuilder(
-            future: registerClass.register(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData == false) {
-                return Container(
-                  color: Colors.transparent,
-                  child: AlertDialog(
-                    content: LinearProgressIndicator(
-                      backgroundColor: Colors.white,
-                      valueColor:
-                          new AlwaysStoppedAnimation<Color>(AppColors.purple),
+        builder: (context) {
+          return FutureBuilder(
+              future: registerClass.register(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData == false) {
+                  return Container(
+                    color: Colors.transparent,
+                    child: AlertDialog(
+                      content: LinearProgressIndicator(
+                        backgroundColor: Colors.white,
+                        valueColor:
+                            new AlwaysStoppedAnimation<Color>(AppColors.purple),
+                      ),
                     ),
-                  ),
+                  );
+                }
+                return Container(
+                  child: snapshot.data == 200
+                      ? _registerationSuccess()
+                      : snapshot.data == 401
+                          ? _registerationEmail()
+                          : _registerationFailed(),
                 );
-              }
-              return Container(
-                child: snapshot.data == 200
-                    ? _registerationSuccess()
-                    : snapshot.data == 401
-                        ? _registerationEmail()
-                        : _registerationFailed(),
-              );
-            });});
+              });
+        });
   }
 
   slide(String direction, Widget widget) {
@@ -607,20 +595,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
   _termsConditions(BuildContext context) {
     return showDialog(
         context: context,
-        builder:(context) {return AlertDialog(
-          title: Text(
-            'Terms and Conditions',
-            textAlign: TextAlign.center,
-          ),
-          scrollable: true,
-          content: Text('Give terms and conditions'),
-          actions: [
-            FlatButton(
-              onPressed: null,
-              child: Text('Agree'),
-            )
-          ],
-        );});
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Terms and Conditions',
+              textAlign: TextAlign.center,
+            ),
+            scrollable: true,
+            content: Text('Give terms and conditions'),
+            actions: [
+              ElevatedButton(
+                onPressed: null,
+                style: Decorations().buttonDecor(context: context,noBorder: true),
+                child: Decorations().buttonText(buttonText: 'Agree', context: context),
+              )
+            ],
+          );
+        });
   }
 
   _avatarimagePicker() async {
@@ -645,37 +636,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
   _avatarFuture() {
     return showDialog(
         context: context,
-        builder:(context) {return FutureBuilder(
-          future: _avatarimagePicker(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (registerClass.avatar != '') {
-              return AlertDialog(
-                content: Text('Avatar already uploaded'),
-              );
-            } else if (snapshot.connectionState != ConnectionState.done) {
-              return Container(
-                color: Colors.transparent,
-                child: AlertDialog(
-                  content: LinearProgressIndicator(
-                    backgroundColor: Colors.white,
-                    valueColor:
-                        new AlwaysStoppedAnimation<Color>(AppColors.purple),
+        builder: (context) {
+          return FutureBuilder(
+            future: _avatarimagePicker(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (registerClass.avatar != '') {
+                return AlertDialog(
+                  content: Text('Avatar already uploaded'),
+                );
+              } else if (snapshot.connectionState != ConnectionState.done) {
+                return Container(
+                  color: Colors.transparent,
+                  child: AlertDialog(
+                    content: LinearProgressIndicator(
+                      backgroundColor: Colors.white,
+                      valueColor:
+                          new AlwaysStoppedAnimation<Color>(AppColors.purple),
+                    ),
                   ),
-                ),
-              );
-            } else if (snapshot.hasData) {
-              changeAvatarColor();
-              registerClass.avatar = snapshot.data;
-              return AlertDialog(
-                content: Text('Avatar upload complete'),
-              );
-            } else
-              return AlertDialog(
-                content: Text(
-                    'Unable to upload connect, please check your connetion'),
-              );
-          },
-        );});
+                );
+              } else if (snapshot.hasData) {
+                changeAvatarColor();
+                registerClass.avatar = snapshot.data;
+                return AlertDialog(
+                  content: Text('Avatar upload complete'),
+                );
+              } else
+                return AlertDialog(
+                  content: Text(
+                      'Unable to upload connect, please check your connetion'),
+                );
+            },
+          );
+        });
   }
 }
 

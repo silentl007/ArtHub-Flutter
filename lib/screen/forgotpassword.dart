@@ -1,6 +1,6 @@
-import 'package:artHub/screen/login.dart';
+import 'package:art_hub/screen/login.dart';
 import 'package:flutter/material.dart';
-import 'package:artHub/common/model.dart';
+import 'package:art_hub/common/model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -24,14 +24,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       child: Scaffold(
         appBar: classWidget.apptitleBar(context, 'Forgot Password'),
         body: WillPopScope(
-          onWillPop: ()async  {
+          onWillPop: () async {
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => LoginScreen()),
                 (Route<dynamic> route) => false);
-                return true;
+            return true;
           },
-                  child: Container(
+          child: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage('assets/appimages/welcomeback.png'),
@@ -58,7 +58,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               icon: Icon(Icons.email, color: AppColors.purple)),
                           onSaved: (text) {
                             setState(() {
-                               resetClass.email = text!.toLowerCase();
+                              resetClass.email = text!.toLowerCase();
                             });
                           },
                           validator: (value) {
@@ -99,11 +99,11 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               labelText: 'Password',
                               helperText:
                                   'must at least be six (6) characters and has at least a digit',
-                              icon:
-                                  Icon(Icons.security, color: AppColors.purple)),
+                              icon: Icon(Icons.security,
+                                  color: AppColors.purple)),
                           onSaved: (text) {
                             setState(() {
-                               resetClass.password = text;
+                              resetClass.password = text;
                             });
                           },
                           validator: (value) {
@@ -125,7 +125,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         preferences: AnimationPreferences(
                             autoPlay: AnimationPlayStates.Loop,
                             offset: Duration(seconds: 3)),
-                        child: RaisedButton(
+                        child: ElevatedButton(
                           onPressed: () {
                             var keyform = textKey.currentState;
                             if (keyform!.validate()) {
@@ -133,14 +133,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                               futureDiag();
                             }
                           },
-                          child: Text(
-                            'Reset',
-                            style: TextStyle(fontSize: 15, color: Colors.white),
-                          ),
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
-                          color: AppColors.purple,
+                          child: Decorations().buttonText(
+                              buttonText: 'Reset', context: context),
+                          style: Decorations().buttonDecor(context: context),
                         ),
                       ),
                     )
@@ -175,26 +170,28 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   futureDiag() {
     return showDialog(
         context: context,
-        builder: (context){return FutureBuilder(
-            future: resetClass.reset(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData == false) {
-                return AlertDialog(
-                  content: LinearProgressIndicator(
-                    backgroundColor: Colors.white,
-                    valueColor:
-                        new AlwaysStoppedAnimation<Color>(AppColors.purple),
-                  ),
+        builder: (context) {
+          return FutureBuilder(
+              future: resetClass.reset(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData == false) {
+                  return AlertDialog(
+                    content: LinearProgressIndicator(
+                      backgroundColor: Colors.white,
+                      valueColor:
+                          new AlwaysStoppedAnimation<Color>(AppColors.purple),
+                    ),
+                  );
+                }
+                return Container(
+                  child: snapshot.data == 200
+                      ? _resetPass()
+                      : snapshot.data == 401
+                          ? _resetEmail()
+                          : _resetFailed(),
                 );
-              }
-              return Container(
-                child: snapshot.data == 200
-                    ? _resetPass()
-                    : snapshot.data == 401
-                        ? _resetEmail()
-                        : _resetFailed(),
-              );
-            });});
+              });
+        });
   }
 
   _resetPass() {

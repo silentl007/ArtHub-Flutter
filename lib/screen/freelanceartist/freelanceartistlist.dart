@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:artHub/screen/freelanceartist/freelancesearchlist.dart';
-import 'package:artHub/screen/homescreen.dart';
+import 'package:art_hub/screen/freelanceartist/freelancesearchlist.dart';
+import 'package:art_hub/screen/homescreen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:artHub/common/model.dart';
+import 'package:art_hub/common/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FreeLanceArtist extends StatefulWidget {
@@ -16,6 +16,7 @@ class _FreeLanceArtistState extends State<FreeLanceArtist> {
   List<ParsedDataFreeLanceArts> collecteddata = [];
   Future? freelancers;
   @override
+  // ignore: must_call_super
   void initState() {
     getprefs();
     freelancers = _getFreelancers();
@@ -85,8 +86,9 @@ class _FreeLanceArtistState extends State<FreeLanceArtist> {
                   return FreelanceSearch(data: snapshot.data);
                 } else {
                   return Center(
-                    child: RaisedButton(
-                      child: Text('Retry'),
+                    child: ElevatedButton(
+                      style: Decorations().buttonDecor(context: context, noBorder: true),
+                      child: Decorations().buttonText(buttonText: 'Retry', context: context,),
                       onPressed: () {
                         freelancers = _getFreelancers();
                         setState(() {});

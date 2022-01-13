@@ -1,4 +1,4 @@
-import 'package:artHub/screen/gallery/galleryart.dart';
+import 'package:art_hub/screen/gallery/galleryart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 

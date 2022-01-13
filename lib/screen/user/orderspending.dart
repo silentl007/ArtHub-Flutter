@@ -1,6 +1,6 @@
-import 'package:artHub/screen/user/orderdetails.dart';
+import 'package:art_hub/screen/user/orderdetails.dart';
 import 'package:flutter/material.dart';
-import 'package:artHub/common/model.dart';
+import 'package:art_hub/common/model.dart';
 import 'dart:convert';
 import 'package:number_display/number_display.dart';
 import 'package:http/http.dart' as http;
@@ -76,8 +76,12 @@ class _PendingState extends State<Pending> {
         } else {
           return Container(
               child: Center(
-                  child: RaisedButton(
-            child: Text('Retry'),
+                  child: ElevatedButton(
+            style: Decorations().buttonDecor(context: context, noBorder: true),
+            child: Decorations().buttonText(
+              buttonText: 'Retry',
+              context: context,
+            ),
             onPressed: () {
               getpending = getPending();
               setState(() {});

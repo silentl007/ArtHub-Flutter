@@ -1,6 +1,6 @@
-import 'package:artHub/screen/homescreen.dart';
+import 'package:art_hub/screen/homescreen.dart';
 import 'package:flutter/material.dart';
-import 'package:artHub/common/model.dart';
+import 'package:art_hub/common/model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:flutter_credit_card/credit_card_brand.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,7 +46,6 @@ class _ProfileState extends State<Profile> {
   final picker = ImagePicker();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getData();
   }
@@ -262,12 +261,12 @@ class _ProfileState extends State<Profile> {
                 preferences: AnimationPreferences(
                     autoPlay: AnimationPlayStates.Loop,
                     offset: Duration(seconds: 3)),
-                child: RaisedButton(
-                  color: AppColors.purple,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(50))),
-                  child: Text('Save payment details',
-                      style: TextStyle(color: Colors.white)),
+                child: ElevatedButton(
+                  style: Decorations().buttonDecor(
+                    context: context,
+                  ),
+                  child: Decorations().buttonText(
+                      buttonText: 'Save payment details', context: context),
                   onPressed: () {
                     showDialog(
                         context: context,
@@ -299,7 +298,8 @@ class _ProfileState extends State<Profile> {
                                             cardHolderName: cardHolderName,
                                             cvvCode: cvvCode,
                                             showBackView: isCvvFocused,
-                                            onCreditCardWidgetChange: (CreditCardBrand brand) {},
+                                            onCreditCardWidgetChange:
+                                                (CreditCardBrand brand) {},
                                           ),
                                         ),
                                         SlideInRight(
@@ -335,15 +335,13 @@ class _ProfileState extends State<Profile> {
                                           child: BounceInDown(
                                             preferences: AnimationPreferences(
                                                 offset: Duration(seconds: 1)),
-                                            child: RaisedButton(
-                                              color: AppColors.purple,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(50))),
-                                              child: Text('Save',
-                                                  style: TextStyle(
-                                                      color: Colors.white)),
+                                            child: ElevatedButton(
+                                              style: Decorations().buttonDecor(
+                                                context: context,
+                                              ),
+                                              child: Decorations().buttonText(
+                                                  buttonText: 'Save',
+                                                  context: context),
                                               onPressed: () {
                                                 saveCard();
                                               },
@@ -534,26 +532,20 @@ class _ProfileState extends State<Profile> {
                           SlideInLeft(
                             preferences: AnimationPreferences(
                                 duration: Duration(seconds: 4)),
-                            child: RaisedButton(
+                            child: ElevatedButton(
                               onPressed: () {
                                 _avatarFuture();
                               },
-                              color: AppColors.purple,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(150))),
+                              style: Decorations().buttonDecor(
+                                  context: context, borderRadius: Sizes.w150),
                               child: Row(
                                 children: [
                                   Icon(Icons.upload_file, color: Colors.white),
                                   SizedBox(
                                     width: 3,
                                   ),
-                                  Text(
-                                    'Upload',
-                                    style: TextStyle(
-                                        fontSize: fontSize15,
-                                        color: Colors.white),
-                                  )
+                                  Decorations().buttonText(
+                                      buttonText: 'Upload', context: context)
                                 ],
                               ),
                             ),
@@ -594,15 +586,12 @@ class _ProfileState extends State<Profile> {
                     preferences: AnimationPreferences(
                         autoPlay: AnimationPlayStates.Loop,
                         offset: Duration(seconds: 3)),
-                    child: RaisedButton(
-                      color: AppColors.purple,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(50))),
-                      child: Text(
-                        'Update',
-                        style: TextStyle(
-                            fontSize: fontSize15, color: Colors.white),
+                    child: ElevatedButton(
+                      style: Decorations().buttonDecor(
+                        context: context,
                       ),
+                      child: Decorations()
+                          .buttonText(buttonText: 'Update', context: context),
                       onPressed: () {
                         final key = _formKey.currentState;
                         if (key!.validate()) {

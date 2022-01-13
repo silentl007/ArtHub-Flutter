@@ -1,6 +1,6 @@
-import 'package:artHub/screen/gallery/portrait.dart';
+import 'package:art_hub/screen/gallery/portrait.dart';
 import 'package:flutter/material.dart';
-import 'package:artHub/common/model.dart';
+import 'package:art_hub/common/model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 
 class GalleryArt extends StatefulWidget {

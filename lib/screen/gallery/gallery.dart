@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:artHub/screen/gallery/gallerylist.dart';
-import 'package:artHub/screen/homescreen.dart';
+import 'package:art_hub/screen/gallery/gallerylist.dart';
+import 'package:art_hub/screen/homescreen.dart';
 import 'package:flutter/material.dart';
-import 'package:artHub/common/model.dart';
+import 'package:art_hub/common/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -86,8 +86,9 @@ class _GalleriesState extends State<Galleries> {
                   );
                 } else {
                   return Center(
-                    child: RaisedButton(
-                      child: Text('Retry'),
+                    child: ElevatedButton(
+                     style: Decorations().buttonDecor(context: context, noBorder: true),
+                      child: Decorations().buttonText(buttonText: 'Retry', context: context,),
                       onPressed: () {
                         gallery = _getGallery();
                         setState(() {

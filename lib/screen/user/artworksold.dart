@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:artHub/common/model.dart';
+import 'package:art_hub/common/model.dart';
 import 'package:http/http.dart' as http;
 import 'package:number_display/number_display.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -22,7 +22,6 @@ class _SoldState extends State<Sold> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     sold = soldworks();
   }
@@ -81,8 +80,12 @@ class _SoldState extends State<Sold> {
         } else {
           return Container(
               child: Center(
-                  child: RaisedButton(
-            child: Text('Retry'),
+                  child: ElevatedButton(
+            style: Decorations().buttonDecor(context: context, noBorder: true),
+            child: Decorations().buttonText(
+              buttonText: 'Retry',
+              context: context,
+            ),
             onPressed: () {
               sold = soldworks();
               setState(() {});

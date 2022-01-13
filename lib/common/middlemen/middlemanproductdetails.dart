@@ -1,7 +1,7 @@
-import 'package:artHub/screen/productdetails.dart';
+import 'package:art_hub/screen/productdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:artHub/common/model.dart';
+import 'package:art_hub/common/model.dart';
 
 class Middle extends StatefulWidget {
   final ParsedDataProduct data;

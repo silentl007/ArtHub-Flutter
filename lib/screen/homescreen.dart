@@ -1,16 +1,16 @@
-import 'package:artHub/common/middlemen/middlemancart.dart';
-import 'package:artHub/common/middlemen/middlemanuserartworks.dart';
-import 'package:artHub/common/middlemen/middleorders.dart';
-import 'package:artHub/screen/aboutus.dart';
-import 'package:artHub/screen/freelanceartist/freelanceartistlist.dart';
-import 'package:artHub/screen/login.dart';
-import 'package:artHub/screen/uploads.dart';
+import 'package:art_hub/common/middlemen/middlemancart.dart';
+import 'package:art_hub/common/middlemen/middlemanuserartworks.dart';
+import 'package:art_hub/common/middlemen/middleorders.dart';
+import 'package:art_hub/screen/aboutus.dart';
+import 'package:art_hub/screen/freelanceartist/freelanceartistlist.dart';
+import 'package:art_hub/screen/login.dart';
+import 'package:art_hub/screen/uploads.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-import 'package:artHub/screen/user/userprofile.dart';
+import 'package:art_hub/screen/user/userprofile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'gallery/gallery.dart';
-import 'package:artHub/common/model.dart';
+import 'package:art_hub/common/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -42,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getPref();
   }
@@ -68,8 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    final double fontSize = size.height * 0.025;
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
     return SafeArea(
       child: Scaffold(
           key: _scaffoldKey,
@@ -120,22 +119,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       preferences: AnimationPreferences(
                           offset: Duration(seconds: offsetDuration)),
                       child: Container(
-                        width: size.width * .7,
-                        height: size.height * .08,
-                        child: RaisedButton(
-                          color: AppColors.purple,
-                          onPressed: () => galleries(),
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
-                          child: Text(
-                            'Galleries',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w900,
-                                fontSize: fontSize),
-                          ),
-                        ),
+                        width: Sizes.w300,
+                        height: Sizes.h65,
+                        child: ElevatedButton(
+                            onPressed: () => galleries(),
+                            style: Decorations().buttonDecor(context: context),
+                            child: Decorations().buttonText(
+                                context: context,
+                                buttonText: 'Galleries',
+                                fontweight: FontWeight.w900,
+                                fontsize: Sizes.w20)),
                       ),
                     ),
                   ),
@@ -149,21 +142,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       preferences: AnimationPreferences(
                           offset: Duration(seconds: offsetDuration)),
                       child: Container(
-                        width: size.width * .7,
-                        height: size.height * .08,
-                        child: RaisedButton(
-                          color: AppColors.red,
+                        width: Sizes.w300,
+                        height: Sizes.h65,
+                        child: ElevatedButton(
                           onPressed: () => freelancers(),
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50))),
-                          child: Text(
-                            'Freelance',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w900,
-                                fontSize: fontSize),
-                          ),
+                          style: Decorations().buttonDecor(
+                              context: context, buttoncolor: AppColors.red),
+                          child: Decorations().buttonText(
+                              context: context,
+                              buttonText: 'Freelancers',
+                              fontweight: FontWeight.w900,
+                              fontsize: Sizes.w20),
                         ),
                       ),
                     ),
@@ -195,15 +184,15 @@ class _HomeScreenState extends State<HomeScreen> {
             title: Text('Are you sure?'),
             content: Text('You are going to exit the application!'),
             actions: [
-              RaisedButton(
-                color: AppColors.purple,
+              ElevatedButton(
+                style: Decorations().buttonDecor(context: context, noBorder: false),
                 onPressed: () => SystemNavigator.pop(),
-                child: Text('Yes'),
+                child: Decorations().buttonText(buttonText: 'Yes', context: context),
               ),
-              RaisedButton(
-                color: AppColors.purple,
+              ElevatedButton(
+                style: Decorations().buttonDecor(context: context, noBorder: false),
                 onPressed: () => Navigator.of(context).pop(false),
-                child: Text('No'),
+                child:  Decorations().buttonText(buttonText: 'No', context: context),
               )
             ],
           );
@@ -269,38 +258,40 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _logout() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-     showDialog(
+    showDialog(
         context: context,
-        builder: (context){return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          title: Text(
-            'Log Out',
-            textAlign: TextAlign.center,
-          ),
-          scrollable: true,
-          content: Text('Are you sure you want to log out?'),
-          actions: [
-            RaisedButton(
-              color: AppColors.purple,
-              onPressed: () async {
-                var variable = await prefs.clear();
-                if (variable == true) {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
-                      (Route<dynamic> route) => false);
-                }
-              },
-              child: Text('Yes'),
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            title: Text(
+              'Log Out',
+              textAlign: TextAlign.center,
             ),
-            RaisedButton(
-              color: AppColors.purple,
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text('No'),
-            )
-          ],
-        );});
+            scrollable: true,
+            content: Text('Are you sure you want to log out?'),
+            actions: [
+              ElevatedButton(
+                style: Decorations().buttonDecor(context: context, noBorder: false),
+                onPressed: () async {
+                  var variable = await prefs.clear();
+                  if (variable == true) {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                        (Route<dynamic> route) => false);
+                  }
+                },
+                child: Decorations().buttonText(buttonText: 'Yes', context: context),
+              ),
+              ElevatedButton(
+                 style: Decorations().buttonDecor(context: context, noBorder: false),
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Decorations().buttonText(buttonText: 'No', context: context),
+              )
+            ],
+          );
+        });
   }
 
   _bottomNavCustomer(int index) {

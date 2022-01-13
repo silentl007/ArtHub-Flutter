@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:artHub/common/middlemen/middleorders.dart';
-import 'package:artHub/screen/homescreen.dart';
+import 'package:art_hub/common/middlemen/middleorders.dart';
+import 'package:art_hub/screen/homescreen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:artHub/common/model.dart';
+import 'package:art_hub/common/model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
@@ -319,8 +319,9 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                 } else {
                   return Container(
                       child: Center(
-                          child: RaisedButton(
-                    child: Text('Retry'),
+                          child: ElevatedButton(
+                            style: Decorations().buttonDecor(context: context, noBorder: false),
+                    child: Decorations().buttonText(buttonText: 'Retry', context: context),
                     onPressed: () {
                       cartItemsVar = cartItems();
                       setState(() {});
@@ -436,20 +437,11 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                     preferences: AnimationPreferences(
                                         offset: Duration(seconds: 3),
                                         autoPlay: AnimationPlayStates.Loop),
-                                    child: RaisedButton(
-                                      color: AppColors.blue,
+                                    child: ElevatedButton(
                                       onPressed: () =>
                                           remove(snapshot[index]['productID']),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(50))),
-                                      child: Text(
-                                        'Remove',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: fontSize20),
-                                      ),
+                                     style: Decorations().buttonDecor(context: context, buttoncolor: AppColors.blue),
+                                      child:Decorations().buttonText(buttonText: 'Remove', context: context, fontweight: FontWeight.w600, fontsize: Sizes.w20)
                                     ),
                                   ),
                                 )
@@ -488,7 +480,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   checkoutsummary(int itemnumber) {
     Size size = MediaQuery.of(context).size;
-    double fontSize20 = size.height * 0.025;
     double fontSize25 = size.height * 0.03125;
     double fontSize15 = size.height * 0.01875;
     return Container(
@@ -601,21 +592,10 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                 child: Container(
                   width: size.width * .35,
                   height: size.height * .07,
-                  child: RaisedButton(
-                    elevation: 15,
-                    child: Text(
-                      'Checkout',
-                      style:
-                          TextStyle(fontSize: fontSize20, color: Colors.white),
-                    ),
-                    color: AppColors.red,
+                  child: ElevatedButton(
+                   style: Decorations().buttonDecor(context: context, elevation: 15, buttoncolor: AppColors.red),
+                    child:Decorations().buttonText(buttonText: 'Checkout', context: context, fontsize: Sizes.w20),
                     onPressed: () => checkitemsavailability(),
-                    // onPressed: ()=> purchaseOrder(),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(50),
-                      ),
-                    ),
                   ),
                 ),
               ),

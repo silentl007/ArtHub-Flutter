@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:artHub/common/model.dart';
+import 'package:art_hub/common/model.dart';
 import 'package:http/http.dart' as http;
 import 'package:number_display/number_display.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -33,7 +33,8 @@ class _AvailableState extends State<Available> {
   }
 
   uploads() async {
-    Uri link = Uri.parse('${Server.link}/apiR/uploaded/${widget.userDetails![0]}/${widget.userDetails![1]}');
+    Uri link = Uri.parse(
+        '${Server.link}/apiR/uploaded/${widget.userDetails![0]}/${widget.userDetails![1]}');
     try {
       var query = await http.get(link,
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
@@ -47,8 +48,8 @@ class _AvailableState extends State<Available> {
 
   remove(String productID) async {
     snackbar('Please wait!', 1, AppColors.purple);
-    Uri link =
-       Uri.parse( '${Server.link}/apiD/uploadremove/${widget.userDetails![0]}/$productID/${widget.userDetails![1]}');
+    Uri link = Uri.parse(
+        '${Server.link}/apiD/uploadremove/${widget.userDetails![0]}/$productID/${widget.userDetails![1]}');
     try {
       var query = await http.delete(link);
       if (query.statusCode == 200) {
@@ -97,8 +98,13 @@ class _AvailableState extends State<Available> {
             } else {
               return Container(
                   child: Center(
-                      child: RaisedButton(
-                child: Text('Retry'),
+                      child: ElevatedButton(
+                style:
+                    Decorations().buttonDecor(context: context, noBorder: true),
+                child: Decorations().buttonText(
+                  buttonText: 'Retry',
+                  context: context,
+                ),
                 onPressed: () {
                   upload = uploads();
                   setState(() {});
@@ -209,29 +215,27 @@ class _AvailableState extends State<Available> {
                                       fontSize: fontSize20),
                                 )),
                             slide(
-                                'right',
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Pulse(
-                                    preferences: AnimationPreferences(
-                                        autoPlay: AnimationPlayStates.Loop),
-                                    child: RaisedButton(
-                                      color: AppColors.blue,
-                                      onPressed: () =>
-                                          remove(snapshot[index]['productID']),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(50))),
-                                      child: Text(
-                                        'Remove',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: fontSize20),
-                                      ),
-                                    ),
+                              'right',
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: Pulse(
+                                  preferences: AnimationPreferences(
+                                      autoPlay: AnimationPlayStates.Loop),
+                                  child: ElevatedButton(
+                                    onPressed: () =>
+                                        remove(snapshot[index]['productID']),
+                                    style: Decorations().buttonDecor(
+                                        context: context,
+                                        buttoncolor: AppColors.blue),
+                                    child: Decorations().buttonText(
+                                        buttonText: 'Remove',
+                                        context: context,
+                                        fontweight: FontWeight.w600,
+                                        fontsize: Sizes.w20),
                                   ),
-                                ))
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       )

@@ -1,7 +1,7 @@
-import 'package:artHub/screen/user/userartworks.dart';
+import 'package:art_hub/screen/user/userartworks.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:artHub/common/model.dart';
+import 'package:art_hub/common/model.dart';
 
 class MiddleUserArtWorks extends StatefulWidget {
   @override

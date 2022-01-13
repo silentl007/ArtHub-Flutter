@@ -1,5 +1,5 @@
-import 'package:artHub/common/model.dart';
-import 'package:artHub/screen/user/userorders.dart';
+import 'package:art_hub/common/model.dart';
+import 'package:art_hub/screen/user/userorders.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

@@ -1,5 +1,5 @@
-import 'package:artHub/common/model.dart';
-import 'package:artHub/common/middlemen/middlemanproductdetails.dart';
+import 'package:art_hub/common/model.dart';
+import 'package:art_hub/common/middlemen/middlemanproductdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:number_display/number_display.dart';
@@ -146,23 +146,22 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
                                                           autoPlay:
                                                               AnimationPlayStates
                                                                   .Loop),
-                                                  child: RaisedButton(
-                                                    color: AppColors.blue,
+                                                  child: ElevatedButton(
                                                     onPressed: () =>
                                                         purchase(context, data),
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    50))),
-                                                    child: Text(
-                                                      'View',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: fontSize20),
-                                                    ),
+                                                    style: Decorations()
+                                                        .buttonDecor(
+                                                            context: context,
+                                                            buttoncolor:
+                                                                AppColors.blue),
+                                                    child: Decorations()
+                                                        .buttonText(
+                                                            buttonText: 'View',
+                                                            context: context,
+                                                            fontweight:
+                                                                FontWeight.w600,
+                                                            fontsize:
+                                                                Sizes.w20),
                                                   ),
                                                 ),
                                               ),

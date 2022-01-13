@@ -1,5 +1,5 @@
-import 'package:artHub/common/model.dart';
-import 'package:artHub/screen/freelanceartist/freelanceartistprofile.dart';
+import 'package:art_hub/common/model.dart';
+import 'package:art_hub/screen/freelanceartist/freelanceartistprofile.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_animator/flutter_animator.dart';
@@ -17,7 +17,6 @@ class _FreelanceSearchState extends State<FreelanceSearch> {
   List filter = [];
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     filter = data;
   }

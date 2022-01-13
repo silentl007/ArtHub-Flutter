@@ -1,5 +1,5 @@
-import 'package:artHub/common/model.dart';
-import 'package:artHub/screen/homescreen.dart';
+import 'package:art_hub/common/model.dart';
+import 'package:art_hub/screen/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:image_picker/image_picker.dart';
@@ -30,7 +30,6 @@ class _UploadsState extends State<Uploads> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getprefs();
   }
@@ -171,12 +170,10 @@ class _UploadsState extends State<Uploads> {
                           2,
                           Row(
                             children: [
-                              RaisedButton(
+                              ElevatedButton(
                                 onPressed: () => _avatarFuture(),
-                                color: AppColors.purple,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(150))),
+                                style: Decorations().buttonDecor(
+                                    context: context, borderRadius: Sizes.w150),
                                 child: Row(
                                   children: [
                                     Icon(Icons.upload_file,
@@ -184,24 +181,18 @@ class _UploadsState extends State<Uploads> {
                                     SizedBox(
                                       width: sizeHeight3,
                                     ),
-                                    Text(
-                                      'Upload',
-                                      style: TextStyle(
-                                          fontSize: fontSize15,
-                                          color: Colors.white),
-                                    )
+                                    Decorations().buttonText(
+                                        buttonText: 'Upload', context: context),
                                   ],
                                 ),
                               ),
                               SizedBox(
                                 width: fontSize15,
                               ),
-                              RaisedButton(
-                                color: AppColors.purple,
+                              ElevatedButton(
                                 onPressed: () => removeavatar(),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(150))),
+                                style: Decorations().buttonDecor(
+                                    context: context, borderRadius: Sizes.w150),
                                 child: Row(
                                   children: [
                                     Icon(
@@ -211,12 +202,8 @@ class _UploadsState extends State<Uploads> {
                                     SizedBox(
                                       width: sizeHeight3,
                                     ),
-                                    Text(
-                                      'Remove',
-                                      style: TextStyle(
-                                          fontSize: fontSize15,
-                                          color: Colors.white),
-                                    )
+                                    Decorations().buttonText(
+                                        buttonText: 'Remove', context: context),
                                   ],
                                 ),
                               ),
@@ -227,12 +214,13 @@ class _UploadsState extends State<Uploads> {
                           'left',
                           2,
                           Container(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Upload at least a picture of the artwork (${uploadworksClass.images.length}/4)',
-                                style: TextStyle(
-                                    fontSize: fontSize15, color: _multicolor),
-                              )),
+                            alignment: Alignment.centerLeft,
+                            child: Decorations().buttonText(
+                                buttonText:
+                                    'Upload at least a picture of the artwork (${uploadworksClass.images.length}/4)',
+                                context: context,
+                                textColor: _multicolor),
+                          ),
                         ),
                         SizedBox(
                           height: sizeHeight5,
@@ -242,12 +230,10 @@ class _UploadsState extends State<Uploads> {
                           2,
                           Row(
                             children: [
-                              RaisedButton(
-                                color: AppColors.purple,
+                              ElevatedButton(
                                 onPressed: () => _multiFuture(),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(150))),
+                                style: Decorations().buttonDecor(
+                                    context: context, borderRadius: Sizes.w150),
                                 child: Row(
                                   children: [
                                     Icon(
@@ -257,24 +243,18 @@ class _UploadsState extends State<Uploads> {
                                     SizedBox(
                                       width: sizeHeight3,
                                     ),
-                                    Text(
-                                      'Upload',
-                                      style: TextStyle(
-                                          fontSize: fontSize15,
-                                          color: Colors.white),
-                                    )
+                                    Decorations().buttonText(
+                                        buttonText: 'Upload', context: context)
                                   ],
                                 ),
                               ),
                               SizedBox(
                                 width: fontSize15,
                               ),
-                              RaisedButton(
-                                color: AppColors.purple,
+                              ElevatedButton(
                                 onPressed: () => removeimage(),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(150))),
+                                style: Decorations().buttonDecor(
+                                    context: context, borderRadius: Sizes.w150),
                                 child: Row(
                                   children: [
                                     Icon(
@@ -284,12 +264,7 @@ class _UploadsState extends State<Uploads> {
                                     SizedBox(
                                       width: sizeHeight3,
                                     ),
-                                    Text(
-                                      'Remove Previous',
-                                      style: TextStyle(
-                                          fontSize: fontSize15,
-                                          color: Colors.white),
-                                    )
+                                    Decorations().buttonText(buttonText: 'Remove Previous', context: context)
                                   ],
                                 ),
                               ),
@@ -407,16 +382,9 @@ class _UploadsState extends State<Uploads> {
                             preferences: AnimationPreferences(
                                 autoPlay: AnimationPlayStates.Loop,
                                 offset: Duration(seconds: 3)),
-                            child: RaisedButton(
-                              color: AppColors.purple,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(50))),
-                              child: Text(
-                                'Upload',
-                                style: TextStyle(
-                                    fontSize: fontSize15, color: Colors.white),
-                              ),
+                            child: ElevatedButton(
+                              style: Decorations().buttonDecor(context: context,),
+                              child: Decorations().buttonText(buttonText: 'Upload', context: context),
                               onPressed: () {
                                 final keyForm = _key.currentState;
                                 if (keyForm!.validate()) {
