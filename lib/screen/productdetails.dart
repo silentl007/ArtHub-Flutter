@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:ArtHub/common/middlemen/middlemancart.dart';
-import 'package:ArtHub/common/model.dart';
+import 'package:artHub/common/middlemen/middlemancart.dart';
+import 'package:artHub/common/model.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_animator/flutter_animator.dart';
@@ -43,8 +43,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   cartItems() async {
-    var link =
-        '${Server.link}/apiR/cartget/${widget.userDetails[0]}/${widget.userDetails[1]}';
+    Uri link = Uri.parse('${Server.link}/apiR/cartget/${widget.userDetails[0]}/${widget.userDetails[1]}');
 
     try {
       var query = await http.get(link,
@@ -132,18 +131,19 @@ class _ProductDetailsState extends State<ProductDetails> {
                   Padding(
                     padding: EdgeInsets.only(top: fontSize25),
                     child: CarouselSlider(
-                      height: size.height * 0.35,
+                      options: CarouselOptions(height: size.height * 0.35,
                       autoPlay: true,
                       enlargeCenterPage: true,
                       autoPlayInterval: Duration(seconds: 2),
-                      pauseAutoPlayOnTouch: Duration(seconds: 5),
+                      pauseAutoPlayOnTouch: true,
                       autoPlayAnimationDuration: Duration(seconds: 1),
                       initialPage: 0,
-                      onPageChanged: (index) {
+                      onPageChanged: (index, CarouselPageChangedReason changedReason) {
                         setState(() {
                           _current = index;
                         });
-                      },
+                      },),
+                      
                       items: data.images!.map((imageURL) {
                         return Material(
                           color: Colors.transparent,
@@ -379,8 +379,7 @@ class _ProductDetailsState extends State<ProductDetails> {
     if (itemnumber == null) {
       return snackbar('Please wait! Fetching data!', 1, AppColors.purple);
     } else {
-      var link =
-          '${Server.link}/apiS/cartadd/${widget.userDetails[0]}/${widget.userDetails[1]}';
+      Uri link = Uri.parse('${Server.link}/apiS/cartadd/${widget.userDetails[0]}/${widget.userDetails[1]}');
       Map<String, dynamic> dataBody = {
         "productID": cartitem.productID,
         "accountType": cartitem.accountType,

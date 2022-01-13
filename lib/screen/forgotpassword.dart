@@ -1,6 +1,6 @@
-import 'package:ArtHub/screen/login.dart';
+import 'package:artHub/screen/login.dart';
 import 'package:flutter/material.dart';
-import 'package:ArtHub/common/model.dart';
+import 'package:artHub/common/model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {

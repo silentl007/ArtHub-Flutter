@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:ArtHub/common/model.dart';
+import 'package:artHub/common/model.dart';
 import 'package:http/http.dart' as http;
 import 'package:number_display/number_display.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -28,8 +28,8 @@ class _SoldState extends State<Sold> {
   }
 
   soldworks() async {
-    String link =
-        '${Server.link}/apiR/soldworks/${widget.userDetails[0]}/${widget.userDetails[1]}';
+    Uri link = Uri.parse(
+        '${Server.link}/apiR/soldworks/${widget.userDetails[0]}/${widget.userDetails[1]}');
 
     try {
       var query = await http.get(link,
@@ -40,8 +40,7 @@ class _SoldState extends State<Sold> {
         for (var items in data) {
           costlist.add(items['cost']);
         }
-        summation = costlist.reduce( (a, b) => a + b);
-       
+        summation = costlist.reduce((a, b) => a + b);
       }
       return data;
     } catch (error) {

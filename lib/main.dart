@@ -1,6 +1,6 @@
-import 'package:ArtHub/common/model.dart';
-import 'package:ArtHub/screen/homescreen.dart';
-import 'package:ArtHub/screen/login.dart';
+import 'package:artHub/common/model.dart';
+import 'package:artHub/screen/homescreen.dart';
+import 'package:artHub/screen/login.dart';
 import 'package:flutter/material.dart';
 
 // Remove flutter rave dependency and replace with paystack

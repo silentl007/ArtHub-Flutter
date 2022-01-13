@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ArtHub/common/model.dart';
+import 'package:artHub/common/model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:number_display/number_display.dart';
 import 'package:cached_network_image/cached_network_image.dart';

@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:ArtHub/common/middlemen/middleorders.dart';
-import 'package:ArtHub/screen/homescreen.dart';
+import 'package:artHub/common/middlemen/middleorders.dart';
+import 'package:artHub/screen/homescreen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:ArtHub/common/model.dart';
+import 'package:artHub/common/model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
@@ -23,6 +23,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   final displayNumber = createDisplay(length: 8, decimal: 0);
   var cartItemsVar;
   Widgets classWidget = Widgets();
+  PaystackPlugin paystack = PaystackPlugin();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String useremail = '';
   String username = '';
@@ -40,7 +41,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   List costlist = [];
   @override
   void initState() {
-    PaystackPlugin.initialize(publicKey: publicKey);
+    paystack.initialize(publicKey: publicKey);
     super.initState();
     getprefs();
     cartItemsVar = cartItems();
@@ -48,12 +49,12 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   getprefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    useremail = prefs.getString('email');
-    username = prefs.getString('displayName');
-    address = prefs.getString('address');
-    location = prefs.getString('location');
-    cardNumber = prefs.getString('cardNumber');
-    cvvCode = prefs.getString('cvvCode');
+    useremail = prefs.getString('email')!;
+    username = prefs.getString('displayName')!;
+    address = prefs.getString('address')!;
+    location = prefs.getString('location')!;
+    cardNumber = prefs.getString('cardNumber')!;
+    cvvCode = prefs.getString('cvvCode')!;
     expiryMonth = prefs.getInt('expiryMonth');
     expiryYear = prefs.getInt('expiryYear');
     prefs.setBool('inapp', true);
@@ -61,8 +62,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   // Server Logic
   cartItems() async {
-    String link =
-        '${Server.link}/apiR/cartget/${widget.userDetails![0]}/${widget.userDetails![1]}';
+    Uri link = Uri.parse('${Server.link}/apiR/cartget/${widget.userDetails![0]}/${widget.userDetails![1]}');
 
     try {
       var query = await http.get(link,
@@ -83,8 +83,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   remove(String productID) async {
     snackbar('Please wait!', 1, AppColors.purple);
-    String link =
-        '${Server.link}/apiD/cartremove/${widget.userDetails![0]}/$productID/${widget.userDetails![1]}';
+   Uri link = Uri.parse('${Server.link}/apiD/cartremove/${widget.userDetails![0]}/$productID/${widget.userDetails![1]}');
     try {
       var query = await http.delete(link);
       if (query.statusCode == 200) {
@@ -102,7 +101,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   checkitemsavailability() async {
     snackbar('Please wait! Checking product availability', 1, AppColors.purple);
-    String link = '${Server.link}/apiS/checkcart';
+   Uri link = Uri.parse('${Server.link}/apiS/checkcart');
     Map<String, dynamic> body = {"purchaseditems": data, "test": "tested"};
     var encodedData = jsonEncode(body);
     try {
@@ -128,7 +127,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   }
 
   purchaseOrder() async {
-    String link = '${Server.link}/apiS/purchaseorders';
+    Uri link = Uri.parse('${Server.link}/apiS/purchaseorders');
     Map body = {
       "userID": widget.userDetails![0].toString(),
       "accountType": widget.userDetails![1].toString(),
@@ -186,7 +185,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   chargeCard() async {
     payment = (summation + servicecharge) * 100;
     Charge charge = Charge()
-      ..amount = payment
+      ..amount = payment!
       ..reference = _getReference()
       ..card = PaymentCard(
         number: cardNumber,
@@ -196,7 +195,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
       )
       // or ..accessCode = _getAccessCodeFrmInitialization()
       ..email = useremail;
-    CheckoutResponse response = await PaystackPlugin.checkout(
+    CheckoutResponse response = await paystack.checkout(
       context,
       method: CheckoutMethod.card, // Defaults to CheckoutMethod.selectable
       charge: charge,

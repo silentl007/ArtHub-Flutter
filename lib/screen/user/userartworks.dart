@@ -1,8 +1,8 @@
-import 'package:ArtHub/screen/homescreen.dart';
-import 'package:ArtHub/screen/user/artworkavailable.dart';
-import 'package:ArtHub/screen/user/artworksold.dart';
+import 'package:artHub/screen/homescreen.dart';
+import 'package:artHub/screen/user/artworkavailable.dart';
+import 'package:artHub/screen/user/artworksold.dart';
 import 'package:flutter/material.dart';
-import 'package:ArtHub/common/model.dart';
+import 'package:artHub/common/model.dart';
 
 class Artworks extends StatefulWidget {
   final List userDetails;

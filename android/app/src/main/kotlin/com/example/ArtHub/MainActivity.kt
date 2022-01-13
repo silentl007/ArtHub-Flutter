@@ -1,4 +1,4 @@
-package com.example.ArtHub
+package com.creatives.arthub
 
 import io.flutter.embedding.android.FlutterActivity
 

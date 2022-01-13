@@ -1,7 +1,7 @@
-import 'package:ArtHub/screen/purchasescreen.dart';
+import 'package:artHub/screen/purchasescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ArtHub/common/model.dart';
+import 'package:artHub/common/model.dart';
 
 class MiddleCart extends StatefulWidget {
   final homecheck;

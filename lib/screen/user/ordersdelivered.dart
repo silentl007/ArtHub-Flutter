@@ -1,6 +1,6 @@
-import 'package:ArtHub/screen/user/orderdetails.dart';
+import 'package:artHub/screen/user/orderdetails.dart';
 import 'package:flutter/material.dart';
-import 'package:ArtHub/common/model.dart';
+import 'package:artHub/common/model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'dart:convert';
 import 'package:number_display/number_display.dart';
@@ -25,8 +25,7 @@ class _DeliveredState extends State<Delivered> {
   }
 
   getDelivered() async {
-    String link =
-        '${Server.link}/apiR/orders/${widget.userDetails[0]}/${widget.userDetails[1]}';
+    Uri link = Uri.parse('${Server.link}/apiR/orders/${widget.userDetails[0]}/${widget.userDetails[1]}');
 
     try {
       var query = await http.get(link,

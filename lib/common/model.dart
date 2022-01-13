@@ -1,4 +1,4 @@
-import 'package:ArtHub/screen/homescreen.dart';
+import 'package:artHub/screen/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:http/http.dart' as http;
@@ -19,7 +19,7 @@ class AppColors {
 }
 
 class Widgets {
-   apptitleBar(BuildContext context, String text) {
+  apptitleBar(BuildContext context, String text) {
     final Size size = MediaQuery.of(context).size;
     double padding30 = size.height * 0.03755;
     return AppBar(
@@ -58,8 +58,9 @@ class Widgets {
               (Route<dynamic> route) => false);
         },
         child: Pulse(
-          preferences: AnimationPreferences(autoPlay: AnimationPlayStates.Loop),
-          child: Icon(Icons.home)),
+            preferences:
+                AnimationPreferences(autoPlay: AnimationPlayStates.Loop),
+            child: Icon(Icons.home)),
         backgroundColor: AppColors.purple,
       ),
     );
@@ -191,7 +192,8 @@ class Registeration {
     };
     var encodedData = jsonEncode(dataBody);
     try {
-      var datasend = await http.post(registerdbLink,
+      Uri link = Uri.parse(registerdbLink);
+      var datasend = await http.post(link,
           body: encodedData,
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
       if (datasend.statusCode == 200) {
@@ -223,8 +225,9 @@ class Login {
     };
 
     try {
+      Uri link = Uri.parse(loginLink);
       var encodedData = jsonEncode(loginData);
-      var datasend = await http.post(loginLink,
+      var datasend = await http.post(link,
           body: encodedData,
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
       if (datasend.statusCode == 200) {
@@ -265,8 +268,9 @@ class ResetPassword {
     String resetLink = '${Server.link}/apiC/resetpassword';
     Map databody = {'email': email, 'password': password};
     try {
+      Uri link = Uri.parse(resetLink);
       var encodedData = jsonEncode(databody);
-      var datasend = await http.put(resetLink,
+      var datasend = await http.put(link,
           body: encodedData,
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
       return datasend.statusCode;
@@ -309,8 +313,9 @@ class UploadWorks {
       'images': images,
     };
     try {
+      Uri link = Uri.parse(uploadLink);
       var encodedData = jsonEncode(uploadData);
-      var datasend = await http.post(uploadLink,
+      var datasend = await http.post(link,
           body: encodedData,
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
       print('status code - ${datasend.statusCode}');
@@ -332,7 +337,7 @@ class UpdateProfile {
   String aboutme = '';
 
   Future updateUser() async {
-    String link = '${Server.link}/apiS/edit';
+    Uri link = Uri.parse('${Server.link}/apiS/edit');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<dynamic, dynamic> body = {
       'userID': prefs.getString('id'),
@@ -350,12 +355,12 @@ class UpdateProfile {
           body: encoded,
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
       if (update.statusCode == 200) {
-        prefs.setString('displayName', name);
-        prefs.setString('address', address);
-        prefs.setString('location', location);
+        prefs.setString('displayName', name!);
+        prefs.setString('address', address!);
+        prefs.setString('location', location!);
         prefs.setString('avatar', avatar);
         prefs.setString('aboutme', aboutme);
-        prefs.setInt('number', number);
+        prefs.setInt('number', number!);
         return update.statusCode;
       }
       return update.statusCode;

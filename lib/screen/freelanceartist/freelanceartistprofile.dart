@@ -1,5 +1,5 @@
-import 'package:ArtHub/common/model.dart';
-import 'package:ArtHub/common/middlemen/middlemanproductdetails.dart';
+import 'package:artHub/common/model.dart';
+import 'package:artHub/common/middlemen/middlemanproductdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_animator/flutter_animator.dart';
@@ -48,7 +48,7 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
                                   topLeft: Radius.circular(100)),
                               child: CachedNetworkImage(
                                 fit: BoxFit.fitHeight,
-                                imageUrl: widget.artistdata.avatar,
+                                imageUrl: widget.artistdata.avatar!,
                                 placeholder: (context, url) => new Center(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,

@@ -1,9 +1,9 @@
-import 'package:ArtHub/common/model.dart';
-import 'package:ArtHub/screen/homescreen.dart';
+import 'package:artHub/common/model.dart';
+import 'package:artHub/screen/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:cloudinary_client/cloudinary_client.dart';
+import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Uploads extends StatefulWidget {
@@ -14,8 +14,9 @@ class Uploads extends StatefulWidget {
 class _UploadsState extends State<Uploads> {
   Widgets classWidget = Widgets();
   UploadWorks uploadworksClass = UploadWorks();
-  final client = CloudinaryClient(
-      '915364875791742', 'xXs8EIDnGzWGCFVZpr4buRyDOQk', 'mediacontrol');
+  final cloudinary = CloudinaryPublic('mediacontrol', 'ArtHub', cache: false);
+  // final client = CloudinaryClient(
+  //     '915364875791742', 'xXs8EIDnGzWGCFVZpr4buRyDOQk', 'mediacontrol');
   final picker = ImagePicker();
   final _key = GlobalKey<FormState>();
   List<ArtType> arttypes = [ArtType('Painting', 1), ArtType('Sculptor', 2)];
@@ -472,11 +473,12 @@ class _UploadsState extends State<Uploads> {
     if (uploadworksClass.avatar != '') {
       return null;
     } else {
-      var image = await picker.getImage(source: ImageSource.gallery);
+      var image = await picker.pickImage(source: ImageSource.gallery);
       try {
-        var response =
-            await client.uploadImage(image.path, folder: 'arthub_folder');
-        return response.secure_url;
+        var response = await cloudinary.uploadFile(
+          CloudinaryFile.fromFile(image!.path, folder: 'arthub_folder'),
+        );
+        return response.secureUrl;
       } catch (exception) {
         print(exception);
       }
@@ -550,12 +552,12 @@ class _UploadsState extends State<Uploads> {
     if (uploadworksClass.images.length == 4) {
       return null;
     } else {
-      var image = await picker.getImage(source: ImageSource.gallery);
+      var image = await picker.pickImage(source: ImageSource.gallery);
       try {
-        var response = await client.uploadImage(
-          image!.path,
+        var response = await cloudinary.uploadFile(
+          CloudinaryFile.fromFile(image!.path, folder: 'arthub_folder'),
         );
-        return response.secure_url;
+        return response.secureUrl;
       } catch (exception) {
         print(exception);
       }

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:ArtHub/common/model.dart';
+import 'package:artHub/common/model.dart';
 import 'package:http/http.dart' as http;
 import 'package:number_display/number_display.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -33,9 +33,7 @@ class _AvailableState extends State<Available> {
   }
 
   uploads() async {
-    String link =
-        '${Server.link}/apiR/uploaded/${widget.userDetails![0]}/${widget.userDetails![1]}';
-
+    Uri link = Uri.parse('${Server.link}/apiR/uploaded/${widget.userDetails![0]}/${widget.userDetails![1]}');
     try {
       var query = await http.get(link,
           headers: {'Content-Type': 'application/json; charset=UTF-8'});
@@ -49,8 +47,8 @@ class _AvailableState extends State<Available> {
 
   remove(String productID) async {
     snackbar('Please wait!', 1, AppColors.purple);
-    String link =
-        '${Server.link}/apiD/uploadremove/${widget.userDetails![0]}/$productID/${widget.userDetails![1]}';
+    Uri link =
+       Uri.parse( '${Server.link}/apiD/uploadremove/${widget.userDetails![0]}/$productID/${widget.userDetails![1]}');
     try {
       var query = await http.delete(link);
       if (query.statusCode == 200) {

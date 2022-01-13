@@ -1,14 +1,13 @@
-import 'package:ArtHub/screen/homescreen.dart';
+import 'package:artHub/screen/homescreen.dart';
 import 'package:flutter/material.dart';
-import 'package:ArtHub/common/model.dart';
+import 'package:artHub/common/model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
+import 'package:flutter_credit_card/credit_card_brand.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:cloudinary_client/cloudinary_client.dart';
+import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:credit_card/flutter_credit_card.dart';
-import 'package:credit_card/credit_card_form.dart';
-import 'package:credit_card/credit_card_model.dart';
+import 'package:flutter_credit_card/flutter_credit_card.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -20,6 +19,7 @@ class _ProfileState extends State<Profile> {
   List cardDate = [];
   UpdateProfile update = UpdateProfile();
   final _formKey = GlobalKey<FormState>();
+  final _cardKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final List<String> states = ['Select State', 'Lagos', 'Bayelsa'];
   String selectedState = 'Select State';
@@ -40,8 +40,9 @@ class _ProfileState extends State<Profile> {
   String appbarTitle = 'Profile';
   Color _stateColor = Colors.black;
   Icon editIcon = Icon(Icons.edit);
-  final client = CloudinaryClient(
-      '915364875791742', 'xXs8EIDnGzWGCFVZpr4buRyDOQk', 'mediacontrol');
+  final cloudinary = CloudinaryPublic('mediacontrol', 'ArtHub', cache: false);
+  // final client = CloudinaryClient(
+  //     '915364875791742', 'xXs8EIDnGzWGCFVZpr4buRyDOQk', 'mediacontrol');
   final picker = ImagePicker();
   @override
   void initState() {
@@ -55,17 +56,17 @@ class _ProfileState extends State<Profile> {
     prefs.setBool('inapp', true);
     setState(() {
       edit = 'profile';
-      email = prefs.getString('email');
-      avatar = prefs.getString('avatar');
-      displayName = prefs.getString('displayName');
-      accountType = prefs.getString('accountType');
-      address = prefs.getString('address');
-      state = prefs.getString('location');
-      aboutme = prefs.getString('aboutme');
+      email = prefs.getString('email')!;
+      avatar = prefs.getString('avatar')!;
+      displayName = prefs.getString('displayName')!;
+      accountType = prefs.getString('accountType')!;
+      address = prefs.getString('address')!;
+      state = prefs.getString('location')!;
+      aboutme = prefs.getString('aboutme')!;
       number = prefs.getInt('number').toString();
-      cardNumber = prefs.getString('cardNumber');
-      cvvCode = prefs.getString('cvvCode');
-      expiryDate = prefs.getString('expiryDate');
+      cardNumber = prefs.getString('cardNumber')!;
+      cvvCode = prefs.getString('cvvCode')!;
+      expiryDate = prefs.getString('expiryDate')!;
     });
   }
 
@@ -278,6 +279,8 @@ class _ProfileState extends State<Profile> {
                             content: StatefulBuilder(
                               builder: (context, StateSetter setState) {
                                 return Container(
+                                  height: 600,
+                                  width: 250,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                         image: AssetImage(
@@ -291,26 +294,24 @@ class _ProfileState extends State<Profile> {
                                           preferences: AnimationPreferences(
                                               offset: Duration(seconds: 1)),
                                           child: CreditCardWidget(
-                                            cardNumber: cardNumber == null
-                                                ? ''
-                                                : cardNumber,
-                                            expiryDate: expiryDate == null
-                                                ? ''
-                                                : expiryDate,
-                                            cardHolderName:
-                                                cardHolderName == null
-                                                    ? ''
-                                                    : cardHolderName,
-                                            cvvCode:
-                                                cvvCode == null ? '' : cvvCode,
+                                            cardNumber: cardNumber,
+                                            expiryDate: expiryDate,
+                                            cardHolderName: cardHolderName,
+                                            cvvCode: cvvCode,
                                             showBackView: isCvvFocused,
+                                            onCreditCardWidgetChange: (CreditCardBrand brand) {},
                                           ),
                                         ),
                                         SlideInRight(
                                           preferences: AnimationPreferences(
                                               offset: Duration(seconds: 1)),
                                           child: CreditCardForm(
+                                            formKey: _cardKey,
                                             themeColor: Colors.red,
+                                            cardNumber: cardNumber,
+                                            expiryDate: expiryDate,
+                                            cardHolderName: cardHolderName,
+                                            cvvCode: cvvCode,
                                             onCreditCardModelChange:
                                                 (CreditCardModel
                                                     creditCardModel) {
@@ -373,8 +374,8 @@ class _ProfileState extends State<Profile> {
     prefs.setString('cardNumber', cardNumber);
     prefs.setString('expiryDate', expiryDate);
     prefs.setString('cvvCode', cvvCode);
-    prefs.setInt('expiryMonth', int.tryParse(cardDate[0]));
-    prefs.setInt('expiryYear', int.tryParse(cardDate[1]));
+    prefs.setInt('expiryMonth', int.tryParse(cardDate[0])!);
+    prefs.setInt('expiryYear', int.tryParse(cardDate[1])!);
     Navigator.pop(context);
     _cardSaved();
   }
@@ -711,11 +712,12 @@ class _ProfileState extends State<Profile> {
   }
 
   _avatarimagePicker() async {
-    var image = await picker.getImage(source: ImageSource.gallery);
+    var image = await picker.pickImage(source: ImageSource.gallery);
     try {
-      var response =
-          await client.uploadImage(image.path, folder: 'arthub_folder');
-      return response.secure_url;
+      var response = await cloudinary.uploadFile(
+        CloudinaryFile.fromFile(image!.path, folder: 'arthub_folder'),
+      );
+      return response.secureUrl;
     } catch (exception) {
       print(exception);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

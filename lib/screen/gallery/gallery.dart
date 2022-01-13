@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'package:ArtHub/screen/gallery/gallerylist.dart';
-import 'package:ArtHub/screen/homescreen.dart';
+import 'package:artHub/screen/gallery/gallerylist.dart';
+import 'package:artHub/screen/homescreen.dart';
 import 'package:flutter/material.dart';
-import 'package:ArtHub/common/model.dart';
+import 'package:artHub/common/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -29,7 +29,8 @@ class _GalleriesState extends State<Galleries> {
 
   Future _getGallery() async {
     try {
-      var data = await http.get('${Server.link}/apiR/gallery');
+      Uri link = Uri.parse('${Server.link}/apiR/gallery');
+      var data = await http.get(link);
       var jsonData = jsonDecode(data.body);
       if (jsonData != null) {
         for (var data in jsonData) {

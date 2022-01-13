@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:ArtHub/screen/freelanceartist/freelancesearchlist.dart';
-import 'package:ArtHub/screen/homescreen.dart';
+import 'package:artHub/screen/freelanceartist/freelancesearchlist.dart';
+import 'package:artHub/screen/homescreen.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:ArtHub/common/model.dart';
+import 'package:artHub/common/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FreeLanceArtist extends StatefulWidget {
@@ -23,7 +23,8 @@ class _FreeLanceArtistState extends State<FreeLanceArtist> {
 
   Future _getFreelancers() async {
     try {
-      var data = await http.get('${Server.link}/apiR/freelance');
+      Uri link = Uri.parse('${Server.link}/apiR/freelance');
+      var data = await http.get(link);
       var jsonData = jsonDecode(data.body);
       if (jsonData != null) {
         for (var data in jsonData) {

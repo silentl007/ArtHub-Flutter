@@ -1,6 +1,6 @@
-import 'package:ArtHub/screen/user/orderdetails.dart';
+import 'package:artHub/screen/user/orderdetails.dart';
 import 'package:flutter/material.dart';
-import 'package:ArtHub/common/model.dart';
+import 'package:artHub/common/model.dart';
 import 'dart:convert';
 import 'package:number_display/number_display.dart';
 import 'package:http/http.dart' as http;
@@ -26,8 +26,8 @@ class _PendingState extends State<Pending> {
   }
 
   getPending() async {
-    String link =
-        '${Server.link}/apiR/orders/${widget.userDetails[0]}/${widget.userDetails[1]}';
+    Uri link = Uri.parse(
+        '${Server.link}/apiR/orders/${widget.userDetails[0]}/${widget.userDetails[1]}');
 
     try {
       var query = await http.get(link,

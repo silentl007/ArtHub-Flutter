@@ -1,7 +1,7 @@
-import 'package:ArtHub/screen/homescreen.dart';
-import 'package:ArtHub/screen/user/ordersdelivered.dart';
+import 'package:artHub/screen/homescreen.dart';
+import 'package:artHub/screen/user/ordersdelivered.dart';
 import 'package:flutter/material.dart';
-import 'package:ArtHub/common/model.dart';
+import 'package:artHub/common/model.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'orderspending.dart';

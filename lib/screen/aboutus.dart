@@ -1,6 +1,6 @@
-import 'package:ArtHub/screen/homescreen.dart';
+import 'package:artHub/screen/homescreen.dart';
 import 'package:flutter/material.dart';
-import 'package:ArtHub/common/model.dart';
+import 'package:artHub/common/model.dart';
 
 class AboutUs extends StatelessWidget {
   @override

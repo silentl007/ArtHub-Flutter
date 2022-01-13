@@ -1,5 +1,5 @@
-import 'package:ArtHub/common/model.dart';
-import 'package:ArtHub/screen/freelanceartist/freelanceartistprofile.dart';
+import 'package:artHub/common/model.dart';
+import 'package:artHub/screen/freelanceartist/freelanceartistprofile.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_animator/flutter_animator.dart';

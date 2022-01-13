@@ -1,5 +1,5 @@
-import 'package:ArtHub/common/model.dart';
-import 'package:ArtHub/common/middlemen/middlemanproductdetails.dart';
+import 'package:artHub/common/model.dart';
+import 'package:artHub/common/middlemen/middlemanproductdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:number_display/number_display.dart';

@@ -1,9 +1,9 @@
-import 'package:ArtHub/common/model.dart';
-import 'package:ArtHub/screen/login.dart';
+import 'package:artHub/common/model.dart';
+import 'package:artHub/screen/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animator/flutter_animator.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:cloudinary_client/cloudinary_client.dart';
+import 'package:cloudinary_public/cloudinary_public.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -32,8 +32,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Color _stateColor = Colors.black;
   Color _radiocolor = AppColors.purple;
   Color _avatarcolor = Colors.black;
-  final client = CloudinaryClient(
-      '915364875791742', 'xXs8EIDnGzWGCFVZpr4buRyDOQk', 'mediacontrol');
+  final cloudinary = CloudinaryPublic('mediacontrol', 'ArtHub', cache: false);
+  // final client = CloudinaryClient(
+  //     '915364875791742', 'xXs8EIDnGzWGCFVZpr4buRyDOQk', 'mediacontrol');
   final picker = ImagePicker();
   @override
   Widget build(BuildContext context) {
@@ -626,11 +627,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (registerClass.avatar != '') {
       return null;
     } else {
-      var image = await picker.getImage(source: ImageSource.gallery);
+      var image = await picker.pickImage(source: ImageSource.gallery);
       try {
-        var response =
-            await client.uploadImage(image.path, folder: 'arthub_folder');
-        return response.secure_url;
+        var response = await cloudinary.uploadFile(
+          CloudinaryFile.fromFile(image!.path, folder: 'arthub_folder'),
+        );
+        return response.secureUrl;
       } catch (exception) {
         print(exception);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

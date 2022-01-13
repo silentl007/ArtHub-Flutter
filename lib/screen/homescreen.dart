@@ -1,16 +1,16 @@
-import 'package:ArtHub/common/middlemen/middlemancart.dart';
-import 'package:ArtHub/common/middlemen/middlemanuserartworks.dart';
-import 'package:ArtHub/common/middlemen/middleorders.dart';
-import 'package:ArtHub/screen/aboutus.dart';
-import 'package:ArtHub/screen/freelanceartist/freelanceartistlist.dart';
-import 'package:ArtHub/screen/login.dart';
-import 'package:ArtHub/screen/uploads.dart';
+import 'package:artHub/common/middlemen/middlemancart.dart';
+import 'package:artHub/common/middlemen/middlemanuserartworks.dart';
+import 'package:artHub/common/middlemen/middleorders.dart';
+import 'package:artHub/screen/aboutus.dart';
+import 'package:artHub/screen/freelanceartist/freelanceartistlist.dart';
+import 'package:artHub/screen/login.dart';
+import 'package:artHub/screen/uploads.dart';
 import 'package:flutter_animator/flutter_animator.dart';
-import 'package:ArtHub/screen/user/userprofile.dart';
+import 'package:artHub/screen/user/userprofile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'gallery/gallery.dart';
-import 'package:ArtHub/common/model.dart';
+import 'package:artHub/common/model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -50,8 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
   getPref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      displayName = prefs.getString('displayName');
-      accountType = prefs.getString('accountType');
+      displayName = prefs.getString('displayName')!;
+      accountType = prefs.getString('accountType')!;
     });
     if (prefs.getBool('inapp') == true) {
       offsetDuration = 0;
