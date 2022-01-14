@@ -58,6 +58,7 @@ class Sizes {
   static double h44 = 0;
   static double h165 = 0;
   static double h330 = 0;
+  static double h360 = 0;
   // Width
   static double w40 = 0;
   static double w180 = 0;
@@ -101,6 +102,8 @@ class Sizes {
   static double w211 = 0;
   static double w4 = 0;
   static double w230 = 0;
+  static double w317 = 0;
+  static double w90 = 0;
   void widthSizeCalc(BuildContext context) {
     // most of the smaller numbers are for font sizes, bigger numbers for height of widgets
     size = MediaQuery.of(context).size.width;
@@ -147,6 +150,8 @@ class Sizes {
     w17 = size! * .04018;
     w70 = size! * .16548;
     w12 = size! * .0283;
+    w317 = size! * .75;
+    w90 = size! * .2123;
   }
 
   void heightSizeCalc(BuildContext context) {
@@ -199,11 +204,17 @@ class Sizes {
     h44 = size! * .05506;
     h165 = size! * .2065;
     h330 = size! * .4130162;
+    h360 = size! * .45;
   }
 }
 
 class Server {
   static const link = 'https://arthubserver.herokuapp.com';
+}
+
+class Texts {
+  static const textScale = .9;
+  static const publicKey = 'pk_test_317423d856fb6d9a2201e6b5540a0ad74904da87';
 }
 
 class AppColors {

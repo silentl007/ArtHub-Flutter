@@ -70,12 +70,11 @@ class _HomeScreenState extends State<HomeScreen> {
     Sizes().heightSizeCalc(context);
     Sizes().widthSizeCalc(context);
     return SafeArea(
-      child: Scaffold(
-          key: _scaffoldKey,
-          bottomNavigationBar: JackInTheBox(
-            preferences:
-                AnimationPreferences(offset: Duration(seconds: offsetDuration)),
-            child: BottomNavigationBar(
+      child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: Texts.textScale),
+        child: Scaffold(
+            key: _scaffoldKey,
+            bottomNavigationBar: BottomNavigationBar(
               backgroundColor: AppColors.purple,
               showUnselectedLabels: true,
               onTap: (index) {
@@ -98,26 +97,22 @@ class _HomeScreenState extends State<HomeScreen> {
                           label: element.option))
                       .toList(),
             ),
-          ),
-          appBar: _apptitleBar('Home'),
-          body: WillPopScope(
-            onWillPop: () => _backFunction(),
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/appimages/welcomeback.png'),
-                      fit: BoxFit.cover)),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Pulse(
-                    preferences: AnimationPreferences(
-                        autoPlay: AnimationPlayStates.Loop),
-                    child: BounceInLeft(
+            appBar: _apptitleBar('Home'),
+            body: WillPopScope(
+              onWillPop: () => _backFunction(),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/appimages/welcomeback.png'),
+                        fit: BoxFit.cover)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Pulse(
                       preferences: AnimationPreferences(
-                          offset: Duration(seconds: offsetDuration)),
+                          autoPlay: AnimationPlayStates.Loop),
                       child: Container(
                         width: Sizes.w300,
                         height: Sizes.h65,
@@ -131,16 +126,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontsize: Sizes.w20)),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Pulse(
-                    preferences: AnimationPreferences(
-                        autoPlay: AnimationPlayStates.Loop),
-                    child: BounceInRight(
+                    SizedBox(
+                      height: Sizes.h15,
+                    ),
+                    Pulse(
                       preferences: AnimationPreferences(
-                          offset: Duration(seconds: offsetDuration)),
+                          autoPlay: AnimationPlayStates.Loop),
                       child: Container(
                         width: Sizes.w300,
                         height: Sizes.h65,
@@ -156,11 +147,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          )),
+            )),
+      ),
     );
   }
 
@@ -185,14 +176,18 @@ class _HomeScreenState extends State<HomeScreen> {
             content: Text('You are going to exit the application!'),
             actions: [
               ElevatedButton(
-                style: Decorations().buttonDecor(context: context, noBorder: false),
+                style: Decorations()
+                    .buttonDecor(context: context, noBorder: false),
                 onPressed: () => SystemNavigator.pop(),
-                child: Decorations().buttonText(buttonText: 'Yes', context: context),
+                child: Decorations()
+                    .buttonText(buttonText: 'Yes', context: context),
               ),
               ElevatedButton(
-                style: Decorations().buttonDecor(context: context, noBorder: false),
+                style: Decorations()
+                    .buttonDecor(context: context, noBorder: false),
                 onPressed: () => Navigator.of(context).pop(false),
-                child:  Decorations().buttonText(buttonText: 'No', context: context),
+                child: Decorations()
+                    .buttonText(buttonText: 'No', context: context),
               )
             ],
           );
@@ -200,13 +195,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _apptitleBar(String text) {
-    final Size size = MediaQuery.of(context).size;
-    final double fontSize = size.height * 0.025;
-    double padding30 = size.height * 0.03755;
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
     return AppBar(
       actions: [
         Padding(
-          padding: EdgeInsets.only(right: padding30),
+          padding: EdgeInsets.only(right: Sizes.w30),
           child: SlideInLeft(
             preferences:
                 AnimationPreferences(offset: Duration(seconds: offsetDuration)),
@@ -224,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(
                         color: AppColors.purple,
                         fontWeight: FontWeight.bold,
-                        fontSize: fontSize),
+                        fontSize: Sizes.w20),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -234,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
         )
       ],
       title: Padding(
-        padding: EdgeInsets.only(right: padding30),
+        padding: EdgeInsets.only(right: Sizes.w30),
         child: SlideInRight(
           preferences:
               AnimationPreferences(offset: Duration(seconds: offsetDuration)),
@@ -272,7 +266,8 @@ class _HomeScreenState extends State<HomeScreen> {
             content: Text('Are you sure you want to log out?'),
             actions: [
               ElevatedButton(
-                style: Decorations().buttonDecor(context: context, noBorder: false),
+                style: Decorations()
+                    .buttonDecor(context: context, noBorder: false),
                 onPressed: () async {
                   var variable = await prefs.clear();
                   if (variable == true) {
@@ -282,12 +277,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         (Route<dynamic> route) => false);
                   }
                 },
-                child: Decorations().buttonText(buttonText: 'Yes', context: context),
+                child: Decorations()
+                    .buttonText(buttonText: 'Yes', context: context),
               ),
               ElevatedButton(
-                 style: Decorations().buttonDecor(context: context, noBorder: false),
+                style: Decorations()
+                    .buttonDecor(context: context, noBorder: false),
                 onPressed: () => Navigator.of(context).pop(false),
-                child: Decorations().buttonText(buttonText: 'No', context: context),
+                child: Decorations()
+                    .buttonText(buttonText: 'No', context: context),
               )
             ],
           );

@@ -27,7 +27,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String useremail = '';
   String username = '';
-  String publicKey = 'pk_test_317423d856fb6d9a2201e6b5540a0ad74904da87';
   String address = '';
   String location = '';
   String cardNumber = '';
@@ -41,7 +40,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   List costlist = [];
   @override
   void initState() {
-    paystack.initialize(publicKey: publicKey);
+    paystack.initialize(publicKey: Texts.publicKey);
     super.initState();
     getprefs();
     cartItemsVar = cartItems();
@@ -62,7 +61,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   // Server Logic
   cartItems() async {
-    Uri link = Uri.parse('${Server.link}/apiR/cartget/${widget.userDetails![0]}/${widget.userDetails![1]}');
+    Uri link = Uri.parse(
+        '${Server.link}/apiR/cartget/${widget.userDetails![0]}/${widget.userDetails![1]}');
 
     try {
       var query = await http.get(link,
@@ -83,7 +83,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   remove(String productID) async {
     snackbar('Please wait!', 1, AppColors.purple);
-   Uri link = Uri.parse('${Server.link}/apiD/cartremove/${widget.userDetails![0]}/$productID/${widget.userDetails![1]}');
+    Uri link = Uri.parse(
+        '${Server.link}/apiD/cartremove/${widget.userDetails![0]}/$productID/${widget.userDetails![1]}');
     try {
       var query = await http.delete(link);
       if (query.statusCode == 200) {
@@ -101,7 +102,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   checkitemsavailability() async {
     snackbar('Please wait! Checking product availability', 1, AppColors.purple);
-   Uri link = Uri.parse('${Server.link}/apiS/checkcart');
+    Uri link = Uri.parse('${Server.link}/apiS/checkcart');
     Map<String, dynamic> body = {"purchaseditems": data, "test": "tested"};
     var encodedData = jsonEncode(body);
     try {
@@ -214,24 +215,20 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return errorDialog(context);
+        return errorDialog();
       },
     );
   }
 
-  Dialog errorDialog(context) {
-    Size size = MediaQuery.of(context).size;
-    double width = size.width;
-    double height = size.height * 0.438;
-    double sizedBox15 = size.height * 0.01877;
-    double fontSize13 = size.height * 0.01627;
-    double fontSize17 = size.height * 0.02128;
+  Dialog errorDialog() {
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
     return Dialog(
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0)), //this right here
+          borderRadius: BorderRadius.circular(Sizes.w5)), //this right here
       child: Container(
-        height: height,
-        width: width,
+        height: Sizes.h350,
+        width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -243,20 +240,20 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                 color: Colors.red,
                 size: 90,
               ),
-              SizedBox(height: sizedBox15),
+              SizedBox(height: Sizes.h15),
               Text(
                 'Failed to process payment',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.black,
-                    fontSize: fontSize17,
+                    fontSize: Sizes.w17,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: sizedBox15),
+              SizedBox(height: Sizes.h15),
               Text(
                 "Error in processing payment, please try again",
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: fontSize13),
+                style: TextStyle(fontSize: Sizes.w13),
               ),
             ],
           ),
@@ -267,68 +264,71 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double padding40 = size.height * 0.05;
     return SafeArea(
-      child: Scaffold(
-        key: _scaffoldKey,
-        floatingActionButton: classWidget.floatingHome(context),
-        appBar: classWidget.apptitleBar(context, 'My Cart'),
-        body: WillPopScope(
-          onWillPop: () async{
-            if (widget.homecheck == 'home') {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                  (Route<dynamic> route) => false);
-                  return true;
-            } else {
-              Navigator.pop(context);
-              return true;
-            }
-          },
-          child: Container(
-            color: Colors.white,
-            child: FutureBuilder(
-              future: cartItemsVar,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return loading();
-                } else if (snapshot.hasData == true) {
-                  return Container(
-                    child: snapshot.data.length != 0
-                        ? Column(
-                            children: [
-                              Expanded(
-                                  flex: 2,
-                                  child: Padding(
-                                      padding: EdgeInsets.all(padding40),
-                                      child: itembuilder(snapshot.data))),
-                              Expanded(
-                                  flex: 1,
-                                  child: Padding(
-                                      padding: EdgeInsets.all(padding40),
-                                      child: checkoutsummary(
-                                          snapshot.data.length))),
-                            ],
-                          )
-                        : Center(
-                            child: Text('No item in your cart!'),
-                          ),
-                  );
-                } else {
-                  return Container(
-                      child: Center(
-                          child: ElevatedButton(
-                            style: Decorations().buttonDecor(context: context, noBorder: false),
-                    child: Decorations().buttonText(buttonText: 'Retry', context: context),
-                    onPressed: () {
-                      cartItemsVar = cartItems();
-                      setState(() {});
-                    },
-                  )));
-                }
-              },
+      child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: Texts.textScale),
+        child: Scaffold(
+          key: _scaffoldKey,
+          floatingActionButton: classWidget.floatingHome(context),
+          appBar: classWidget.apptitleBar(context, 'My Cart'),
+          body: WillPopScope(
+            onWillPop: () async {
+              if (widget.homecheck == 'home') {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    (Route<dynamic> route) => false);
+                return true;
+              } else {
+                Navigator.pop(context);
+                return true;
+              }
+            },
+            child: Container(
+              color: Colors.white,
+              child: FutureBuilder(
+                future: cartItemsVar,
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return loading();
+                  } else if (snapshot.hasData == true) {
+                    return Container(
+                      child: snapshot.data.length != 0
+                          ? Column(
+                              children: [
+                                Expanded(
+                                    flex: 2,
+                                    child: Padding(
+                                        padding: EdgeInsets.all(Sizes.w40),
+                                        child: itembuilder(snapshot.data))),
+                                Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                        padding: EdgeInsets.all(Sizes.w40),
+                                        child: checkoutsummary(
+                                            snapshot.data.length))),
+                              ],
+                            )
+                          : Center(
+                              child: Text('No item in your cart!'),
+                            ),
+                    );
+                  } else {
+                    return Container(
+                        child: Center(
+                            child: ElevatedButton(
+                      style: Decorations()
+                          .buttonDecor(context: context, noBorder: false),
+                      child: Decorations()
+                          .buttonText(buttonText: 'Retry', context: context),
+                      onPressed: () {
+                        cartItemsVar = cartItems();
+                        setState(() {});
+                      },
+                    )));
+                  }
+                },
+              ),
             ),
           ),
         ),
@@ -337,11 +337,8 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   }
 
   itembuilder(List snapshot) {
-    Size size = MediaQuery.of(context).size;
-    double innerheight = size.height * .20;
-    double fontSize20 = size.height * 0.025;
-    double padding8 = size.height * 0.01001;
-    double padding5 = size.height * 0.00625;
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
     return Container(
       color: Colors.white,
       child: ListView.builder(
@@ -349,108 +346,102 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         itemBuilder: (BuildContext context, int index) {
           return Padding(
             padding: EdgeInsets.only(
-              top: padding8,
-              bottom: padding8,
-              left: padding5,
-              right: padding5,
+              top: Sizes.h8,
+              bottom: Sizes.h8,
+              left: Sizes.w5,
+              right: Sizes.w5,
             ),
-            child: BounceInDown(
-              preferences: AnimationPreferences(offset: Duration(seconds: 2)),
-              child: Material(
-                elevation: 3,
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-                child: Container(
-                  height: size.height * .20,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(padding8),
-                    child: Row(
-                      children: [
-                        slide(
-                          'left',
-                          3,
-                          Container(
-                            height: innerheight,
-                            width: size.height * .15,
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(30.0),
-                              child: CachedNetworkImage(
-                                fit: BoxFit.cover,
-                                imageUrl: snapshot[index]['avatar'],
-                                placeholder: (context, url) => new Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      CircularProgressIndicator(
-                                        valueColor:
-                                            new AlwaysStoppedAnimation<Color>(
-                                                AppColors.purple),
-                                        strokeWidth: 5.0,
-                                      ),
-                                    ],
+            child: Material(
+              elevation: 3,
+              borderRadius: BorderRadius.all(Radius.circular(Sizes.w30)),
+              child: Container(
+                height: Sizes.h165,
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(Sizes.w8),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: Sizes.h165,
+                        width: Sizes.h120,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(Sizes.w30),
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: snapshot[index]['avatar'],
+                            placeholder: (context, url) => new Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  CircularProgressIndicator(
+                                    valueColor:
+                                        new AlwaysStoppedAnimation<Color>(
+                                            AppColors.purple),
+                                    strokeWidth: 5.0,
                                   ),
-                                ),
-                                errorWidget: (context, url, error) =>
-                                    new Icon(Icons.error),
+                                ],
                               ),
                             ),
+                            errorWidget: (context, url, error) =>
+                                new Icon(Icons.error),
                           ),
                         ),
-                        slide(
-                          'right',
-                          5,
-                          Container(
-                            color: Colors.transparent,
-                            width: size.height * .22,
-                            padding: EdgeInsets.only(left: fontSize20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text(
-                                  '${snapshot[index]['product']}',
-                                  style: TextStyle(
-                                      color: AppColors.purple,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: fontSize20),
-                                ),
-                                Text(
-                                  '${snapshot[index]['type']}',
-                                  style: TextStyle(
-                                      color: AppColors.purple,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: fontSize20),
-                                ),
-                                Text(
-                                  '₦ ${displayNumber(snapshot[index]['cost'])}',
-                                  style: TextStyle(
-                                      color: AppColors.red,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: fontSize20),
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Pulse(
-                                    preferences: AnimationPreferences(
-                                        offset: Duration(seconds: 3),
-                                        autoPlay: AnimationPlayStates.Loop),
-                                    child: ElevatedButton(
-                                      onPressed: () =>
-                                          remove(snapshot[index]['productID']),
-                                     style: Decorations().buttonDecor(context: context, buttoncolor: AppColors.blue),
-                                      child:Decorations().buttonText(buttonText: 'Remove', context: context, fontweight: FontWeight.w600, fontsize: Sizes.w20)
-                                    ),
-                                  ),
-                                )
-                              ],
+                      ),
+                      Container(
+                        color: Colors.transparent,
+                        width: Sizes.h180,
+                        padding: EdgeInsets.only(left: Sizes.w20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              '${snapshot[index]['product']}',
+                              style: TextStyle(
+                                  color: AppColors.purple,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Sizes.w20),
                             ),
-                          ),
-                        )
-                      ],
-                    ),
+                            Text(
+                              '${snapshot[index]['type']}',
+                              style: TextStyle(
+                                  color: AppColors.purple,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: Sizes.w20),
+                            ),
+                            Text(
+                              '₦ ${displayNumber(snapshot[index]['cost'])}',
+                              style: TextStyle(
+                                  color: AppColors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Sizes.w20),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Pulse(
+                                preferences: AnimationPreferences(
+                                    offset: Duration(seconds: 3),
+                                    autoPlay: AnimationPlayStates.Loop),
+                                child: ElevatedButton(
+                                    onPressed: () =>
+                                        remove(snapshot[index]['productID']),
+                                    style: Decorations().buttonDecor(
+                                        context: context,
+                                        buttoncolor: AppColors.blue),
+                                    child: Decorations().buttonText(
+                                        buttonText: 'Remove',
+                                        context: context,
+                                        fontweight: FontWeight.w600,
+                                        fontsize: Sizes.w20)),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -479,9 +470,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   }
 
   checkoutsummary(int itemnumber) {
-    Size size = MediaQuery.of(context).size;
-    double fontSize25 = size.height * 0.03125;
-    double fontSize15 = size.height * 0.01875;
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -489,28 +477,22 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SlideInLeft(
-                preferences: AnimationPreferences(offset: Duration(seconds: 2)),
-                child: Text(
-                  'Total Items ($itemnumber)',
-                  style: TextStyle(
-                      color: AppColors.purple,
-                      fontWeight: FontWeight.bold,
-                      fontSize: fontSize25),
-                ),
+              Text(
+                'Total Items ($itemnumber)',
+                style: TextStyle(
+                    color: AppColors.purple,
+                    fontWeight: FontWeight.bold,
+                    fontSize: Sizes.w25),
               ),
-              SlideInRight(
-                preferences: AnimationPreferences(offset: Duration(seconds: 2)),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    '₦ ${displayNumber(summation)}',
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                        color: AppColors.red,
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontSize25),
-                  ),
+              Align(
+                alignment: Alignment.topRight,
+                child: Text(
+                  '₦ ${displayNumber(summation)}',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                      color: AppColors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: Sizes.w25),
                 ),
               )
             ],
@@ -518,65 +500,48 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SlideInLeft(
-                preferences: AnimationPreferences(offset: Duration(seconds: 2)),
-                child: Text('Service Charge',
-                    style: TextStyle(
-                        color: AppColors.purple,
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontSize15)),
-              ),
+              Text('Service Charge',
+                  style: TextStyle(
+                      color: AppColors.purple,
+                      fontWeight: FontWeight.bold,
+                      fontSize: Sizes.w15)),
               Align(
                 alignment: Alignment.topRight,
-                child: SlideInRight(
-                  preferences:
-                      AnimationPreferences(offset: Duration(seconds: 2)),
-                  child: Text(
-                    '₦ ${displayNumber(servicecharge)}',
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                        color: AppColors.red,
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontSize15),
-                  ),
+                child: Text(
+                  '₦ ${displayNumber(servicecharge)}',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                      color: AppColors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: Sizes.w15),
                 ),
               )
             ],
           ),
-          FadeInDownBig(
-            preferences: AnimationPreferences(offset: Duration(seconds: 2)),
-            child: Container(
-              width: double.infinity,
-              height: 1,
-              color: AppColors.purple,
-            ),
+          Container(
+            width: double.infinity,
+            height: 1,
+            color: AppColors.purple,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SlideInLeft(
-                preferences: AnimationPreferences(offset: Duration(seconds: 2)),
-                child: Text(
-                  'Total',
-                  style: TextStyle(
-                      color: AppColors.purple,
-                      fontWeight: FontWeight.bold,
-                      fontSize: fontSize25),
-                ),
+              Text(
+                'Total',
+                style: TextStyle(
+                    color: AppColors.purple,
+                    fontWeight: FontWeight.bold,
+                    fontSize: Sizes.w25),
               ),
               Align(
                 alignment: Alignment.topRight,
-                child: SlideInRight(
-                  preferences:
-                      AnimationPreferences(offset: Duration(seconds: 2)),
-                  child: Text(
-                    '₦ ${displayNumber(summation + servicecharge)}',
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                        color: AppColors.red,
-                        fontWeight: FontWeight.bold,
-                        fontSize: fontSize25),
-                  ),
+                child: Text(
+                  '₦ ${displayNumber(summation + servicecharge)}',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                      color: AppColors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: Sizes.w25),
                 ),
               )
             ],
@@ -590,11 +555,17 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
-                  width: size.width * .35,
-                  height: size.height * .07,
+                  width: Sizes.w150,
+                  height: Sizes.h60,
                   child: ElevatedButton(
-                   style: Decorations().buttonDecor(context: context, elevation: 15, buttoncolor: AppColors.red),
-                    child:Decorations().buttonText(buttonText: 'Checkout', context: context, fontsize: Sizes.w20),
+                    style: Decorations().buttonDecor(
+                        context: context,
+                        elevation: 15,
+                        buttoncolor: AppColors.red),
+                    child: Decorations().buttonText(
+                        buttonText: 'Checkout',
+                        context: context,
+                        fontsize: Sizes.w20),
                     onPressed: () => checkitemsavailability(),
                   ),
                 ),

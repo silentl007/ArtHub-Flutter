@@ -41,42 +41,39 @@ class _UploadsState extends State<Uploads> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double fontSize15 = size.height * 0.01870;
-    double padding40 = size.height * 0.05;
-    double sizeHeight5 = size.height * 0.00625;
-    double sizeHeight3 = size.height * 0.00375;
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
     final node = FocusScope.of(context);
     return SafeArea(
-      child: Scaffold(
-        appBar: classWidget.apptitleBar(context, 'Uploads'),
-        body: WillPopScope(
-          onWillPop: () async {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
-                (Route<dynamic> route) => false);
-            return true;
-          },
-          child: Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage('assets/appimages/welcomeback.png'),
-                      fit: BoxFit.cover),
+      child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: Texts.textScale),
+        child: Scaffold(
+          appBar: classWidget.apptitleBar(context, 'Uploads'),
+          body: WillPopScope(
+            onWillPop: () async {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (Route<dynamic> route) => false);
+              return true;
+            },
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/appimages/welcomeback.png'),
+                        fit: BoxFit.cover),
+                  ),
                 ),
-              ),
-              SingleChildScrollView(
-                child: Form(
-                  key: _key,
-                  child: Container(
-                    padding: EdgeInsets.only(left: padding40, right: padding40),
-                    child: Column(
-                      children: [
-                        slide(
-                          'left',
-                          2,
+                SingleChildScrollView(
+                  child: Form(
+                    key: _key,
+                    child: Container(
+                      padding:
+                          EdgeInsets.only(left: Sizes.w40, right: Sizes.w40),
+                      child: Column(
+                        children: [
                           TextFormField(
                             textCapitalization: TextCapitalization.words,
                             textInputAction: TextInputAction.next,
@@ -94,46 +91,35 @@ class _UploadsState extends State<Uploads> {
                               uploadworksClass.productName = value!;
                             },
                           ),
-                        ),
-                        slide(
-                            'right',
-                            2,
-                            TextFormField(
-                              maxLength: 160,
-                              textInputAction: TextInputAction.next,
-                              onEditingComplete: () => node.nextFocus(),
-                              decoration: InputDecoration(
-                                labelText: 'Description',
-                                icon: Icon(Icons.book),
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'This field is empty';
-                                } else if (value.length > 260) {
-                                  return 'The description is too long';
-                                }
-                              },
-                              onSaved: (value) {
-                                uploadworksClass.description = value!;
-                              },
-                            )),
-                        SizedBox(
-                          height: fontSize15,
-                        ),
-                        slide(
-                          'left',
-                          2,
+                          TextFormField(
+                            maxLength: 160,
+                            textInputAction: TextInputAction.next,
+                            onEditingComplete: () => node.nextFocus(),
+                            decoration: InputDecoration(
+                              labelText: 'Description',
+                              icon: Icon(Icons.book),
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'This field is empty';
+                              } else if (value.length > 260) {
+                                return 'The description is too long';
+                              }
+                            },
+                            onSaved: (value) {
+                              uploadworksClass.description = value!;
+                            },
+                          ),
+                          SizedBox(
+                            height: Sizes.h15,
+                          ),
                           Container(
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 'Artwork type',
                                 style: TextStyle(
-                                    fontSize: fontSize15, color: _radiocolor),
+                                    fontSize: Sizes.w15, color: _radiocolor),
                               )),
-                        ),
-                        slide(
-                          'left',
-                          2,
                           Column(
                             children: arttypes
                                 .map((data) => RadioListTile(
@@ -150,24 +136,16 @@ class _UploadsState extends State<Uploads> {
                                     ))
                                 .toList(),
                           ),
-                        ),
-                        slide(
-                          'right',
-                          2,
                           Container(
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 'Upload avatar of artwork',
                                 style: TextStyle(
-                                    fontSize: fontSize15, color: _avatarcolor),
+                                    fontSize: Sizes.w15, color: _avatarcolor),
                               )),
-                        ),
-                        SizedBox(
-                          height: sizeHeight5,
-                        ),
-                        slide(
-                          'right',
-                          2,
+                          SizedBox(
+                            height: Sizes.h5,
+                          ),
                           Row(
                             children: [
                               ElevatedButton(
@@ -179,7 +157,7 @@ class _UploadsState extends State<Uploads> {
                                     Icon(Icons.upload_file,
                                         color: Colors.white),
                                     SizedBox(
-                                      width: sizeHeight3,
+                                      width: Sizes.h3,
                                     ),
                                     Decorations().buttonText(
                                         buttonText: 'Upload', context: context),
@@ -187,7 +165,7 @@ class _UploadsState extends State<Uploads> {
                                 ),
                               ),
                               SizedBox(
-                                width: fontSize15,
+                                width: Sizes.h15,
                               ),
                               ElevatedButton(
                                 onPressed: () => removeavatar(),
@@ -200,7 +178,7 @@ class _UploadsState extends State<Uploads> {
                                       color: Colors.white,
                                     ),
                                     SizedBox(
-                                      width: sizeHeight3,
+                                      width: Sizes.h3,
                                     ),
                                     Decorations().buttonText(
                                         buttonText: 'Remove', context: context),
@@ -209,10 +187,6 @@ class _UploadsState extends State<Uploads> {
                               ),
                             ],
                           ),
-                        ),
-                        slide(
-                          'left',
-                          2,
                           Container(
                             alignment: Alignment.centerLeft,
                             child: Decorations().buttonText(
@@ -221,13 +195,9 @@ class _UploadsState extends State<Uploads> {
                                 context: context,
                                 textColor: _multicolor),
                           ),
-                        ),
-                        SizedBox(
-                          height: sizeHeight5,
-                        ),
-                        slide(
-                          'left',
-                          2,
+                          SizedBox(
+                            height: Sizes.h5,
+                          ),
                           Row(
                             children: [
                               ElevatedButton(
@@ -241,7 +211,7 @@ class _UploadsState extends State<Uploads> {
                                       color: Colors.white,
                                     ),
                                     SizedBox(
-                                      width: sizeHeight3,
+                                      width: Sizes.h3,
                                     ),
                                     Decorations().buttonText(
                                         buttonText: 'Upload', context: context)
@@ -249,7 +219,7 @@ class _UploadsState extends State<Uploads> {
                                 ),
                               ),
                               SizedBox(
-                                width: fontSize15,
+                                width: Sizes.w15,
                               ),
                               ElevatedButton(
                                 onPressed: () => removeimage(),
@@ -262,159 +232,148 @@ class _UploadsState extends State<Uploads> {
                                       color: Colors.white,
                                     ),
                                     SizedBox(
-                                      width: sizeHeight3,
+                                      width: Sizes.h3,
                                     ),
-                                    Decorations().buttonText(buttonText: 'Remove Previous', context: context)
+                                    Decorations().buttonText(
+                                        buttonText: 'Remove Previous',
+                                        context: context)
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        slide(
-                            'right',
-                            2,
-                            TextFormField(
-                              keyboardType: TextInputType.number,
-                              textInputAction: TextInputAction.next,
-                              onEditingComplete: () => node.nextFocus(),
-                              decoration: InputDecoration(
-                                labelText: 'Cost (₦)',
-                                icon: Icon(Icons.money),
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'This field is empty';
-                                } else if (value.contains(',')) {
-                                  return 'Please remove the ,';
-                                } else if (value.contains('.')) {
-                                  return 'Please remove the .';
-                                }
-                              },
-                              onSaved: (value) {
-                                uploadworksClass.cost = int.tryParse(value!)!;
-                              },
-                            )),
-                        slide(
-                            'left',
-                            2,
-                            TextFormField(
-                              textInputAction: TextInputAction.next,
-                              onEditingComplete: () => node.nextFocus(),
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                  labelText: 'Weight (KG)',
-                                  icon: Icon(Icons.pan_tool_sharp)),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'This field is empty';
-                                }
-                              },
-                              onSaved: (value) {
-                                uploadworksClass.weight =
-                                    double.tryParse(value!)!;
-                              },
-                            )),
-                        slide(
-                            'right',
-                            2,
-                            TextFormField(
-                              textInputAction: TextInputAction.next,
-                              onEditingComplete: () => node.nextFocus(),
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                labelText: 'Height (Inchs)',
-                                icon: Icon(Icons.height),
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'This field is empty';
-                                }
-                              },
-                              onSaved: (value) {
-                                uploadworksClass.height =
-                                    double.tryParse(value!)!;
-                              },
-                            )),
-                        slide(
-                            'left',
-                            2,
-                            TextFormField(
-                              textInputAction: TextInputAction.next,
-                              onEditingComplete: () => node.nextFocus(),
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                labelText: 'Width (Inchs)',
-                                icon: Icon(Icons.linear_scale),
-                              ),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'This field is empty';
-                                }
-                              },
-                              onSaved: (value) {
-                                uploadworksClass.width =
-                                    double.tryParse(value!)!;
-                              },
-                            )),
-                        slide(
-                            'right',
-                            2,
-                            TextFormField(
-                              textCapitalization: TextCapitalization.words,
-                              decoration: InputDecoration(
-                                  labelText:
-                                      'Materials used (separate with , )',
-                                  icon: Icon(Icons.carpenter_rounded)),
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'This field is empty';
-                                }
-                              },
-                              onSaved: (value) {
-                                uploadworksClass.materials = value!;
-                              },
-                            )),
-                        BounceInDown(
-                          preferences: AnimationPreferences(
-                              offset: Duration(seconds: 2)),
-                          child: Pulse(
-                            preferences: AnimationPreferences(
-                                autoPlay: AnimationPlayStates.Loop,
-                                offset: Duration(seconds: 3)),
-                            child: ElevatedButton(
-                              style: Decorations().buttonDecor(context: context,),
-                              child: Decorations().buttonText(buttonText: 'Upload', context: context),
-                              onPressed: () {
-                                final keyForm = _key.currentState;
-                                if (keyForm!.validate()) {
-                                  if (uploadworksClass.avatar == '') {
-                                    setState(() {
-                                      _avatarcolor = Colors.red;
-                                    });
-                                  } else if (uploadworksClass.images.isEmpty) {
-                                    setState(() {
-                                      _multicolor = Colors.red;
-                                    });
-                                  } else if (defaultarttype == 0) {
-                                    setState(() {
-                                      _radiocolor = Colors.red;
-                                    });
-                                  } else {
-                                    keyForm.save();
-                                    _uploadProcess();
-                                  }
-                                }
-                              },
+                          TextFormField(
+                            keyboardType: TextInputType.number,
+                            textInputAction: TextInputAction.next,
+                            onEditingComplete: () => node.nextFocus(),
+                            decoration: InputDecoration(
+                              labelText: 'Cost (₦)',
+                              icon: Icon(Icons.money),
                             ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'This field is empty';
+                              } else if (value.contains(',')) {
+                                return 'Please remove the ,';
+                              } else if (value.contains('.')) {
+                                return 'Please remove the .';
+                              }
+                            },
+                            onSaved: (value) {
+                              uploadworksClass.cost = int.tryParse(value!)!;
+                            },
                           ),
-                        )
-                      ],
+                          TextFormField(
+                            textInputAction: TextInputAction.next,
+                            onEditingComplete: () => node.nextFocus(),
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                                labelText: 'Weight (KG)',
+                                icon: Icon(Icons.pan_tool_sharp)),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'This field is empty';
+                              }
+                            },
+                            onSaved: (value) {
+                              uploadworksClass.weight =
+                                  double.tryParse(value!)!;
+                            },
+                          ),
+                          TextFormField(
+                            textInputAction: TextInputAction.next,
+                            onEditingComplete: () => node.nextFocus(),
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              labelText: 'Height (Inchs)',
+                              icon: Icon(Icons.height),
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'This field is empty';
+                              }
+                            },
+                            onSaved: (value) {
+                              uploadworksClass.height =
+                                  double.tryParse(value!)!;
+                            },
+                          ),
+                          TextFormField(
+                            textInputAction: TextInputAction.next,
+                            onEditingComplete: () => node.nextFocus(),
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              labelText: 'Width (Inchs)',
+                              icon: Icon(Icons.linear_scale),
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'This field is empty';
+                              }
+                            },
+                            onSaved: (value) {
+                              uploadworksClass.width = double.tryParse(value!)!;
+                            },
+                          ),
+                          TextFormField(
+                            textCapitalization: TextCapitalization.words,
+                            decoration: InputDecoration(
+                                labelText: 'Materials used (separate with , )',
+                                icon: Icon(Icons.carpenter_rounded)),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'This field is empty';
+                              }
+                            },
+                            onSaved: (value) {
+                              uploadworksClass.materials = value!;
+                            },
+                          ),
+                          BounceInDown(
+                            preferences: AnimationPreferences(
+                                offset: Duration(seconds: 2)),
+                            child: Pulse(
+                              preferences: AnimationPreferences(
+                                  autoPlay: AnimationPlayStates.Loop,
+                                  offset: Duration(seconds: 3)),
+                              child: ElevatedButton(
+                                style: Decorations().buttonDecor(
+                                  context: context,
+                                ),
+                                child: Decorations().buttonText(
+                                    buttonText: 'Upload', context: context),
+                                onPressed: () {
+                                  final keyForm = _key.currentState;
+                                  if (keyForm!.validate()) {
+                                    if (uploadworksClass.avatar == '') {
+                                      setState(() {
+                                        _avatarcolor = Colors.red;
+                                      });
+                                    } else if (uploadworksClass
+                                        .images.isEmpty) {
+                                      setState(() {
+                                        _multicolor = Colors.red;
+                                      });
+                                    } else if (defaultarttype == 0) {
+                                      setState(() {
+                                        _radiocolor = Colors.red;
+                                      });
+                                    } else {
+                                      keyForm.save();
+                                      _uploadProcess();
+                                    }
+                                  }
+                                },
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -454,6 +413,8 @@ class _UploadsState extends State<Uploads> {
   }
 
   _avatarFuture() {
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
     return showDialog(
         context: context,
         builder: (context) {
@@ -463,7 +424,8 @@ class _UploadsState extends State<Uploads> {
               if (uploadworksClass.avatar != '') {
                 return AlertDialog(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(Sizes.w20))),
                   content: Text('Avatar already uploaded'),
                 );
               } else if (snapshot.connectionState != ConnectionState.done) {
@@ -471,7 +433,8 @@ class _UploadsState extends State<Uploads> {
                   color: Colors.transparent,
                   child: AlertDialog(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                        borderRadius:
+                            BorderRadius.all(Radius.circular(Sizes.w20))),
                     content: LinearProgressIndicator(
                       backgroundColor: Colors.white,
                       valueColor:
@@ -484,13 +447,15 @@ class _UploadsState extends State<Uploads> {
                 changeAvatarColor();
                 return AlertDialog(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(Sizes.w20))),
                   content: Text('Avatar upload complete'),
                 );
               } else
                 return AlertDialog(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(Sizes.w20))),
                   content: Text(
                       'Unable to upload connect, please check your connetion'),
                 );

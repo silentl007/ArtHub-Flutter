@@ -7,17 +7,20 @@ class AboutUs extends StatelessWidget {
   Widget build(BuildContext context) {
     Widgets classWidget = Widgets();
     return SafeArea(
-      child: Scaffold(
-          appBar: classWidget.apptitleBar(context, 'About Us'),
-          body: WillPopScope(
-              onWillPop: () async{
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
-                    (Route<dynamic> route) => false);
-                    return true;
-              },
-              child: Container())),
+      child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: Texts.textScale),
+        child: Scaffold(
+            appBar: classWidget.apptitleBar(context, 'About Us'),
+            body: WillPopScope(
+                onWillPop: () async {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                      (Route<dynamic> route) => false);
+                  return true;
+                },
+                child: Container())),
+      ),
     );
   }
 }

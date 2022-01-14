@@ -38,152 +38,139 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final picker = ImagePicker();
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     final node = FocusScope.of(context);
-    double fontSize15 = size.height * 0.01870;
-    double sizeHeight5 = size.height * 0.00625;
-    double sizeHeight3 = size.height * 0.00375;
-    double padding40 = size.height * 0.05;
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
     return SafeArea(
-      child: Scaffold(
-        key: _scaffoldKey,
-        backgroundColor: Colors.white,
-        appBar: classWidget.apptitleBar(context, 'Register'),
-        body: WillPopScope(
-          onWillPop: () async {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-                (Route<dynamic> route) => false);
-            return true;
-          },
-          child: Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/appimages/welcomeback.png'),
-                        fit: BoxFit.cover)),
-              ),
-              Form(
-                key: _key,
-                child: Container(
-                  padding: EdgeInsets.only(left: padding40, right: padding40),
-                  width: double.infinity,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        slide(
-                            'left',
-                            Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Account type',
-                                  style: TextStyle(
-                                      fontSize: fontSize15, color: _radiocolor),
-                                ))),
-                        SizedBox(
-                          height: sizeHeight5,
-                        ),
-                        slide(
-                            'left',
-                            Column(
-                                children: accounts.map((data) {
-                              return RadioListTile(
-                                  activeColor: AppColors.purple,
-                                  title: Text('${data.type}'),
-                                  value: data.index!,
-                                  groupValue: defaultaccount,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      defaultaccount = data.index!;
-                                      accountchoice = data.type;
-                                    });
+      child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: Texts.textScale),
+        child: Scaffold(
+          key: _scaffoldKey,
+          backgroundColor: Colors.white,
+          appBar: classWidget.apptitleBar(context, 'Register'),
+          body: WillPopScope(
+            onWillPop: () async {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  (Route<dynamic> route) => false);
+              return true;
+            },
+            child: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage('assets/appimages/welcomeback.png'),
+                          fit: BoxFit.cover)),
+                ),
+                Form(
+                  key: _key,
+                  child: Container(
+                    padding: EdgeInsets.only(left: Sizes.w40, right: Sizes.w40),
+                    width: double.infinity,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Account type',
+                                style: TextStyle(
+                                    fontSize: Sizes.w15, color: _radiocolor),
+                              )),
+                          SizedBox(
+                            height: Sizes.h5,
+                          ),
+                          Column(
+                              children: accounts.map((data) {
+                            return RadioListTile(
+                                activeColor: AppColors.purple,
+                                title: Text('${data.type}'),
+                                value: data.index!,
+                                groupValue: defaultaccount,
+                                onChanged: (value) {
+                                  setState(() {
+                                    defaultaccount = data.index!;
+                                    accountchoice = data.type;
                                   });
-                            }).toList())),
-                        slide(
-                            'right',
-                            TextFormField(
-                              cursorColor: AppColors.purple,
-                              textCapitalization: TextCapitalization.words,
-                              keyboardType: TextInputType.name,
-                              textInputAction: TextInputAction.next,
-                              onEditingComplete: () => node.nextFocus(),
-                              decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: AppColors.purple)),
-                                  labelText: 'Full Name',
-                                  icon: Icon(Icons.title,
-                                      color: AppColors.purple)),
-                              onSaved: (text) {
-                                setState(() {
-                                  registerClass.fullName = text;
                                 });
-                              },
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'This field is empty';
-                                }
-                              },
-                            )),
-                        slide(
-                            'left',
-                            TextFormField(
-                              cursorColor: AppColors.purple,
-                              keyboardType: TextInputType.number,
-                              textInputAction: TextInputAction.next,
-                              onEditingComplete: () => node.nextFocus(),
-                              maxLength: 11,
-                              decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: AppColors.purple)),
-                                  labelText: 'Phone No.',
-                                  icon: Icon(Icons.phone,
-                                      color: AppColors.purple)),
-                              onSaved: (text) {
-                                setState(() {
-                                  registerClass.number = text;
-                                });
-                              },
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'This field is empty';
-                                } else if (value.length != 11) {
-                                  return 'The number is not complete';
-                                }
-                              },
-                            )),
-                        slide(
-                            'right',
-                            TextFormField(
-                              cursorColor: AppColors.purple,
-                              textCapitalization: TextCapitalization.words,
-                              textInputAction: TextInputAction.next,
-                              onEditingComplete: () => node.nextFocus(),
-                              decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: AppColors.purple)),
-                                  labelText: 'Address',
-                                  icon: Icon(Icons.gps_fixed,
-                                      color: AppColors.purple)),
-                              onSaved: (text) {
-                                setState(() {
-                                  registerClass.address = text;
-                                });
-                              },
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'This field is empty';
-                                }
-                              },
-                            )),
-                        accountchoice == 'Freelancer'
-                            ? slide(
-                                'right',
-                                Column(
+                          }).toList()),
+                          TextFormField(
+                            cursorColor: AppColors.purple,
+                            textCapitalization: TextCapitalization.words,
+                            keyboardType: TextInputType.name,
+                            textInputAction: TextInputAction.next,
+                            onEditingComplete: () => node.nextFocus(),
+                            decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: AppColors.purple)),
+                                labelText: 'Full Name',
+                                icon:
+                                    Icon(Icons.title, color: AppColors.purple)),
+                            onSaved: (text) {
+                              setState(() {
+                                registerClass.fullName = text;
+                              });
+                            },
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'This field is empty';
+                              }
+                            },
+                          ),
+                          TextFormField(
+                            cursorColor: AppColors.purple,
+                            keyboardType: TextInputType.number,
+                            textInputAction: TextInputAction.next,
+                            onEditingComplete: () => node.nextFocus(),
+                            maxLength: 11,
+                            decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: AppColors.purple)),
+                                labelText: 'Phone No.',
+                                icon:
+                                    Icon(Icons.phone, color: AppColors.purple)),
+                            onSaved: (text) {
+                              setState(() {
+                                registerClass.number = text;
+                              });
+                            },
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'This field is empty';
+                              } else if (value.length != 11) {
+                                return 'The number is not complete';
+                              }
+                            },
+                          ),
+                          TextFormField(
+                            cursorColor: AppColors.purple,
+                            textCapitalization: TextCapitalization.words,
+                            textInputAction: TextInputAction.next,
+                            onEditingComplete: () => node.nextFocus(),
+                            decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: AppColors.purple)),
+                                labelText: 'Address',
+                                icon: Icon(Icons.gps_fixed,
+                                    color: AppColors.purple)),
+                            onSaved: (text) {
+                              setState(() {
+                                registerClass.address = text;
+                              });
+                            },
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'This field is empty';
+                              }
+                            },
+                          ),
+                          accountchoice == 'Freelancer'
+                              ? Column(
                                   children: [
                                     TextFormField(
                                       cursorColor: AppColors.purple,
@@ -209,18 +196,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       },
                                     ),
                                     SizedBox(
-                                      height: sizeHeight5,
+                                      height: Sizes.h5,
                                     ),
                                     Container(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
                                           'Upload your avatar',
                                           style: TextStyle(
-                                              fontSize: fontSize15,
+                                              fontSize: Sizes.w15,
                                               color: _avatarcolor),
                                         )),
                                     SizedBox(
-                                      height: sizeHeight5,
+                                      height: Sizes.h5,
                                     ),
                                     Row(
                                       children: [
@@ -234,7 +221,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                               Icon(Icons.upload_file,
                                                   color: Colors.white),
                                               SizedBox(
-                                                width: sizeHeight5,
+                                                width: Sizes.h5,
                                               ),
                                               Decorations().buttonText(
                                                   buttonText: 'Upload',
@@ -242,7 +229,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                             ],
                                           ),
                                         ),
-                                        SizedBox(width: sizeHeight3),
+                                        SizedBox(width: Sizes.h3),
                                         ElevatedButton(
                                           onPressed: () => removeavatar(),
                                           style: Decorations().buttonDecor(
@@ -253,7 +240,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                               Icon(Icons.cancel,
                                                   color: Colors.white),
                                               SizedBox(
-                                                width: sizeHeight5,
+                                                width: Sizes.h5,
                                               ),
                                               Decorations().buttonText(
                                                   buttonText: 'Remove',
@@ -264,202 +251,201 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       ],
                                     ),
                                   ],
-                                ))
-                            : Container(),
-                        SizedBox(
-                          height: sizeHeight3,
-                        ),
-                        slide(
-                            'left',
-                            Container(
-                              alignment: Alignment.centerLeft,
-                              child: DropdownButton<String>(
-                                value: selectedState,
-                                onChanged: (text) {
-                                  setState(() {
-                                    selectedState = text!;
-                                    registerClass.location = selectedState;
-                                  });
-                                },
-                                items: states
-                                    .map<DropdownMenuItem<String>>((text) {
-                                  return DropdownMenuItem(
-                                    child: Text(
-                                      text,
-                                      style: TextStyle(
-                                          color: _stateColor, fontSize: 18),
-                                    ),
-                                    value: text,
-                                  );
-                                }).toList(),
-                              ),
-                            )),
-                        slide(
-                            'right',
-                            TextFormField(
-                              cursorColor: AppColors.purple,
-                              keyboardType: TextInputType.emailAddress,
-                              textInputAction: TextInputAction.next,
-                              onEditingComplete: () => node.nextFocus(),
-                              decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: AppColors.purple)),
-                                  labelText: 'E-mail',
-                                  icon: Icon(Icons.email,
-                                      color: AppColors.purple)),
-                              onSaved: (text) {
+                                )
+                              : Container(),
+                          SizedBox(
+                            height: Sizes.h3,
+                          ),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            child: DropdownButton<String>(
+                              value: selectedState,
+                              onChanged: (text) {
                                 setState(() {
-                                  registerClass.email = text!.toLowerCase();
+                                  selectedState = text!;
+                                  registerClass.location = selectedState;
                                 });
                               },
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'This field is empty';
-                                } else if (value.contains('@') == false) {
-                                  return 'Not a valid email';
-                                }
-                              },
-                            )),
-                        slide(
-                            'left',
-                            TextFormField(
-                              cursorColor: AppColors.purple,
-                              obscureText: showpassword,
-                              controller: passwordCtrl,
-                              textInputAction: TextInputAction.next,
-                              onEditingComplete: () => node.nextFocus(),
-                              decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: AppColors.purple)),
-                                  suffixIcon: IconButton(
-                                    icon: Icon(Icons.remove_red_eye),
-                                    color: AppColors.purple,
-                                    onPressed: () {
-                                      if (showpassword == true) {
-                                        setState(() {
-                                          showpassword = false;
-                                        });
-                                      } else {
-                                        setState(() {
-                                          showpassword = true;
-                                        });
-                                      }
-                                    },
-                                  ),
-                                  labelText: 'Password',
-                                  helperText:
-                                      'must at least be six (6) characters and has at least a digit',
-                                  icon: Icon(Icons.security,
-                                      color: AppColors.purple)),
-                              onSaved: (text) {
-                                setState(() {
-                                  registerClass.password = text;
-                                });
-                              },
-                              validator: (value) {
-                                if (value!.length < 6) {
-                                  return 'Password is less than six (6) characters';
-                                } else if (value.contains(RegExp(r'[0-9]')) ==
-                                    false) {
-                                  return 'Password does not contain a digit';
-                                }
-                              },
-                            )),
-                        slide(
-                            'right',
-                            TextFormField(
-                              cursorColor: AppColors.purple,
-                              obscureText: showpassword1,
-                              textInputAction: TextInputAction.done,
-                              onEditingComplete: () => node.unfocus(),
-                              decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: AppColors.purple)),
-                                  suffixIcon: IconButton(
-                                    icon: Icon(Icons.remove_red_eye),
-                                    color: AppColors.purple,
-                                    onPressed: () {
-                                      if (showpassword1 == true) {
-                                        setState(() {
-                                          showpassword1 = false;
-                                        });
-                                      } else {
-                                        setState(() {
-                                          showpassword1 = true;
-                                        });
-                                      }
-                                    },
-                                  ),
-                                  labelText: 'Repeat Password',
-                                  icon: Icon(Icons.repeat,
-                                      color: AppColors.purple)),
-                              validator: (text) {
-                                if (text != passwordCtrl.text) {
-                                  return 'Passwords do not match!';
-                                }
-                              },
-                            )),
-                        SizedBox(
-                          height: sizeHeight3,
-                        ),
-                        slide(
-                            'left',
-                            CheckboxListTile(
-                              value: _check,
-                              checkColor: AppColors.purple,
-                              activeColor: Colors.transparent,
-                              onChanged: (bool? val) {
-                                setState(() {
-                                  _check = val!;
-                                });
-                              },
-                              title: InkWell(
-                                  onTap: () => _termsConditions(context),
+                              items:
+                                  states.map<DropdownMenuItem<String>>((text) {
+                                return DropdownMenuItem(
                                   child: Text(
-                                      'I have read and agreed to terms and conditions',
-                                      style: TextStyle(
-                                        color: _terms,
-                                      ))),
-                            )),
-                        BounceInDown(
-                            preferences: AnimationPreferences(
-                                offset: Duration(seconds: 2)),
-                            child: Pulse(
-                              preferences: AnimationPreferences(
-                                  autoPlay: AnimationPlayStates.Loop,
-                                  offset: Duration(seconds: 3)),
-                              child: ElevatedButton(
-                                style: Decorations().buttonDecor(
-                                  context: context,
-                                ),
-                                child: Decorations().buttonText(
-                                    buttonText: 'Register', context: context),
-                                onPressed: () {
-                                  final keyForm = _key.currentState;
-
-                                  if (keyForm!.validate() == true) {
-                                    if (_check == false) {
+                                    text,
+                                    style: TextStyle(
+                                        color: _stateColor,
+                                        fontSize: Sizes.w18),
+                                  ),
+                                  value: text,
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                          TextFormField(
+                            cursorColor: AppColors.purple,
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
+                            onEditingComplete: () => node.nextFocus(),
+                            decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: AppColors.purple)),
+                                labelText: 'E-mail',
+                                icon:
+                                    Icon(Icons.email, color: AppColors.purple)),
+                            onSaved: (text) {
+                              setState(() {
+                                registerClass.email = text!.toLowerCase();
+                              });
+                            },
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'This field is empty';
+                              } else if (value.contains('@') == false) {
+                                return 'Not a valid email';
+                              }
+                            },
+                          ),
+                          TextFormField(
+                            cursorColor: AppColors.purple,
+                            obscureText: showpassword,
+                            controller: passwordCtrl,
+                            textInputAction: TextInputAction.next,
+                            onEditingComplete: () => node.nextFocus(),
+                            decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: AppColors.purple)),
+                                suffixIcon: IconButton(
+                                  icon: Icon(Icons.remove_red_eye),
+                                  color: AppColors.purple,
+                                  onPressed: () {
+                                    if (showpassword == true) {
                                       setState(() {
-                                        _terms = Colors.red;
-                                      });
-                                    } else if (selectedState ==
-                                        'Select State') {
-                                      setState(() {
-                                        _stateColor = Colors.red;
-                                      });
-                                    } else if (defaultaccount == 0) {
-                                      setState(() {
-                                        _radiocolor = Colors.red;
+                                        showpassword = false;
                                       });
                                     } else {
-                                      if (accountchoice == 'Freelancer') {
-                                        if (registerClass.avatar == '') {
-                                          setState(() {
-                                            _avatarcolor = Colors.red;
-                                          });
+                                      setState(() {
+                                        showpassword = true;
+                                      });
+                                    }
+                                  },
+                                ),
+                                labelText: 'Password',
+                                helperText:
+                                    'must at least be six (6) characters and has at least a digit',
+                                icon: Icon(Icons.security,
+                                    color: AppColors.purple)),
+                            onSaved: (text) {
+                              setState(() {
+                                registerClass.password = text;
+                              });
+                            },
+                            validator: (value) {
+                              if (value!.length < 6) {
+                                return 'Password is less than six (6) characters';
+                              } else if (value.contains(RegExp(r'[0-9]')) ==
+                                  false) {
+                                return 'Password does not contain a digit';
+                              }
+                            },
+                          ),
+                          TextFormField(
+                            cursorColor: AppColors.purple,
+                            obscureText: showpassword1,
+                            textInputAction: TextInputAction.done,
+                            onEditingComplete: () => node.unfocus(),
+                            decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: AppColors.purple)),
+                                suffixIcon: IconButton(
+                                  icon: Icon(Icons.remove_red_eye),
+                                  color: AppColors.purple,
+                                  onPressed: () {
+                                    if (showpassword1 == true) {
+                                      setState(() {
+                                        showpassword1 = false;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        showpassword1 = true;
+                                      });
+                                    }
+                                  },
+                                ),
+                                labelText: 'Repeat Password',
+                                icon: Icon(Icons.repeat,
+                                    color: AppColors.purple)),
+                            validator: (text) {
+                              if (text != passwordCtrl.text) {
+                                return 'Passwords do not match!';
+                              }
+                            },
+                          ),
+                          SizedBox(
+                            height: Sizes.h3,
+                          ),
+                          CheckboxListTile(
+                            value: _check,
+                            checkColor: AppColors.purple,
+                            activeColor: Colors.transparent,
+                            onChanged: (bool? val) {
+                              setState(() {
+                                _check = val!;
+                              });
+                            },
+                            title: InkWell(
+                                onTap: () => _termsConditions(context),
+                                child: Text(
+                                    'I have read and agreed to terms and conditions',
+                                    style: TextStyle(
+                                      color: _terms,
+                                    ))),
+                          ),
+                          BounceInDown(
+                              preferences: AnimationPreferences(
+                                  offset: Duration(seconds: 2)),
+                              child: Pulse(
+                                preferences: AnimationPreferences(
+                                    autoPlay: AnimationPlayStates.Loop,
+                                    offset: Duration(seconds: 3)),
+                                child: ElevatedButton(
+                                  style: Decorations().buttonDecor(
+                                    context: context,
+                                  ),
+                                  child: Decorations().buttonText(
+                                      buttonText: 'Register', context: context),
+                                  onPressed: () {
+                                    final keyForm = _key.currentState;
+
+                                    if (keyForm!.validate() == true) {
+                                      if (_check == false) {
+                                        setState(() {
+                                          _terms = Colors.red;
+                                        });
+                                      } else if (selectedState ==
+                                          'Select State') {
+                                        setState(() {
+                                          _stateColor = Colors.red;
+                                        });
+                                      } else if (defaultaccount == 0) {
+                                        setState(() {
+                                          _radiocolor = Colors.red;
+                                        });
+                                      } else {
+                                        if (accountchoice == 'Freelancer') {
+                                          if (registerClass.avatar == '') {
+                                            setState(() {
+                                              _avatarcolor = Colors.red;
+                                            });
+                                          } else {
+                                            registerClass.location =
+                                                selectedState;
+                                            registerClass.account =
+                                                accountchoice;
+                                            keyForm.save();
+                                            futureDiag(context);
+                                          }
                                         } else {
                                           registerClass.location =
                                               selectedState;
@@ -467,23 +453,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                           keyForm.save();
                                           futureDiag(context);
                                         }
-                                      } else {
-                                        registerClass.location = selectedState;
-                                        registerClass.account = accountchoice;
-                                        keyForm.save();
-                                        futureDiag(context);
                                       }
                                     }
-                                  }
-                                },
-                              ),
-                            ))
-                      ],
+                                  },
+                                ),
+                              ))
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -606,8 +587,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
             actions: [
               ElevatedButton(
                 onPressed: null,
-                style: Decorations().buttonDecor(context: context,noBorder: true),
-                child: Decorations().buttonText(buttonText: 'Agree', context: context),
+                style:
+                    Decorations().buttonDecor(context: context, noBorder: true),
+                child: Decorations()
+                    .buttonText(buttonText: 'Agree', context: context),
               )
             ],
           );
