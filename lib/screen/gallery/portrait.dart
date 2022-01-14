@@ -20,12 +20,8 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double innerheight = size.height * .20;
-    double fontSize20 = size.height * 0.020;
-    double padding40 = size.height * 0.05;
-    double padding10 = size.height * 0.01252;
-    double padding20 = size.height * 0.025;
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
     return works!.isEmpty
         ? Center(
             child: Text('No item found'),
@@ -40,129 +36,107 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
                       children: works!.map((data) {
                         return Padding(
                           padding: EdgeInsets.only(
-                              left: padding40,
-                              right: padding40,
-                              top: padding10),
+                              left: Sizes.w40,
+                              right: Sizes.w40,
+                              top: Sizes.h10),
                           child: Material(
                             elevation: 10,
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(Sizes.w30)),
                             child: Container(
-                              height: size.height * .20,
+                              height: Sizes.h160,
                               decoration: BoxDecoration(
                                 color: Colors.transparent,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(Sizes.w30)),
                               ),
                               child: Padding(
-                                padding: EdgeInsets.all(padding20),
+                                padding: EdgeInsets.all(Sizes.w20),
                                 child: Row(
                                   children: [
                                     Container(
-                                      height: innerheight,
-                                      width: size.height * .15,
-                                      child: FadeInDown(
-                                        preferences: AnimationPreferences(
-                                          offset: Duration(seconds: 2),
-                                        ),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(30.0),
-                                          child: CachedNetworkImage(
-                                            fit: BoxFit.cover,
-                                            imageUrl: data.avatar,
-                                            placeholder: (context, url) =>
-                                                new Center(
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                children: [
-                                                  CircularProgressIndicator(
-                                                    valueColor:
-                                                        new AlwaysStoppedAnimation<
-                                                                Color>(
-                                                            AppColors.purple),
-                                                    strokeWidth: 5.0,
-                                                  ),
-                                                ],
-                                              ),
+                                      height: Sizes.h160,
+                                      width: Sizes.w120,
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(Sizes.w30),
+                                        child: CachedNetworkImage(
+                                          fit: BoxFit.cover,
+                                          imageUrl: data.avatar,
+                                          placeholder: (context, url) =>
+                                              new Center(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                CircularProgressIndicator(
+                                                  valueColor:
+                                                      new AlwaysStoppedAnimation<
+                                                              Color>(
+                                                          AppColors.purple),
+                                                  strokeWidth: 5.0,
+                                                ),
+                                              ],
                                             ),
-                                            errorWidget:
-                                                (context, url, error) =>
-                                                    new Icon(Icons.error),
                                           ),
+                                          errorWidget: (context, url, error) =>
+                                              new Icon(Icons.error),
                                         ),
                                       ),
                                     ),
                                     SingleChildScrollView(
                                       child: Container(
                                         color: Colors.transparent,
-                                        width: size.height * .22,
+                                        width: Sizes.w176,
                                         padding:
-                                            EdgeInsets.only(left: padding20),
+                                            EdgeInsets.only(left: Sizes.w20),
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceAround,
                                           children: [
-                                            SlideInLeft(
-                                              preferences: AnimationPreferences(
-                                                offset: Duration(seconds: 2),
-                                              ),
-                                              child: Text(
-                                                '${data.productname}',
-                                                style: TextStyle(
-                                                    color: AppColors.purple,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: fontSize20),
-                                              ),
+                                            Text(
+                                              '${data.productname}',
+                                              style: TextStyle(
+                                                  color: AppColors.purple,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: Sizes.w20),
                                             ),
-                                            SlideInRight(
-                                              preferences: AnimationPreferences(
-                                                offset: Duration(seconds: 2),
-                                              ),
-                                              child: Text(
-                                                '₦ ${displayNumber(data.cost)}',
-                                                style: TextStyle(
-                                                    color: AppColors.red,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: fontSize20),
-                                              ),
+                                            Text(
+                                              '₦ ${displayNumber(data.cost)}',
+                                              style: TextStyle(
+                                                  color: AppColors.red,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: Sizes.w20),
                                             ),
                                             Align(
                                               alignment: Alignment.bottomRight,
-                                              child: SlideInRight(
+                                              child: Pulse(
                                                 preferences:
                                                     AnimationPreferences(
-                                                  offset: Duration(seconds: 2),
-                                                ),
-                                                child: Pulse(
-                                                  preferences:
-                                                      AnimationPreferences(
-                                                          offset: Duration(
-                                                              seconds: 2),
-                                                          autoPlay:
-                                                              AnimationPlayStates
-                                                                  .Loop),
-                                                  child: ElevatedButton(
-                                                    onPressed: () =>
-                                                        purchase(context, data),
-                                                    style: Decorations()
-                                                        .buttonDecor(
-                                                            context: context,
-                                                            buttoncolor:
-                                                                AppColors.blue),
-                                                    child: Decorations()
-                                                        .buttonText(
-                                                            buttonText: 'View',
-                                                            context: context,
-                                                            fontweight:
-                                                                FontWeight.w600,
-                                                            fontsize:
-                                                                Sizes.w20),
-                                                  ),
+                                                        offset: Duration(
+                                                            seconds: 2),
+                                                        autoPlay:
+                                                            AnimationPlayStates
+                                                                .Loop),
+                                                child: ElevatedButton(
+                                                  onPressed: () =>
+                                                      purchase(context, data),
+                                                  style: Decorations()
+                                                      .buttonDecor(
+                                                          context: context,
+                                                          buttoncolor:
+                                                              AppColors.blue),
+                                                  child: Decorations()
+                                                      .buttonText(
+                                                          buttonText: 'View',
+                                                          context: context,
+                                                          fontweight:
+                                                              FontWeight.w600,
+                                                          fontsize: Sizes.w20),
                                                 ),
                                               ),
                                             )

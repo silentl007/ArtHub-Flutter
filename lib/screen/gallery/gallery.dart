@@ -52,53 +52,58 @@ class _GalleriesState extends State<Galleries> {
   Widget build(BuildContext context) {
     collecteddata.shuffle();
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: classWidget.apptitleBar(context, 'Galleries'),
-        body: WillPopScope(
-          onWillPop: ()async{
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => HomeScreen()),
-              (Route<dynamic> route) => false);
+      child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: Texts.textScale),
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: classWidget.apptitleBar(context, 'Galleries'),
+          body: WillPopScope(
+            onWillPop: () async {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (Route<dynamic> route) => false);
               return true;
-          },
-                  child: FutureBuilder(
-              future: gallery,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        CircularProgressIndicator(
-                          valueColor:
-                              new AlwaysStoppedAnimation<Color>(AppColors.purple),
-                          strokeWidth: 9.0,
+            },
+            child: FutureBuilder(
+                future: gallery,
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          CircularProgressIndicator(
+                            valueColor: new AlwaysStoppedAnimation<Color>(
+                                AppColors.purple),
+                            strokeWidth: 9.0,
+                          ),
+                        ],
+                      ),
+                    );
+                  } else if (snapshot.hasData) {
+                    return GalleryList(
+                      data: snapshot.data,
+                    );
+                  } else {
+                    return Center(
+                      child: ElevatedButton(
+                        style: Decorations()
+                            .buttonDecor(context: context, noBorder: true),
+                        child: Decorations().buttonText(
+                          buttonText: 'Retry',
+                          context: context,
                         ),
-                      ],
-                    ),
-                  );
-                } else if (snapshot.hasData) {
-                  return GalleryList(
-                    data: snapshot.data,
-                  );
-                } else {
-                  return Center(
-                    child: ElevatedButton(
-                     style: Decorations().buttonDecor(context: context, noBorder: true),
-                      child: Decorations().buttonText(buttonText: 'Retry', context: context,),
-                      onPressed: () {
-                        gallery = _getGallery();
-                        setState(() {
-                          
-                        });
-                      },
-                    ),
-                  );
-                }
-              }),
+                        onPressed: () {
+                          gallery = _getGallery();
+                          setState(() {});
+                        },
+                      ),
+                    );
+                  }
+                }),
+          ),
         ),
       ),
     );

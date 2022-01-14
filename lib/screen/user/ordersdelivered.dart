@@ -56,8 +56,8 @@ class _DeliveredState extends State<Delivered> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double padding10 = size.height * 0.0125;
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
     return FutureBuilder(
       future: getdelivered,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -67,7 +67,7 @@ class _DeliveredState extends State<Delivered> {
           return Container(
             child: snapshot.data.length != 0
                 ? Padding(
-                    padding: EdgeInsets.all(padding10),
+                    padding: EdgeInsets.all(Sizes.w10),
                     child: itembuilder(snapshot.data),
                   )
                 : Center(
@@ -97,43 +97,34 @@ class _DeliveredState extends State<Delivered> {
     return ListView.builder(
       itemCount: snapshot.length,
       itemBuilder: (BuildContext context, int index) {
-        return BounceInDown(
-          preferences: AnimationPreferences(
-            offset: Duration(seconds: 2),
-          ),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(25),
-              ),
+        return Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(Sizes.w25),
             ),
-            child: ListTile(
-              onTap: () {
-                orderDetails(snapshot[index].purchaseditems);
-              },
-              leading: Icon(Icons.check),
-              trailing: Icon(Icons.arrow_right),
-              title: slide(
-                  'right',
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Order ID'),
-                      Text('${snapshot[index].orderID}'),
-                    ],
-                  )),
-              subtitle: slide(
-                  'right',
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Date: ${snapshot[index].dateOrdered}'),
-                      Text('No. of items: ${snapshot[index].itemnumber}'),
-                      Text(
-                          'Cost of items: ₦${displayNumber(snapshot[index].itemscost)}'),
-                    ],
-                  )),
+          ),
+          child: ListTile(
+            onTap: () {
+              orderDetails(snapshot[index].purchaseditems);
+            },
+            leading: Icon(Icons.check),
+            trailing: Icon(Icons.arrow_right),
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Order ID'),
+                Text('${snapshot[index].orderID}'),
+              ],
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Date: ${snapshot[index].dateOrdered}'),
+                Text('No. of items: ${snapshot[index].itemnumber}'),
+                Text(
+                    'Cost of items: ₦${displayNumber(snapshot[index].itemscost)}'),
+              ],
             ),
           ),
         );

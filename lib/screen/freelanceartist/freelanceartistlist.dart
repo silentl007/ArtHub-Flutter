@@ -54,49 +54,56 @@ class _FreeLanceArtistState extends State<FreeLanceArtist> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: classWidget.apptitleBar(context, 'Freelancers'),
-        body: WillPopScope(
-          onWillPop: () async {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
-                (Route<dynamic> route) => false);
-                return true;
-          },
-          child: FutureBuilder(
-              future: freelancers,
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState != ConnectionState.done) {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        CircularProgressIndicator(
-                          valueColor: new AlwaysStoppedAnimation<Color>(
-                              AppColors.purple),
-                          strokeWidth: 9.0,
+      child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: Texts.textScale),
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: classWidget.apptitleBar(context, 'Freelancers'),
+          body: WillPopScope(
+            onWillPop: () async {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (Route<dynamic> route) => false);
+              return true;
+            },
+            child: FutureBuilder(
+                future: freelancers,
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState != ConnectionState.done) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          CircularProgressIndicator(
+                            valueColor: new AlwaysStoppedAnimation<Color>(
+                                AppColors.purple),
+                            strokeWidth: 9.0,
+                          ),
+                        ],
+                      ),
+                    );
+                  } else if (snapshot.hasData) {
+                    return FreelanceSearch(data: snapshot.data);
+                  } else {
+                    return Center(
+                      child: ElevatedButton(
+                        style: Decorations()
+                            .buttonDecor(context: context, noBorder: true),
+                        child: Decorations().buttonText(
+                          buttonText: 'Retry',
+                          context: context,
                         ),
-                      ],
-                    ),
-                  );
-                } else if (snapshot.hasData) {
-                  return FreelanceSearch(data: snapshot.data);
-                } else {
-                  return Center(
-                    child: ElevatedButton(
-                      style: Decorations().buttonDecor(context: context, noBorder: true),
-                      child: Decorations().buttonText(buttonText: 'Retry', context: context,),
-                      onPressed: () {
-                        freelancers = _getFreelancers();
-                        setState(() {});
-                      },
-                    ),
-                  );
-                }
-              }),
+                        onPressed: () {
+                          freelancers = _getFreelancers();
+                          setState(() {});
+                        },
+                      ),
+                    );
+                  }
+                }),
+          ),
         ),
       ),
     );

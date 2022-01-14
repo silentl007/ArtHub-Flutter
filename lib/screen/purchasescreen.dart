@@ -238,7 +238,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               Icon(
                 Icons.cancel,
                 color: Colors.red,
-                size: 90,
+                size: Sizes.w90,
               ),
               SizedBox(height: Sizes.h15),
               Text(
@@ -299,12 +299,14 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                 Expanded(
                                     flex: 2,
                                     child: Padding(
-                                        padding: EdgeInsets.all(Sizes.w40),
+                                        padding: EdgeInsets.only(
+                                            left: Sizes.w40, right: Sizes.w40,),
                                         child: itembuilder(snapshot.data))),
                                 Expanded(
                                     flex: 1,
                                     child: Padding(
-                                        padding: EdgeInsets.all(Sizes.w40),
+                                        padding: EdgeInsets.only(
+                                            left: Sizes.w40, right: Sizes.w40, top: Sizes.h20),
                                         child: checkoutsummary(
                                             snapshot.data.length))),
                               ],
@@ -340,7 +342,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
     Sizes().heightSizeCalc(context);
     Sizes().widthSizeCalc(context);
     return Container(
-      color: Colors.white,
       child: ListView.builder(
         itemCount: snapshot.length,
         itemBuilder: (BuildContext context, int index) {
@@ -355,7 +356,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               elevation: 3,
               borderRadius: BorderRadius.all(Radius.circular(Sizes.w30)),
               child: Container(
-                height: Sizes.h165,
+                height: Sizes.h160,
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                 ),
@@ -364,7 +365,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                   child: Row(
                     children: [
                       Container(
-                        height: Sizes.h165,
+                        height: Sizes.h160,
                         width: Sizes.h120,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(Sizes.w30),
@@ -472,7 +473,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   checkoutsummary(int itemnumber) {
     return Container(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -497,6 +498,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               )
             ],
           ),
+          Divider(height: Sizes.h15,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -518,11 +520,12 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
               )
             ],
           ),
+          Divider(height: Sizes.h15,),
           Container(
             width: double.infinity,
             height: 1,
             color: AppColors.purple,
-          ),
+          ),Divider(height: Sizes.h15,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

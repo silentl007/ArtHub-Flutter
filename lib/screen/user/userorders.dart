@@ -2,7 +2,6 @@ import 'package:art_hub/screen/homescreen.dart';
 import 'package:art_hub/screen/user/ordersdelivered.dart';
 import 'package:flutter/material.dart';
 import 'package:art_hub/common/model.dart';
-import 'package:flutter_animator/flutter_animator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'orderspending.dart';
 
@@ -33,62 +32,60 @@ class _OrdersState extends State<Orders> {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    double fontSize20 = size.height * 0.025;
-    double padding30 = size.height * 0.03755;
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
     return DefaultTabController(
       initialIndex: initialPage,
       length: 2,
       child: SafeArea(
-          child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-            title: Padding(
-              padding: EdgeInsets.only(right: padding30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SlideInLeft(
-                    preferences:
-                        AnimationPreferences(offset: Duration(seconds: 2)),
-                    child: Text(
+          child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: Texts.textScale),
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+              title: Padding(
+                padding: EdgeInsets.only(right: Sizes.w30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
                       'Orders',
                       style: TextStyle(
-                        color: AppColors.purple,
-                        fontWeight: FontWeight.bold,
-                      ),
+                          color: AppColors.purple,
+                          fontSize: Sizes.w20,
+                          fontWeight: FontWeight.w700),
                     ),
+                  ],
+                ),
+              ),
+              bottom: TabBar(indicatorColor: AppColors.purple, tabs: <Widget>[
+                Tab(
+                  child: Text(
+                    'Delivered',
+                    style: TextStyle(
+                        color: AppColors.purple,
+                        fontSize: Sizes.w20,
+                        fontWeight: FontWeight.w700),
                   ),
-                ],
-              ),
+                ),
+                Tab(
+                  child: Text(
+                    'Pending',
+                    style: TextStyle(
+                        color: AppColors.purple,
+                        fontSize: Sizes.w20,
+                        fontWeight: FontWeight.w700),
+                  ),
+                )
+              ])),
+          body: WillPopScope(
+            onWillPop: () => _backtoHome(),
+            child: TabBarView(
+              children: [
+                Delivered(widget.userdetails!),
+                Pending(widget.userdetails!),
+              ],
             ),
-            bottom: TabBar(indicatorColor: AppColors.purple, tabs: <Widget>[
-              Tab(
-                child: Text(
-                  'Delivered',
-                  style: TextStyle(
-                      color: AppColors.purple,
-                      fontSize: fontSize20,
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
-              Tab(
-                child: Text(
-                  'Pending',
-                  style: TextStyle(
-                      color: AppColors.purple,
-                      fontSize: fontSize20,
-                      fontWeight: FontWeight.w700),
-                ),
-              )
-            ])),
-        body: WillPopScope(
-          onWillPop: () => _backtoHome(),
-          child: TabBarView(
-            children: [
-              Delivered(widget.userdetails!),
-              Pending(widget.userdetails!),
-            ],
           ),
         ),
       )),

@@ -15,64 +15,67 @@ class _ArtworksState extends State<Artworks> {
   Widgets classWidget = Widgets();
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    double fontSize20 = size.height * 0.025;
-    double padding30 = size.height * 0.03755;
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
+
     return DefaultTabController(
       initialIndex: 0,
       length: 2,
       child: SafeArea(
-          child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-            title: Padding(
-              padding: EdgeInsets.only(right: padding30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'Artworks',
-                    style: TextStyle(
-                      color: AppColors.purple,
-                      fontWeight: FontWeight.bold,
+          child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: Texts.textScale),
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+              title: Padding(
+                padding: EdgeInsets.only(right: Sizes.w30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Artworks',
+                      style: TextStyle(
+                        color: AppColors.purple,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
+                  ],
+                ),
+              ),
+              bottom: TabBar(indicatorColor: AppColors.purple, tabs: <Widget>[
+                Tab(
+                  child: Text(
+                    'Available',
+                    style: TextStyle(
+                        color: AppColors.purple,
+                        fontSize: Sizes.w20,
+                        fontWeight: FontWeight.w700),
                   ),
-                ],
-              ),
+                ),
+                Tab(
+                  child: Text(
+                    'Sold',
+                    style: TextStyle(
+                        color: AppColors.purple,
+                        fontSize: Sizes.w20,
+                        fontWeight: FontWeight.w700),
+                  ),
+                )
+              ])),
+          body: WillPopScope(
+            onWillPop: () async {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  (Route<dynamic> route) => false);
+              return true;
+            },
+            child: TabBarView(
+              children: [
+                Available(userDetails: widget.userDetails),
+                Sold(widget.userDetails),
+              ],
             ),
-            bottom: TabBar(indicatorColor: AppColors.purple, tabs: <Widget>[
-              Tab(
-                child: Text(
-                  'Available',
-                  style: TextStyle(
-                      color: AppColors.purple,
-                      fontSize: fontSize20,
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
-              Tab(
-                child: Text(
-                  'Sold',
-                  style: TextStyle(
-                      color: AppColors.purple,
-                      fontSize: fontSize20,
-                      fontWeight: FontWeight.w700),
-                ),
-              )
-            ])),
-        body: WillPopScope(
-          onWillPop: () async {
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
-                (Route<dynamic> route) => false);
-                return true;
-          },
-          child: TabBarView(
-            children: [
-              Available(userDetails: widget.userDetails),
-              Sold(widget.userDetails),
-            ],
           ),
         ),
       )),

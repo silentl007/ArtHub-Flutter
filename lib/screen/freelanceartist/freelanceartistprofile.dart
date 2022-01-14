@@ -17,42 +17,41 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double fontSize40 = size.height * 0.05;
-    double padding22 = size.height * 0.0275;
-    double padding18 = size.height * 0.02253;
-    double padding8 = size.height * 0.01001;
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
+
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: classWidget.apptitleBar(context, '${widget.artistdata.name}'),
-        floatingActionButton: classWidget.floatingHome(context),
-        body: Padding(
-          padding: EdgeInsets.all(padding22),
-          child: Column(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Container(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          height: double.infinity,
-                          child: BounceInLeft(
-                            preferences: AnimationPreferences(
-                                offset: Duration(seconds: 1)),
+      child: MediaQuery(
+        data: MediaQuery.of(context).copyWith(textScaleFactor: Texts.textScale),
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: classWidget.apptitleBar(context, '${widget.artistdata.name}'),
+          floatingActionButton: classWidget.floatingHome(context),
+          body: Padding(
+            padding: EdgeInsets.all(Sizes.w22),
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            height: double.infinity,
                             child: ClipRRect(
                               borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(100)),
+                                  topLeft: Radius.circular(Sizes.w100)),
                               child: CachedNetworkImage(
                                 fit: BoxFit.fitHeight,
                                 imageUrl: widget.artistdata.avatar!,
                                 placeholder: (context, url) => new Center(
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.end,
                                     children: [
                                       CircularProgressIndicator(
                                         valueColor:
@@ -69,67 +68,65 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
                             ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                          flex: 1,
-                          child: BounceInDown(
-                            preferences: AnimationPreferences(
-                                offset: Duration(seconds: 1)),
-                            child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: Container(
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: padding18),
-                                  child: Text(
-                                    '${widget.artistdata.name}',
-                                    style: TextStyle(
-                                        fontSize: fontSize40,
-                                        color: AppColors.purple,
-                                        fontWeight: FontWeight.bold),
-                                    textAlign: TextAlign.justify,
+                        Expanded(
+                            flex: 1,
+                            child: Pulse(
+                              preferences: AnimationPreferences(
+                                autoPlay: AnimationPlayStates.Loop,
+                                  offset: Duration(seconds: 1)),
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Container(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: Sizes.w18),
+                                    child: Text(
+                                      '${widget.artistdata.name}',
+                                      style: TextStyle(
+                                          fontSize: Sizes.w40,
+                                          color: AppColors.purple,
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.justify,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ))
-                    ],
+                            ))
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Padding(
-                  padding: EdgeInsets.only(top: padding8),
-                  child: widget.artistdata.works!.length == 0
-                      ? Center(
-                          child: Text('Sorry, no item available!'),
-                        )
-                      : GridView.builder(
-                          itemCount: widget.artistdata.works!.length,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 20),
-                          itemBuilder: (BuildContext context, int index) {
-                            return BounceInUp(
-                              preferences: AnimationPreferences(
-                                  offset: Duration(seconds: 2)),
-                              child: Pulse(
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: Sizes.h8),
+                    child: widget.artistdata.works!.length == 0
+                        ? Center(
+                            child: Text('Sorry, no item available!'),
+                          )
+                        : GridView.builder(
+                            itemCount: widget.artistdata.works!.length,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 20,
+                                    mainAxisSpacing: 20),
+                            itemBuilder: (BuildContext context, int index) {
+                              return Pulse(
                                 preferences: AnimationPreferences(
                                   autoPlay: AnimationPlayStates.Loop,
                                 ),
                                 child: InkWell(
-                                  onTap: () => details(
-                                      context, widget.artistdata.works![index]),
+                                  onTap: () => details(context,
+                                      widget.artistdata.works![index]),
                                   child: ClipRRect(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
+                                        BorderRadius.all(Radius.circular(Sizes.w20)),
                                     child: CachedNetworkImage(
                                       fit: BoxFit.cover,
-                                      imageUrl: widget.artistdata.works![index]
-                                          ['avatar'],
-                                      placeholder: (context, url) => new Center(
+                                      imageUrl: widget
+                                          .artistdata.works![index]['avatar'],
+                                      placeholder: (context, url) =>
+                                          new Center(
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -139,7 +136,8 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
                                             CircularProgressIndicator(
                                               valueColor:
                                                   new AlwaysStoppedAnimation<
-                                                      Color>(AppColors.purple),
+                                                          Color>(
+                                                      AppColors.purple),
                                               strokeWidth: 5.0,
                                             ),
                                           ],
@@ -150,13 +148,13 @@ class _FreeLanceProfileState extends State<FreeLanceProfile> {
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                        ),
+                              );
+                            },
+                          ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

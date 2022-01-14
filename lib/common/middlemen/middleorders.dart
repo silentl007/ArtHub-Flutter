@@ -58,7 +58,7 @@ class _MiddleOrdersState extends State<MiddleOrders> {
   orderscreen(List data) {
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => Orders(userdetails: data, page: widget.page!,)));
+          MaterialPageRoute(builder: (context) => Orders(userdetails: data, page: widget.page??0,)));
     });
   }
 }

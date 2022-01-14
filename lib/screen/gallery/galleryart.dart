@@ -70,63 +70,63 @@ class _GalleryArtState extends State<GalleryArt> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double fontSize20 = size.height * 0.025;
-    double padding30 = size.height * 0.03755;
-
     portraitworks.shuffle();
     return DefaultTabController(
       initialIndex: 0,
       length: 2,
       child: SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          floatingActionButton: classWidget.floatingHome(context),
-          appBar: AppBar(
-              title: Padding(
-                padding: EdgeInsets.only(right: padding30),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    SlideInLeft(
-                      preferences:
-                          AnimationPreferences(offset: Duration(seconds: 1)),
-                      child: Text(
-                        'Art',
-                        style: TextStyle(
-                          color: AppColors.purple,
-                          fontWeight: FontWeight.bold,
+        child: MediaQuery(
+          data:
+              MediaQuery.of(context).copyWith(textScaleFactor: Texts.textScale),
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            floatingActionButton: classWidget.floatingHome(context),
+            appBar: AppBar(
+                title: Padding(
+                  padding: EdgeInsets.only(right: Sizes.w30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SlideInLeft(
+                        preferences:
+                            AnimationPreferences(offset: Duration(seconds: 1)),
+                        child: Text(
+                          'Art',
+                          style: TextStyle(
+                            color: AppColors.purple,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
+                    ],
+                  ),
+                ),
+                bottom: TabBar(indicatorColor: AppColors.purple, tabs: <Widget>[
+                  Tab(
+                    child: Text(
+                      'Portraits',
+                      style: TextStyle(
+                          color: AppColors.purple,
+                          fontSize: Sizes.w20,
+                          fontWeight: FontWeight.w700),
                     ),
-                  ],
-                ),
-              ),
-              bottom: TabBar(indicatorColor: AppColors.purple, tabs: <Widget>[
-                Tab(
-                  child: Text(
-                    'Portraits',
-                    style: TextStyle(
-                        color: AppColors.purple,
-                        fontSize: fontSize20,
-                        fontWeight: FontWeight.w700),
                   ),
-                ),
-                Tab(
-                  child: Text(
-                    'Sculptors',
-                    style: TextStyle(
-                        color: AppColors.purple,
-                        fontSize: fontSize20,
-                        fontWeight: FontWeight.w700),
-                  ),
-                )
-              ])),
-          body: TabBarView(
-            children: [
-              PortraitDisplay(works: portraitworks),
-              PortraitDisplay(works: sculpworks)
-            ],
+                  Tab(
+                    child: Text(
+                      'Sculptors',
+                      style: TextStyle(
+                          color: AppColors.purple,
+                          fontSize: Sizes.w20,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  )
+                ])),
+            body: TabBarView(
+              children: [
+                PortraitDisplay(works: portraitworks),
+                PortraitDisplay(works: sculpworks)
+              ],
+            ),
           ),
         ),
       ),

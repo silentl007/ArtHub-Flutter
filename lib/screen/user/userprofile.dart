@@ -78,40 +78,41 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      key: _scaffoldKey,
-      floatingActionButton: BounceInDown(
-        preferences: AnimationPreferences(offset: Duration(seconds: 2)),
-        child: FloatingActionButton(
-          onPressed: () {
-            if (edit == 'profile') {
-              setState(() {
-                edit = 'edit';
-                appbarTitle = 'Edit Profile';
-                editIcon = Icon(Icons.home);
-              });
-            } else {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
-                  (Route<dynamic> route) => false);
-            }
-          },
-          backgroundColor: AppColors.purple,
-          child: editIcon,
+        child: MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaleFactor: Texts.textScale),
+      child: Scaffold(
+        key: _scaffoldKey,
+        floatingActionButton: BounceInDown(
+          preferences: AnimationPreferences(offset: Duration(seconds: 2)),
+          child: FloatingActionButton(
+            onPressed: () {
+              if (edit == 'profile') {
+                setState(() {
+                  edit = 'edit';
+                  appbarTitle = 'Edit Profile';
+                  editIcon = Icon(Icons.home);
+                });
+              } else {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    (Route<dynamic> route) => false);
+              }
+            },
+            backgroundColor: AppColors.purple,
+            child: editIcon,
+          ),
         ),
+        appBar: classWidget.apptitleBar(context, appbarTitle),
+        body: edit == 'profile' ? _profile() : _profileEdit(),
       ),
-      appBar: classWidget.apptitleBar(context, appbarTitle),
-      body: edit == 'profile' ? _profile() : _profileEdit(),
     ));
   }
 
   _profile() {
-    Size size = MediaQuery.of(context).size;
     final node = FocusScope.of(context);
-    double containerHeight = size.height * 0.25;
-    double containerwidth = size.width * 0.355;
-    double padding40 = size.height * 0.05;
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
     return WillPopScope(
       onWillPop: () async {
         Navigator.pushAndRemoveUntil(
@@ -123,7 +124,7 @@ class _ProfileState extends State<Profile> {
       child: Container(
         width: double.infinity,
         height: double.infinity,
-        padding: EdgeInsets.only(left: padding40, right: padding40),
+        padding: EdgeInsets.only(left: Sizes.w40, right: Sizes.w40),
         decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage('assets/appimages/welcomeback.png'),
@@ -132,96 +133,83 @@ class _ProfileState extends State<Profile> {
         child: SingleChildScrollView(
           child: Column(children: [
             accountType == 'Freelancer'
-                ? BounceInDown(
-                    preferences:
-                        AnimationPreferences(offset: Duration(seconds: 2)),
-                    child: Container(
-                      height: containerHeight,
-                      width: containerwidth,
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.only(topLeft: Radius.circular(70)),
-                        image: DecorationImage(
-                          image: NetworkImage(avatar),
-                          fit: BoxFit.cover,
-                        ),
+                ? Container(
+                    height: Sizes.h200,
+                    width: Sizes.w150,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(Sizes.w70)),
+                      image: DecorationImage(
+                        image: NetworkImage(avatar),
+                        fit: BoxFit.cover,
                       ),
-                      child: ClipRRect(
-                        borderRadius:
-                            BorderRadius.only(topLeft: Radius.circular(70)),
-                        child: CachedNetworkImage(
-                          fit: BoxFit.cover,
-                          imageUrl: avatar,
-                          placeholder: (context, url) => new Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                CircularProgressIndicator(
-                                  valueColor: new AlwaysStoppedAnimation<Color>(
-                                      AppColors.purple),
-                                  strokeWidth: 5.0,
-                                ),
-                              ],
-                            ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(Sizes.w70)),
+                      child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        imageUrl: avatar,
+                        placeholder: (context, url) => new Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              CircularProgressIndicator(
+                                valueColor: new AlwaysStoppedAnimation<Color>(
+                                    AppColors.purple),
+                                strokeWidth: 5.0,
+                              ),
+                            ],
                           ),
-                          errorWidget: (context, url, error) =>
-                              new Icon(Icons.error),
                         ),
+                        errorWidget: (context, url, error) =>
+                            new Icon(Icons.error),
                       ),
                     ),
                   )
                 : Container(),
-            SlideInLeft(
-              preferences: AnimationPreferences(duration: Duration(seconds: 4)),
-              child: TextFormField(
-                readOnly: true,
-                initialValue: email,
-                cursorColor: AppColors.purple,
-                textCapitalization: TextCapitalization.words,
-                keyboardType: TextInputType.name,
-                textInputAction: TextInputAction.next,
-                onEditingComplete: () => node.nextFocus(),
-                decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.purple)),
-                    labelText: 'Email',
-                    icon: Icon(Icons.email, color: AppColors.purple)),
-              ),
+            TextFormField(
+              readOnly: true,
+              initialValue: email,
+              cursorColor: AppColors.purple,
+              textCapitalization: TextCapitalization.words,
+              keyboardType: TextInputType.name,
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(),
+              decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.purple)),
+                  labelText: 'Email',
+                  icon: Icon(Icons.email, color: AppColors.purple)),
             ),
-            SlideInRight(
-              preferences: AnimationPreferences(duration: Duration(seconds: 4)),
-              child: TextFormField(
-                readOnly: true,
-                initialValue: displayName,
-                cursorColor: AppColors.purple,
-                textCapitalization: TextCapitalization.words,
-                keyboardType: TextInputType.name,
-                textInputAction: TextInputAction.next,
-                onEditingComplete: () => node.nextFocus(),
-                decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.purple)),
-                    labelText: 'Full Name',
-                    icon: Icon(Icons.title, color: AppColors.purple)),
-              ),
+            TextFormField(
+              readOnly: true,
+              initialValue: displayName,
+              cursorColor: AppColors.purple,
+              textCapitalization: TextCapitalization.words,
+              keyboardType: TextInputType.name,
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(),
+              decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.purple)),
+                  labelText: 'Full Name',
+                  icon: Icon(Icons.title, color: AppColors.purple)),
             ),
-            SlideInLeft(
-              preferences: AnimationPreferences(duration: Duration(seconds: 4)),
-              child: TextFormField(
-                readOnly: true,
-                initialValue: number,
-                cursorColor: AppColors.purple,
-                keyboardType: TextInputType.number,
-                textInputAction: TextInputAction.next,
-                onEditingComplete: () => node.nextFocus(),
-                maxLength: 11,
-                decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.purple)),
-                    labelText: 'Phone No.',
-                    icon: Icon(Icons.phone, color: AppColors.purple)),
-              ),
+            TextFormField(
+              readOnly: true,
+              initialValue: number,
+              cursorColor: AppColors.purple,
+              keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(),
+              maxLength: 11,
+              decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.purple)),
+                  labelText: 'Phone No.',
+                  icon: Icon(Icons.phone, color: AppColors.purple)),
             ),
             SlideInRight(
               preferences: AnimationPreferences(duration: Duration(seconds: 4)),
@@ -239,21 +227,18 @@ class _ProfileState extends State<Profile> {
                     icon: Icon(Icons.gps_fixed, color: AppColors.purple)),
               ),
             ),
-            SlideInLeft(
-              preferences: AnimationPreferences(duration: Duration(seconds: 4)),
-              child: TextFormField(
-                readOnly: true,
-                initialValue: state,
-                cursorColor: AppColors.purple,
-                textCapitalization: TextCapitalization.words,
-                textInputAction: TextInputAction.next,
-                onEditingComplete: () => node.nextFocus(),
-                decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.purple)),
-                    labelText: 'State',
-                    icon: Icon(Icons.location_city, color: AppColors.purple)),
-              ),
+            TextFormField(
+              readOnly: true,
+              initialValue: state,
+              cursorColor: AppColors.purple,
+              textCapitalization: TextCapitalization.words,
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(),
+              decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.purple)),
+                  labelText: 'State',
+                  icon: Icon(Icons.location_city, color: AppColors.purple)),
             ),
             BounceInDown(
               preferences: AnimationPreferences(offset: Duration(seconds: 2)),
@@ -273,13 +258,13 @@ class _ProfileState extends State<Profile> {
                         builder: (BuildContext context) {
                           return AlertDialog(
                             shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(Sizes.w20))),
                             content: StatefulBuilder(
                               builder: (context, StateSetter setState) {
                                 return Container(
-                                  height: 600,
-                                  width: 250,
+                                  height: Sizes.h600,
+                                  width: Sizes.w250,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                         image: AssetImage(
@@ -289,46 +274,37 @@ class _ProfileState extends State<Profile> {
                                   child: SingleChildScrollView(
                                     child: Column(
                                       children: [
-                                        SlideInLeft(
-                                          preferences: AnimationPreferences(
-                                              offset: Duration(seconds: 1)),
-                                          child: CreditCardWidget(
-                                            cardNumber: cardNumber,
-                                            expiryDate: expiryDate,
-                                            cardHolderName: cardHolderName,
-                                            cvvCode: cvvCode,
-                                            showBackView: isCvvFocused,
-                                            onCreditCardWidgetChange:
-                                                (CreditCardBrand brand) {},
-                                          ),
+                                        CreditCardWidget(
+                                          cardNumber: cardNumber,
+                                          expiryDate: expiryDate,
+                                          cardHolderName: cardHolderName,
+                                          cvvCode: cvvCode,
+                                          showBackView: isCvvFocused,
+                                          onCreditCardWidgetChange:
+                                              (CreditCardBrand brand) {},
                                         ),
-                                        SlideInRight(
-                                          preferences: AnimationPreferences(
-                                              offset: Duration(seconds: 1)),
-                                          child: CreditCardForm(
-                                            formKey: _cardKey,
-                                            themeColor: Colors.red,
-                                            cardNumber: cardNumber,
-                                            expiryDate: expiryDate,
-                                            cardHolderName: cardHolderName,
-                                            cvvCode: cvvCode,
-                                            onCreditCardModelChange:
-                                                (CreditCardModel
-                                                    creditCardModel) {
-                                              setState(() {
-                                                cardNumber =
-                                                    creditCardModel.cardNumber;
-                                                expiryDate =
-                                                    creditCardModel.expiryDate;
-                                                cardHolderName = creditCardModel
-                                                    .cardHolderName;
-                                                cvvCode =
-                                                    creditCardModel.cvvCode;
-                                                isCvvFocused = creditCardModel
-                                                    .isCvvFocused;
-                                              });
-                                            },
-                                          ),
+                                        CreditCardForm(
+                                          formKey: _cardKey,
+                                          themeColor: Colors.red,
+                                          cardNumber: cardNumber,
+                                          expiryDate: expiryDate,
+                                          cardHolderName: cardHolderName,
+                                          cvvCode: cvvCode,
+                                          onCreditCardModelChange:
+                                              (CreditCardModel
+                                                  creditCardModel) {
+                                            setState(() {
+                                              cardNumber =
+                                                  creditCardModel.cardNumber;
+                                              expiryDate =
+                                                  creditCardModel.expiryDate;
+                                              cardHolderName = creditCardModel
+                                                  .cardHolderName;
+                                              cvvCode = creditCardModel.cvvCode;
+                                              isCvvFocused =
+                                                  creditCardModel.isCvvFocused;
+                                            });
+                                          },
                                         ),
                                         Align(
                                           alignment: Alignment.bottomRight,
@@ -379,10 +355,9 @@ class _ProfileState extends State<Profile> {
   }
 
   _profileEdit() {
-    Size size = MediaQuery.of(context).size;
     final node = FocusScope.of(context);
-    double fontSize15 = size.height * 0.01870;
-    double padding40 = size.height * 0.05;
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
     return WillPopScope(
       onWillPop: () async {
         Navigator.pushAndRemoveUntil(
@@ -396,7 +371,7 @@ class _ProfileState extends State<Profile> {
         child: Container(
           width: double.infinity,
           height: double.infinity,
-          padding: EdgeInsets.only(left: padding40, right: padding40),
+          padding: EdgeInsets.only(left: Sizes.w40, right: Sizes.w40),
           decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage('assets/appimages/welcomeback.png'),
@@ -405,87 +380,75 @@ class _ProfileState extends State<Profile> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SlideInLeft(
-                  preferences:
-                      AnimationPreferences(duration: Duration(seconds: 4)),
-                  child: TextFormField(
-                    initialValue: displayName,
-                    cursorColor: AppColors.purple,
-                    textCapitalization: TextCapitalization.words,
-                    keyboardType: TextInputType.name,
-                    textInputAction: TextInputAction.next,
-                    onEditingComplete: () => node.nextFocus(),
-                    decoration: InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.purple)),
-                        labelText: 'Full Name',
-                        icon: Icon(Icons.title, color: AppColors.purple)),
-                    onSaved: (text) {
-                      setState(() {
-                        update.name = text;
-                      });
-                    },
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'This field is empty';
-                      }
-                    },
-                  ),
+                TextFormField(
+                  initialValue: displayName,
+                  cursorColor: AppColors.purple,
+                  textCapitalization: TextCapitalization.words,
+                  keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
+                  onEditingComplete: () => node.nextFocus(),
+                  decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.purple)),
+                      labelText: 'Full Name',
+                      icon: Icon(Icons.title, color: AppColors.purple)),
+                  onSaved: (text) {
+                    setState(() {
+                      update.name = text;
+                    });
+                  },
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'This field is empty';
+                    }
+                  },
                 ),
-                SlideInRight(
-                  preferences:
-                      AnimationPreferences(duration: Duration(seconds: 4)),
-                  child: TextFormField(
-                    initialValue: number,
-                    cursorColor: AppColors.purple,
-                    keyboardType: TextInputType.number,
-                    textInputAction: TextInputAction.next,
-                    onEditingComplete: () => node.nextFocus(),
-                    maxLength: 11,
-                    decoration: InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.purple)),
-                        labelText: 'Phone No.',
-                        icon: Icon(Icons.phone, color: AppColors.purple)),
-                    onSaved: (text) {
-                      setState(() {
-                        update.number = int.tryParse(text!);
-                      });
-                    },
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'This field is empty';
-                      } else if (value.length != 11) {
-                        return 'The number is not complete';
-                      }
-                    },
-                  ),
+                TextFormField(
+                  initialValue: number,
+                  cursorColor: AppColors.purple,
+                  keyboardType: TextInputType.number,
+                  textInputAction: TextInputAction.next,
+                  onEditingComplete: () => node.nextFocus(),
+                  maxLength: 11,
+                  decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.purple)),
+                      labelText: 'Phone No.',
+                      icon: Icon(Icons.phone, color: AppColors.purple)),
+                  onSaved: (text) {
+                    setState(() {
+                      update.number = int.tryParse(text!);
+                    });
+                  },
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'This field is empty';
+                    } else if (value.length != 11) {
+                      return 'The number is not complete';
+                    }
+                  },
                 ),
-                SlideInLeft(
-                  preferences:
-                      AnimationPreferences(duration: Duration(seconds: 4)),
-                  child: TextFormField(
-                    initialValue: address,
-                    cursorColor: AppColors.purple,
-                    textCapitalization: TextCapitalization.words,
-                    textInputAction: TextInputAction.next,
-                    onEditingComplete: () => node.nextFocus(),
-                    decoration: InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: AppColors.purple)),
-                        labelText: 'Address',
-                        icon: Icon(Icons.gps_fixed, color: AppColors.purple)),
-                    onSaved: (text) {
-                      setState(() {
-                        update.address = text;
-                      });
-                    },
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'This field is empty';
-                      }
-                    },
-                  ),
+                TextFormField(
+                  initialValue: address,
+                  cursorColor: AppColors.purple,
+                  textCapitalization: TextCapitalization.words,
+                  textInputAction: TextInputAction.next,
+                  onEditingComplete: () => node.nextFocus(),
+                  decoration: InputDecoration(
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: AppColors.purple)),
+                      labelText: 'Address',
+                      icon: Icon(Icons.gps_fixed, color: AppColors.purple)),
+                  onSaved: (text) {
+                    setState(() {
+                      update.address = text;
+                    });
+                  },
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'This field is empty';
+                    }
+                  },
                 ),
                 accountType == 'Freelancer'
                     ? Column(
@@ -514,69 +477,56 @@ class _ProfileState extends State<Profile> {
                           //     }
                           //   },
                           // ),
-                          SlideInRight(
-                            preferences: AnimationPreferences(
-                                duration: Duration(seconds: 4)),
-                            child: Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Update your avatar',
-                                  style: TextStyle(
-                                      fontSize: fontSize15,
-                                      color: Colors.black),
-                                )),
-                          ),
+                          Container(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Update your avatar',
+                                style: TextStyle(
+                                    fontSize: Sizes.w15, color: Colors.black),
+                              )),
                           SizedBox(
-                            height: 5,
+                            height: Sizes.h5,
                           ),
-                          SlideInLeft(
-                            preferences: AnimationPreferences(
-                                duration: Duration(seconds: 4)),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                _avatarFuture();
-                              },
-                              style: Decorations().buttonDecor(
-                                  context: context, borderRadius: Sizes.w150),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.upload_file, color: Colors.white),
-                                  SizedBox(
-                                    width: 3,
-                                  ),
-                                  Decorations().buttonText(
-                                      buttonText: 'Upload', context: context)
-                                ],
-                              ),
+                          ElevatedButton(
+                            onPressed: () {
+                              _avatarFuture();
+                            },
+                            style: Decorations().buttonDecor(
+                                context: context, borderRadius: Sizes.w150),
+                            child: Row(
+                              children: [
+                                Icon(Icons.upload_file, color: Colors.white),
+                                SizedBox(
+                                  width: Sizes.w4,
+                                ),
+                                Decorations().buttonText(
+                                    buttonText: 'Upload', context: context)
+                              ],
                             ),
                           ),
                         ],
                       )
                     : Container(),
-                SlideInRight(
-                  preferences:
-                      AnimationPreferences(duration: Duration(seconds: 4)),
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    child: DropdownButton<String>(
-                      value: selectedState,
-                      onChanged: (text) {
-                        setState(() {
-                          selectedState = text!;
-                          update.location = selectedState;
-                        });
-                      },
-                      items: states.map<DropdownMenuItem<String>>((text) {
-                        return DropdownMenuItem(
-                          child: Text(
-                            text,
-                            style: TextStyle(
-                                color: _stateColor, fontSize: fontSize15),
-                          ),
-                          value: text,
-                        );
-                      }).toList(),
-                    ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: DropdownButton<String>(
+                    value: selectedState,
+                    onChanged: (text) {
+                      setState(() {
+                        selectedState = text!;
+                        update.location = selectedState;
+                      });
+                    },
+                    items: states.map<DropdownMenuItem<String>>((text) {
+                      return DropdownMenuItem(
+                        child: Text(
+                          text,
+                          style: TextStyle(
+                              color: _stateColor, fontSize: Sizes.w15),
+                        ),
+                        value: text,
+                      );
+                    }).toList(),
                   ),
                 ),
                 BounceInDown(
@@ -618,6 +568,8 @@ class _ProfileState extends State<Profile> {
   }
 
   updateProfile() {
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
     return showDialog(
         context: context,
         builder: (context) {
@@ -629,7 +581,8 @@ class _ProfileState extends State<Profile> {
                     color: Colors.transparent,
                     child: AlertDialog(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(Sizes.w20))),
                       content: LinearProgressIndicator(
                         backgroundColor: Colors.white,
                         valueColor:
@@ -654,14 +607,18 @@ class _ProfileState extends State<Profile> {
   }
 
   updateFailed() {
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
     return AlertDialog(
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20))),
+          borderRadius: BorderRadius.all(Radius.circular(Sizes.w20))),
       content: Text('Please check your internet connection'),
     );
   }
 
   _avatarFuture() {
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
     return showDialog(
         context: context,
         builder: (context) {
@@ -673,7 +630,8 @@ class _ProfileState extends State<Profile> {
                   color: Colors.transparent,
                   child: AlertDialog(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                        borderRadius:
+                            BorderRadius.all(Radius.circular(Sizes.w20))),
                     content: LinearProgressIndicator(
                       backgroundColor: Colors.white,
                       valueColor:
@@ -685,13 +643,15 @@ class _ProfileState extends State<Profile> {
                 avatar = snapshot.data;
                 return AlertDialog(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(Sizes.w20))),
                   content: Text('Avatar upload complete'),
                 );
               } else
                 return AlertDialog(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                      borderRadius:
+                          BorderRadius.all(Radius.circular(Sizes.w20))),
                   content: Text(
                       'Unable to upload connect, please check your connetion'),
                 );

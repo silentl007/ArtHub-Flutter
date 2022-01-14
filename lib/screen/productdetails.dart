@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:art_hub/common/middlemen/middlemancart.dart';
 import 'package:art_hub/common/model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_animator/flutter_animator.dart';
@@ -246,13 +247,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                                       width: Sizes.w90,
                                       decoration: BoxDecoration(
                                           borderRadius: BorderRadius.all(
-                                              Radius.circular(Sizes.w10)),
-                                          color: AppColors.red),
+                                              Radius.circular(Sizes.w10)),),
                                       child: Center(
                                           child: Text(
                                         '₦ ${displayNumber(data.cost!)}',
                                         style: TextStyle(
-                                            color: Colors.white,
+                                            color: AppColors.red,
+                                            fontWeight: FontWeight.w700,
                                             fontSize: Sizes.w20),
                                       )),
                                     ),

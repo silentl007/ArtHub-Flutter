@@ -49,8 +49,9 @@ class _SoldState extends State<Sold> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double padding40 = size.height * 0.05;
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
+
     return FutureBuilder(
       future: sold,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -60,7 +61,7 @@ class _SoldState extends State<Sold> {
           return Container(
             child: snapshot.data.length != 0
                 ? Padding(
-                    padding: EdgeInsets.all(padding40),
+                    padding: EdgeInsets.all(Sizes.w40),
                     child: Column(
                       children: [
                         Expanded(
@@ -97,11 +98,6 @@ class _SoldState extends State<Sold> {
   }
 
   itembuilder(List snapshot) {
-    Size size = MediaQuery.of(context).size;
-    double innerheight = size.height * .20;
-    double fontSize20 = size.height * 0.025;
-    double padding8 = size.height * 0.01001;
-    double padding5 = size.height * 0.00625;
     return Container(
       color: Colors.white,
       child: ListView.builder(
@@ -109,90 +105,79 @@ class _SoldState extends State<Sold> {
         itemBuilder: (BuildContext context, int index) {
           return Padding(
             padding: EdgeInsets.only(
-              top: padding8,
-              bottom: padding8,
-              left: padding5,
-              right: padding5,
+              top: Sizes.h8,
+              bottom: Sizes.h8,
+              left: Sizes.w5,
+              right: Sizes.w5,
             ),
             child: Material(
               elevation: 3,
-              borderRadius: BorderRadius.all(Radius.circular(30)),
+              borderRadius: BorderRadius.all(Radius.circular(Sizes.w30)),
               child: Container(
-                height: size.height * .20,
+                height: Sizes.h160,
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                 ),
                 child: Padding(
-                  padding: EdgeInsets.all(padding8),
+                  padding: EdgeInsets.all(Sizes.w8),
                   child: Row(
                     children: [
                       Container(
-                        height: innerheight,
-                        width: size.height * .15,
-                        child: FadeInDown(
-                          preferences: AnimationPreferences(
-                            offset: Duration(seconds: 2),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(30.0),
-                            child: CachedNetworkImage(
-                              fit: BoxFit.cover,
-                              imageUrl: snapshot[index]['avatar'],
-                              placeholder: (context, url) => new Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    CircularProgressIndicator(
-                                      valueColor:
-                                          new AlwaysStoppedAnimation<Color>(
-                                              AppColors.purple),
-                                      strokeWidth: 5.0,
-                                    ),
-                                  ],
-                                ),
+                        height: Sizes.h160,
+                        width: Sizes.w120,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(Sizes.w30),
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            imageUrl: snapshot[index]['avatar'],
+                            placeholder: (context, url) => new Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  CircularProgressIndicator(
+                                    valueColor:
+                                        new AlwaysStoppedAnimation<Color>(
+                                            AppColors.purple),
+                                    strokeWidth: 5.0,
+                                  ),
+                                ],
                               ),
-                              errorWidget: (context, url, error) =>
-                                  new Icon(Icons.error),
                             ),
+                            errorWidget: (context, url, error) =>
+                                new Icon(Icons.error),
                           ),
                         ),
                       ),
                       Container(
                         color: Colors.transparent,
-                        width: size.height * .22,
-                        padding: EdgeInsets.only(left: fontSize20),
+                        width: Sizes.h176,
+                        padding: EdgeInsets.only(left: Sizes.w20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            slide(
-                                'left',
-                                Text(
-                                  '${snapshot[index]['product']}',
-                                  style: TextStyle(
-                                      color: AppColors.purple,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: fontSize20),
-                                )),
-                            slide(
-                                'right',
-                                Text(
-                                  '${snapshot[index]['type']}',
-                                  style: TextStyle(
-                                      color: AppColors.purple,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: fontSize20),
-                                )),
-                            slide(
-                                'left',
-                                Text(
-                                  '₦ ${displayNumber(snapshot[index]['cost'])}',
-                                  style: TextStyle(
-                                      color: AppColors.red,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: fontSize20),
-                                )),
+                            Text(
+                              '${snapshot[index]['product']}',
+                              style: TextStyle(
+                                  color: AppColors.purple,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Sizes.w20),
+                            ),
+                            Text(
+                              '${snapshot[index]['type']}',
+                              style: TextStyle(
+                                  color: AppColors.purple,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: Sizes.w20),
+                            ),
+                            Text(
+                              '₦ ${displayNumber(snapshot[index]['cost'])}',
+                              style: TextStyle(
+                                  color: AppColors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: Sizes.w20),
+                            ),
                           ],
                         ),
                       )
@@ -208,30 +193,24 @@ class _SoldState extends State<Sold> {
   }
 
   solddetails(int itemnumber) {
-    Size size = MediaQuery.of(context).size;
-    double fontSize25 = size.height * 0.03125;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        slide(
-            'right',
-            Text(
-              'Total Items ($itemnumber)',
-              style: TextStyle(
-                  color: AppColors.purple,
-                  fontWeight: FontWeight.bold,
-                  fontSize: fontSize25),
-            )),
-        slide(
-            'left',
-            Text(
-              '₦ ${displayNumber(summation!)}',
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                  color: AppColors.red,
-                  fontWeight: FontWeight.bold,
-                  fontSize: fontSize25),
-            )),
+        Text(
+          'Total Items ($itemnumber)',
+          style: TextStyle(
+              color: AppColors.purple,
+              fontWeight: FontWeight.bold,
+              fontSize: Sizes.w25),
+        ),
+        Text(
+          '₦ ${displayNumber(summation!)}',
+          textAlign: TextAlign.right,
+          style: TextStyle(
+              color: AppColors.red,
+              fontWeight: FontWeight.bold,
+              fontSize: Sizes.w25),
+        ),
       ],
     );
   }

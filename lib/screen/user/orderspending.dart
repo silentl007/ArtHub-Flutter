@@ -55,8 +55,8 @@ class _PendingState extends State<Pending> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    double padding10 = size.height * 0.0125;
+    Sizes().heightSizeCalc(context);
+    Sizes().widthSizeCalc(context);
     return FutureBuilder(
       future: getpending,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -66,7 +66,7 @@ class _PendingState extends State<Pending> {
           return Container(
             child: snapshot.data.length != 0
                 ? Padding(
-                    padding: EdgeInsets.all(padding10),
+                    padding: EdgeInsets.all(Sizes.w10),
                     child: itembuilder(snapshot.data),
                   )
                 : Center(
@@ -93,59 +93,46 @@ class _PendingState extends State<Pending> {
   }
 
   itembuilder(List snapshot) {
-    Size size = MediaQuery.of(context).size;
-    double qrsize200 = size.height * 0.25;
     return ListView.builder(
       itemCount: snapshot.length,
       itemBuilder: (BuildContext context, int index) {
-        return BounceInDown(
-          preferences: AnimationPreferences(
-            offset: Duration(seconds: 2),
+        return Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(Sizes.w25),
+            ),
           ),
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(25),
+          child: ListTile(
+            onTap: () {
+              orderDetails(snapshot[index].purchaseditems);
+            },
+            leading: Pulse(
+              preferences:
+                  AnimationPreferences(autoPlay: AnimationPlayStates.Loop),
+              child: IconButton(
+                icon: Icon(Icons.qr_code),
+                onPressed: () {
+                  showQR(snapshot[index].orderID, Sizes.h200);
+                },
               ),
             ),
-            child: ListTile(
-              onTap: () {
-                orderDetails(snapshot[index].purchaseditems);
-              },
-              leading: slide(
-                  'left',
-                  Pulse(
-                    preferences: AnimationPreferences(
-                        autoPlay: AnimationPlayStates.Loop),
-                    child: IconButton(
-                      icon: Icon(Icons.qr_code),
-                      onPressed: () {
-                        showQR(snapshot[index].orderID, qrsize200);
-                      },
-                    ),
-                  )),
-              trailing: Icon(Icons.arrow_right),
-              title: slide(
-                  'right',
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Order ID'),
-                      Text('${snapshot[index].orderID}'),
-                    ],
-                  )),
-              subtitle: slide(
-                  'right',
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Date: ${snapshot[index].dateOrdered}'),
-                      Text('No. of items: ${snapshot[index].itemnumber}'),
-                      Text(
-                          'Cost of items: ₦${displayNumber(snapshot[index].itemscost)}'),
-                    ],
-                  )),
+            trailing: Icon(Icons.arrow_right),
+            title: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Order ID'),
+                Text('${snapshot[index].orderID}'),
+              ],
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Date: ${snapshot[index].dateOrdered}'),
+                Text('No. of items: ${snapshot[index].itemnumber}'),
+                Text(
+                    'Cost of items: ₦${displayNumber(snapshot[index].itemscost)}'),
+              ],
             ),
           ),
         );

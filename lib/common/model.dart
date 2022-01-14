@@ -57,8 +57,10 @@ class Sizes {
   static double h600 = 0;
   static double h44 = 0;
   static double h165 = 0;
+  static double h160 = 0;
   static double h330 = 0;
   static double h360 = 0;
+  static double h176 = 0;
   // Width
   static double w40 = 0;
   static double w180 = 0;
@@ -104,6 +106,7 @@ class Sizes {
   static double w230 = 0;
   static double w317 = 0;
   static double w90 = 0;
+  static double w176 = 0;
   void widthSizeCalc(BuildContext context) {
     // most of the smaller numbers are for font sizes, bigger numbers for height of widgets
     size = MediaQuery.of(context).size.width;
@@ -132,6 +135,7 @@ class Sizes {
     w350 = size! * .82742;
     w250 = size! * .591;
     w100 = size! * .2364;
+    w176 = size! * .41607;
     w60 = size! * .1418;
     w2 = size! * .0047;
     w38 = size! * .0898;
@@ -199,10 +203,12 @@ class Sizes {
     h12 = size! * .015018;
     h355 = size! * .444305;
     h180 = size! * .225;
+    h176 = size! * .22;
     h7 = size! * .008761;
     h3 = size! * .00375;
     h44 = size! * .05506;
     h165 = size! * .2065;
+    h160 = size! * .20;
     h330 = size! * .4130162;
     h360 = size! * .45;
   }
@@ -236,8 +242,8 @@ class Decorations {
         elevation: elevation ?? 10,
         primary: buttoncolor ?? AppColors.purple,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-                Radius.circular(noBorder == true ? 0 : borderRadius ??  Sizes.w50))));
+            borderRadius: BorderRadius.all(Radius.circular(
+                noBorder == true ? 0 : borderRadius ?? Sizes.w50))));
   }
 
   buttonText(
@@ -259,11 +265,10 @@ class Decorations {
 
 class Widgets {
   apptitleBar(BuildContext context, String text) {
-    final Size size = MediaQuery.of(context).size;
-    double padding30 = size.height * 0.03755;
+  Sizes().widthSizeCalc(context);
     return AppBar(
       title: Padding(
-        padding: EdgeInsets.only(right: padding30),
+        padding: EdgeInsets.only(right: Sizes.w30),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
