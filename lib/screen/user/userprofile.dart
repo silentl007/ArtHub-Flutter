@@ -211,21 +211,18 @@ class _ProfileState extends State<Profile> {
                   labelText: 'Phone No.',
                   icon: Icon(Icons.phone, color: AppColors.purple)),
             ),
-            SlideInRight(
-              preferences: AnimationPreferences(duration: Duration(seconds: 4)),
-              child: TextFormField(
-                readOnly: true,
-                initialValue: address,
-                cursorColor: AppColors.purple,
-                textCapitalization: TextCapitalization.words,
-                textInputAction: TextInputAction.next,
-                onEditingComplete: () => node.nextFocus(),
-                decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.purple)),
-                    labelText: 'Address',
-                    icon: Icon(Icons.gps_fixed, color: AppColors.purple)),
-              ),
+            TextFormField(
+              readOnly: true,
+              initialValue: address,
+              cursorColor: AppColors.purple,
+              textCapitalization: TextCapitalization.words,
+              textInputAction: TextInputAction.next,
+              onEditingComplete: () => node.nextFocus(),
+              decoration: InputDecoration(
+                  focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColors.purple)),
+                  labelText: 'Address',
+                  icon: Icon(Icons.gps_fixed, color: AppColors.purple)),
             ),
             TextFormField(
               readOnly: true,
