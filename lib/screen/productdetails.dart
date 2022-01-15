@@ -87,6 +87,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             ),
           ),
           appBar: AppBar(
+            toolbarHeight: Sizes.h30,
             title: Decorations()
                 .buttonText(buttonText: 'Details', context: context),
             actions: [

@@ -82,6 +82,7 @@ class _GalleryArtState extends State<GalleryArt> {
             backgroundColor: Colors.white,
             floatingActionButton: classWidget.floatingHome(context),
             appBar: AppBar(
+              toolbarHeight: Sizes.h30,
                 title: Padding(
                   padding: EdgeInsets.only(right: Sizes.w30),
                   child: Row(

@@ -35,124 +35,75 @@ class _FreelanceSearchState extends State<FreelanceSearch> {
             child: GridView.builder(
               itemCount: filter.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                  crossAxisCount: 3,
                   mainAxisSpacing: 20,
                   crossAxisSpacing: 20,
                   childAspectRatio: .8),
               itemBuilder: (BuildContext context, int index) {
                 return Padding(
                     padding: EdgeInsets.only(top: Sizes.h8),
-                    child: index.isEven || index == 0
-                        ? InkWell(
-                            onTap: () => profile(filter[index]),
-                            child: Container(
-                              child: Stack(
-                                fit: StackFit.passthrough,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(Sizes.w70)),
-                                    child: CachedNetworkImage(
-                                      fit: BoxFit.cover,
-                                      imageUrl: filter[index].avatar,
-                                      placeholder: (context, url) => new Center(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            CircularProgressIndicator(
-                                              valueColor:
-                                                  new AlwaysStoppedAnimation<
-                                                      Color>(AppColors.purple),
-                                              strokeWidth: 5.0,
-                                            ),
-                                          ],
-                                        ),
+                    child: InkWell(
+                      onTap: () => profile(filter[index]),
+                      child: Stack(
+                        fit: StackFit.passthrough,
+                        children: [
+                          Container(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(Sizes.w70)),
+                              child: CachedNetworkImage(
+                                fit: BoxFit.cover,
+                                imageUrl: filter[index].avatar,
+                                placeholder: (context, url) => Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      CircularProgressIndicator(
+                                        valueColor:
+                                            new AlwaysStoppedAnimation<Color>(
+                                                AppColors.purple),
+                                        strokeWidth: 5.0,
                                       ),
-                                      errorWidget: (context, url, error) =>
-                                          new Icon(Icons.error),
-                                    ),
+                                    ],
                                   ),
-                                  Pulse(
-                                    preferences: AnimationPreferences(
-                                        autoPlay: AnimationPlayStates.Loop,
-                                        offset: Duration(seconds: 2)),
-                                    child: Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: ListTile(
-                                        tileColor: AppColors.purple,
-                                        title: Text(
-                                          '${filter[index].name}',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: Sizes.w15),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    new Icon(Icons.error),
+                              ),
+                            ),
+                          ),
+                          Pulse(
+                            preferences: AnimationPreferences(
+                                autoPlay: AnimationPlayStates.Loop,
+                                offset: Duration(seconds: 2)),
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Container(
+                                height: Sizes.h30,
+                                width: double.infinity,
+                                color: AppColors.purple,
+                                child: Wrap(
+                                  alignment: WrapAlignment.center,
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  runAlignment: WrapAlignment.center,
+                                  children: [
+                                    Text(
+                                      '${filter[index].name}',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: Sizes.w15),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           )
-                        : InkWell(
-                            onTap: () => profile(filter[index]),
-                            child: Container(
-                              child: Stack(
-                                fit: StackFit.passthrough,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(Sizes.w70)),
-                                    child: CachedNetworkImage(
-                                      fit: BoxFit.cover,
-                                      imageUrl: filter[index].avatar,
-                                      placeholder: (context, url) => new Center(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            CircularProgressIndicator(
-                                              valueColor:
-                                                  new AlwaysStoppedAnimation<
-                                                      Color>(AppColors.purple),
-                                              strokeWidth: 5.0,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      errorWidget: (context, url, error) =>
-                                          new Icon(Icons.error),
-                                    ),
-                                  ),
-                                  Pulse(
-                                    preferences: AnimationPreferences(
-                                        autoPlay: AnimationPlayStates.Loop,
-                                        offset: Duration(seconds: 2)),
-                                    child: Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: ListTile(
-                                        tileColor: AppColors.purple,
-                                        title: Text(
-                                          '${filter[index].name}',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: Sizes.w15),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ));
+                        ],
+                      ),
+                    ));
               },
             ),
           )

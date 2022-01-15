@@ -46,6 +46,8 @@ class _PortraitDisplayState extends State<PortraitDisplay> {
                             child: Container(
                               height: Sizes.h160,
                               decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: AppColors.purple.withOpacity(.2)),
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.all(
                                     Radius.circular(Sizes.w30)),

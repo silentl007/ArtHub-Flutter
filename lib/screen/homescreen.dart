@@ -72,6 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: MediaQuery(
         data: MediaQuery.of(context).copyWith(textScaleFactor: Texts.textScale),
+        // data: MediaQuery.of(context).copyWith(textScaleFactor: Texts.textScale),
         child: Scaffold(
             key: _scaffoldKey,
             bottomNavigationBar: BottomNavigationBar(
@@ -98,6 +99,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       .toList(),
             ),
             appBar: _apptitleBar('Home'),
+            // appBar: AppBar(
+            //   toolbarTextStyle: TextStyle(),
+            //   foregroundColor: Colors.red,
+            //   backgroundColor: Colors.red,
+            // ),
             body: WillPopScope(
               onWillPop: () => _backFunction(),
               child: Container(
@@ -198,6 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Sizes().heightSizeCalc(context);
     Sizes().widthSizeCalc(context);
     return AppBar(
+       toolbarHeight: Sizes.h30,
       actions: [
         Padding(
           padding: EdgeInsets.only(right: Sizes.w30),

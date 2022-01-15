@@ -50,9 +50,11 @@ class _GalleriesState extends State<Galleries> {
 
   @override
   Widget build(BuildContext context) {
+    // print(AppBar().preferredSize.height);
     collecteddata.shuffle();
     return SafeArea(
       child: MediaQuery(
+        // data: MediaQueryData(),
         data: MediaQuery.of(context).copyWith(textScaleFactor: Texts.textScale),
         child: Scaffold(
           backgroundColor: Colors.white,

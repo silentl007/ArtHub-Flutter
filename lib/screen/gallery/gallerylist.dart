@@ -34,170 +34,84 @@ class _GalleryListState extends State<GalleryList> {
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: EdgeInsets.only(
-                      left: Sizes.w20,
-                      right: Sizes.w20,
+                        left: Sizes.w20, right: Sizes.w20, bottom: Sizes.h10),
+                    child: InkWell(
+                      onTap: () => galleryart(filtereddata[index].works),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(Sizes.w35),
+                        child: Container(
+                            height: Sizes.h160,
+                            width: double.infinity,
+                            // color: Colors.purple,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/appimages/gallerylistback.jpg'),
+                                    fit: BoxFit.fill)),
+                            child: Padding(
+                                padding: EdgeInsets.only(
+                                    left: Sizes.w50,
+                                    top: Sizes.h30,
+                                    bottom: Sizes.w12),
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("${filtereddata[index].name}",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
+                                              fontSize: Sizes.w30)),
+                                      SizedBox(
+                                        height: Sizes.h8,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/appimages/addressicon.png',
+                                            height: Sizes.h20,
+                                          ),
+                                          SizedBox(
+                                            width: Sizes.w10,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                  '${filtereddata[index].address}',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: Sizes.w13)),
+                                              Text(
+                                                  '${filtereddata[index].location} State',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: Sizes.w13)),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: Sizes.h8,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Image.asset(
+                                            'assets/appimages/callicon.png',
+                                            height: Sizes.h20,
+                                          ),
+                                          SizedBox(
+                                            width: Sizes.h10,
+                                          ),
+                                          Text('0${filtereddata[index].contact}',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: Sizes.w13))
+                                        ],
+                                      )
+                                    ]))),
+                      ),
                     ),
-                    child: index.isEven || index == 0
-                        ? InkWell(
-                            onTap: () => galleryart(filtereddata[index].works),
-                            child: Material(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(Sizes.w30)),
-                              child: Container(
-                                height: Sizes.h160,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/appimages/gallerylistback.png'),
-                                        fit: BoxFit.fill)),
-                                child: Padding(
-                                    padding: EdgeInsets.only(
-                                        left: Sizes.w50,
-                                        top: Sizes.h12,
-                                        bottom: Sizes.h12),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("${filtereddata[index].name}",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.white,
-                                                fontSize: Sizes.w30)),
-                                        SizedBox(
-                                          height: Sizes.h8,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              'assets/appimages/addressicon.png',
-                                              height: Sizes.h20,
-                                            ),
-                                            SizedBox(
-                                              width: Sizes.h10,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                    '${filtereddata[index].address}',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: Sizes.w13)),
-                                                Text(
-                                                    '${filtereddata[index].location} State',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: Sizes.w13)),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: Sizes.h8,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              'assets/appimages/callicon.png',
-                                              height: Sizes.h20,
-                                            ),
-                                            SizedBox(
-                                              width: Sizes.w10,
-                                            ),
-                                            Text(
-                                                '0${filtereddata[index].contact}',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: Sizes.w13))
-                                          ],
-                                        )
-                                      ],
-                                    )),
-                              ),
-                            ),
-                          )
-                        : InkWell(
-                            onTap: () => galleryart(filtereddata[index].works),
-                            child: Material(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(Sizes.w30)),
-                              child: Container(
-                                height: Sizes.h160,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/appimages/gallerylistback.png'),
-                                        fit: BoxFit.fill)),
-                                child: Padding(
-                                    padding: EdgeInsets.only(
-                                        left: Sizes.w50,
-                                        top: Sizes.h12,
-                                        bottom: Sizes.w12),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("${filtereddata[index].name}",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.white,
-                                                fontSize: Sizes.w30)),
-                                        SizedBox(
-                                          height: Sizes.h8,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              'assets/appimages/addressicon.png',
-                                              height: Sizes.h20,
-                                            ),
-                                            SizedBox(
-                                              width: Sizes.w10,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                    '${filtereddata[index].address}',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: Sizes.w13)),
-                                                Text(
-                                                    '${filtereddata[index].location} State',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: Sizes.w13)),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: Sizes.h8,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              'assets/appimages/callicon.png',
-                                              height: Sizes.h20,
-                                            ),
-                                            SizedBox(
-                                              width: Sizes.h10,
-                                            ),
-                                            Text(
-                                                '0${filtereddata[index].contact}',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: Sizes.w13))
-                                          ],
-                                        )
-                                      ],
-                                    )),
-                              ),
-                            ),
-                          ),
                   );
                 }),
           ),

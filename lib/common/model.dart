@@ -219,7 +219,7 @@ class Server {
 }
 
 class Texts {
-  static const textScale = .9;
+  static const textScale = .8;
   static const publicKey = 'pk_test_317423d856fb6d9a2201e6b5540a0ad74904da87';
 }
 
@@ -267,6 +267,7 @@ class Widgets {
   apptitleBar(BuildContext context, String text) {
   Sizes().widthSizeCalc(context);
     return AppBar(
+      toolbarHeight: Sizes.h30,
       title: Padding(
         padding: EdgeInsets.only(right: Sizes.w30),
         child: Row(
